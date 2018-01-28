@@ -32,8 +32,8 @@ end
 
 const tilde_i0 = Int64(1)
 
-function boundaryExtension_zeroPadding{T}(β::StridedVector{T},
-                                          k::Int64)
+function boundaryExtension_zeroPadding(β::AbstractArray{T,1},
+                                       k::Int64) where T
     kmin = tilde_i0
     kmax = length(β) + kmin - 1
     
@@ -44,8 +44,8 @@ function boundaryExtension_zeroPadding{T}(β::StridedVector{T},
     end
 end
 
-function boundaryExtension_constant{T}(β::StridedVector{T},
-                                       k::Int64)
+function boundaryExtension_constant(β::AbstractArray{T,1},
+                                    k::Int64) where T
     kmin = tilde_i0
     kmax = length(β) + kmin - 1
 
@@ -58,16 +58,16 @@ function boundaryExtension_constant{T}(β::StridedVector{T},
     end
 end
 
-function boundaryExtension_periodic{T}(β::StridedVector{T},
-                                       k::Int64)
+function boundaryExtension_periodic(β::AbstractArray{T,1},
+                                    k::Int64)  where T
     kmin = tilde_i0
     kmax = length(β) + kmin - 1
 
     β[kmin+mod(k-kmin,1+kmax-kmin)]
 end
 
-function boundaryExtension_mirror{T}(β::StridedVector{T},
-                                     k::Int64)
+function boundaryExtension_mirror(β::AbstractArray{T,1},
+                                  k::Int64) where T
     kmin = tilde_i0
     kmax = length(β) + kmin - 1
 
@@ -82,14 +82,14 @@ boundaryExtension =
          :Periodic=>boundaryExtension_periodic,
          :Mirror=>boundaryExtension_mirror)
 
-function direct_conv!{T}(tilde_α::StridedVector{T},
-                         Ωα::UnitRange,
-                         λ::Int64,
-                         β::StridedVector{T},
-                         γ::StridedVector{T},
-                         Ωγ::UnitRange,
-                         LeftBoundary::Symbol,
-                         RightBoundary::Symbol)
+function direct_conv!(tilde_α::AbstractArray{T,1},
+                      Ωα::UnitRange,
+                      λ::Int64,
+                      β::AbstractArray{T,1},
+                      γ::AbstractArray{T,1},
+                      Ωγ::UnitRange,
+                      LeftBoundary::Symbol,
+                      RightBoundary::Symbol) where T
     # Sanity check
     @assert λ!=0
     @assert length(tilde_α)==length(Ωα)
@@ -139,17 +139,17 @@ end
 
 # Some UI functions, γ inplace modification 
 #
-function direct_conv!{T}(tilde_α::StridedVector{T},
-                         α_offset::Int64,
-                         λ::Int64,
+function direct_conv!(tilde_α::AbstractArray{T,1},
+                      α_offset::Int64,
+                      λ::Int64,
 
-                         β::StridedVector{T},
+                      β::AbstractArray{T,1},
 
-                         γ::StridedVector{T},
-                         Ωγ::UnitRange,
-                         
-                         LeftBoundary::Symbol,
-                         RightBoundary::Symbol)
+                      γ::AbstractArray{T,1},
+                      Ωγ::UnitRange,
+                      
+                      LeftBoundary::Symbol,
+                      RightBoundary::Symbol) where T
 
     Ωα = UnitRange(-α_offset,
                    length(tilde_α)-α_offset-1)
@@ -169,14 +169,14 @@ end
 
 # Some UI functions, allocates γ 
 #
-function direct_conv{T}(tilde_α::StridedVector{T},
-                        α_offset::Int64,
-                        λ::Int64,
+function direct_conv(tilde_α::AbstractArray{T,1},
+                     α_offset::Int64,
+                     λ::Int64,
 
-                        β::StridedVector{T},
+                     β::AbstractArray{T,1},
 
-                        LeftBoundary::Symbol,
-                        RightBoundary::Symbol)
+                     LeftBoundary::Symbol,
+                     RightBoundary::Symbol) where T
 
     γ = Array{T,1}(length(β))
     
