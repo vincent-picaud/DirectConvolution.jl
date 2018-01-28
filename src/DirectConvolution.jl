@@ -169,6 +169,21 @@ end
 
 # Some UI functions, allocates γ 
 #
+doc"""
+    direct_conv(...)
+
+Compute convolution.
+
+Here's some inline maths: $\sqrt[n]{1 + x + x^2 + \ldots}$.
+
+Here's an equation:
+
+$\frac{n!}{k!(n - k)!} = \binom{n}{k}$
+
+This is the binomial coefficient.
+
+Return γ, a created vector of length identical to β one.
+"""
 function direct_conv(tilde_α::AbstractArray{T,1},
                      α_offset::Int64,
                      λ::Int64,

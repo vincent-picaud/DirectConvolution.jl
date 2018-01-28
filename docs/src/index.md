@@ -2,6 +2,12 @@
 
 For small kernels this approach is more efficient than FFT
 
+
+```math
+\gamma[k]=\sum\limits_{i\in\Omega^\alpha}\alpha[i]\beta[k+\lambda i],\text{ with }\lambda\in\mathbb{Z}^*
+``` 
+
+
 **CAVEAT**: under construction
 
 ## Demos
