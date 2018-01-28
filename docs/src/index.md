@@ -4,17 +4,30 @@ For small kernels this approach is more efficient than FFT
 
 **CAVEAT**: under construction
 
+## Demos
+
 ```@contents
+Pages = [
+    "demos.md"]
+Depth = 1
 ```
 
-# Autodoc...
+## Autodoc...
 
 ```@autodocs
 Modules = [DirectConvolution]
 Order   = [:type, :function]
 ```
 
-# Index
+
+## Benchmarks
+
+```@contents
+Pages = [
+    "benchmarks.md"]
+```
+
+## Index
 
 ```@index
 ```
