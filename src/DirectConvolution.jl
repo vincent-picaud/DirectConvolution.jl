@@ -1,5 +1,7 @@
 module DirectConvolution
 
+export directConv, directConv!
+
 # CAVEAT: do not use builtin 2*UnitRange as it returns a StepRange.
 # We want -2*(6:8) -> -16:-12 and not -12:-2:-16
 #
@@ -85,7 +87,7 @@ boundaryExtension =
          :Periodic=>boundaryExtension_periodic,
          :Mirror=>boundaryExtension_mirror)
 
-function direct_conv!(tilde_α::AbstractArray{T,1},
+function directConv!(tilde_α::AbstractArray{T,1},
                       Ωα::UnitRange,
                       λ::Int64,
                       β::AbstractArray{T,1},
@@ -142,7 +144,7 @@ end
 
 # Some UI functions, γ inplace modification 
 #
-function direct_conv!(tilde_α::AbstractArray{T,1},
+function directConv!(tilde_α::AbstractArray{T,1},
                       α_offset::Int64,
                       λ::Int64,
 
@@ -157,7 +159,7 @@ function direct_conv!(tilde_α::AbstractArray{T,1},
     Ωα = UnitRange(-α_offset,
                    length(tilde_α)-α_offset-1)
     
-    direct_conv!(tilde_α,
+    directConv!(tilde_α,
                  Ωα,
                  λ,
                  
@@ -173,7 +175,14 @@ end
 # Some UI functions, allocates γ 
 #
 doc"""
-    direct_conv(...)
+    directConv(tilde_α::AbstractArray{T,1},
+                α_offset::Int64,
+                λ::Int64,
+
+                β::AbstractArray{T,1},
+
+                LeftBoundary::Symbol,
+                RightBoundary::Symbol)
 
 Compute convolution.
 
@@ -187,7 +196,7 @@ This is the binomial coefficient.
 
 Return γ, a created vector of length identical to β one.
 """
-function direct_conv(tilde_α::AbstractArray{T,1},
+function directConv(tilde_α::AbstractArray{T,1},
                      α_offset::Int64,
                      λ::Int64,
 
@@ -198,7 +207,7 @@ function direct_conv(tilde_α::AbstractArray{T,1},
 
     γ = Array{T,1}(length(β))
     
-    direct_conv!(tilde_α,
+    directConv!(tilde_α,
                  α_offset,
                  λ,
 
@@ -213,7 +222,5 @@ function direct_conv(tilde_α::AbstractArray{T,1},
     γ
 end
 
-export direct_conv
-export direct_conv!
 
 end # module
