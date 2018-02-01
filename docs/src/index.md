@@ -8,7 +8,7 @@ For small kernels this approach is more efficient than FFT
 
 This can be visualized as follow 
 
-![](../figures/a_offset.png)
+![](figures/a_offset.png)
 
 Package aimes:
  - versatility: supports "à trous" algorithm, cross-correlation,
@@ -16,7 +16,16 @@ Package aimes:
  - performance: beats FFT approach for small kernels
  - implements: basic filtering operations like Savitzky-Golay filters
    or the decimated/undecimated wavelet transform.
- 
+
+This package basically exports two main functions 
+ - [`direcConv`](@ref) computes the convolution and returns a newly allocated vector
+ - [`direcConv!`](@ref) computes the convolution in-place
+
+The introduced parameters and their roles is quickly describe below
+
+
+
+
 ## Usage examples
 
 Let's start with a basic example, with zero padding boundary
