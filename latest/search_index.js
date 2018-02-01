@@ -29,7 +29,7 @@ var documenterSearchIndex = {"docs": [
     "page": "Home",
     "title": "Performance",
     "category": "section",
-    "text": "Typically wavelet transform involve small filters, of size 5 for instance. We want to compare directConv to native Julia conv function.First one must check that the two methods return the same result. Note that conv function return a vector γ of length |α|+|β|-1 whereas our function respect initial β bounds, hence the returned γ vector has same size as input β.using DirectConvolution, BenchmarkTools\nα=rand(5);\nβ=rand(1000);\nr1=conv(α,β);\nr2=directConv(α,0,-1,β,:ZeroPadding,:ZeroPadding);\nprintln(\"Result comparison $(r1[1:1000] ≈ r2)\")\nprintln(\"Julia conv()\")\n@benchmark conv(α,β);\nprintln(\"This directConv()\")\n@benchmark directConv(α,0,-1,β,:ZeroPadding,:ZeroPadding);"
+    "text": "Typically wavelet transform involve small filters, of size 5 for instance. We want to compare directConv to native Julia conv function.First one must check that the two methods return the same result. Note that conv function return a vector γ of length |α|+|β|-1 whereas our function respect initial β bounds, hence the returned γ vector has same size as input β.using DirectConvolution\nα=rand(5);\nβ=rand(1000);\nr1=conv(α,β);\nr2=directConv(α,0,-1,β,:ZeroPadding,:ZeroPadding);\nprintln(\"Result comparison $(r1[1:1000] ≈ r2)\")\nprintln(\"Julia conv()\")\n@time conv(α,β);\nprintln(\"This directConv()\")\n@time directConv(α,0,-1,β,:ZeroPadding,:ZeroPadding);"
 },
 
 {
