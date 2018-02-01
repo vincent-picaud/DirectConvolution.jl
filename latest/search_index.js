@@ -13,7 +13,7 @@ var documenterSearchIndex = {"docs": [
     "page": "Home",
     "title": "Direct Convolution",
     "category": "section",
-    "text": "For small kernels this approach is more efficient than FFTgammak=sumlimits_iinOmega^alphaalphaibetak+lambda itext with lambdainmathbbZ^*This can be visualized as follow (Image: )Package aimes:versatility: supports \"à trous\" algorithm, cross-correlation, different boundary extensions\nperformance: beats FFT approach for small kernels\nimplements: basic filtering operations like Savitzky-Golay filters or the decimated/undecimated wavelet transform."
+    "text": "For small kernels this approach is more efficient than FFTgammak=sumlimits_iinOmega^alphaalphaibetak+lambda itext with lambdainmathbbZ^*This can be visualized as follow (Image: )Package aimes:versatility: supports \"à trous\" algorithm, cross-correlation, different boundary extensions\nperformance: beats FFT approach for small kernels\nimplements: basic filtering operations like Savitzky-Golay filters or the decimated/undecimated wavelet transform.This package basically exports two main functions direcConv computes the convolution and returns a newly allocated vector\ndirecConv! computes the convolution in-placeThe introduced parameters and their roles is quickly describe below"
 },
 
 {
