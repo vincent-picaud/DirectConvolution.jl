@@ -4,7 +4,7 @@ using Documenter, DirectConvolution
 
 makedocs(modules=[DirectConvolution],
 	 format = :html,
-	 sitename = "Package name",
+	 sitename = "DirectConvolution",
 	 doctest=true,
          pages = Any[
              "Home" => "index.md",
@@ -17,7 +17,7 @@ makedocs(modules=[DirectConvolution],
 deploydocs(
     repo   = "github.com/vincent-picaud/DirectConvolution.jl.git",
     target = "build",
-    julia = "nightly", 
+    julia = "nightly",
     deps   = nothing,
     make   = nothing
 )

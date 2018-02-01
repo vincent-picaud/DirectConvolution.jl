@@ -1,5 +1,8 @@
 module DirectConvolution
 
+# CAVEAT: do not use builtin 2*UnitRange as it returns a StepRange.
+# We want -2*(6:8) -> -16:-12 and not -12:-2:-16
+#
 function scale(λ::Int64,Ω::UnitRange)
     ifelse(λ>0,
            UnitRange(λ*start(Ω),λ*last(Ω)),
@@ -18,13 +21,13 @@ end
 
 # Left & Right relative complements A\B
 #
-function relelativeComplement_left(A::UnitRange,
+function relativeComplement_left(A::UnitRange,
                                    B::UnitRange)
     UnitRange(start(A),
               min(last(A),start(B)-1))
 end
 
-function relelativeComplement_right(A::UnitRange,
+function relativeComplement_right(A::UnitRange,
                                     B::UnitRange)
     UnitRange(max(start(A),last(B)+1),
               last(A))
@@ -116,7 +119,7 @@ function direct_conv!(tilde_α::AbstractArray{T,1},
 
     # Left part
     #
-    rΩγ1_left = relelativeComplement_left(Ωγ,rΩγ1)
+    rΩγ1_left = relativeComplement_left(Ωγ,rΩγ1)
     Φ_left = boundaryExtension[LeftBoundary]
     
     for k in rΩγ1_left
@@ -127,7 +130,7 @@ function direct_conv!(tilde_α::AbstractArray{T,1},
 
     # Right part
     #
-    rΩγ1_right = relelativeComplement_right(Ωγ,rΩγ1)
+    rΩγ1_right = relativeComplement_right(Ωγ,rΩγ1)
     Φ_right = boundaryExtension[RightBoundary]
     
     for k in rΩγ1_right
