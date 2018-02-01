@@ -113,12 +113,12 @@ function directConv!(tilde_α::AbstractArray{T,1},
     # rΩγ1 part: no boundary effect
     #
     β_offset = λ*(start(Ωα)-tilde_i0)
-    @simd for k in rΩγ1
-        for i in tilde_Ωα
+    for k in rΩγ1
+        @simd for i in tilde_Ωα
             @inbounds γ[k]+=tilde_α[i]*β[k+λ*i+β_offset]
         end
     end
-
+    
     # Left part
     #
     rΩγ1_left = relativeComplement_left(Ωγ,rΩγ1)
@@ -185,14 +185,6 @@ doc"""
                 RightBoundary::Symbol)
 
 Compute convolution.
-
-Here's some inline maths: $\sqrt[n]{1 + x + x^2 + \ldots}$.
-
-Here's an equation:
-
-$\frac{n!}{k!(n - k)!} = \binom{n}{k}$
-
-This is the binomial coefficient.
 
 Return γ, a created vector of length identical to β one.
 """
