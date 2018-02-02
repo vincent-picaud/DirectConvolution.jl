@@ -13,7 +13,7 @@ This can be visualized as follow
 Package aimes:
  - versatility: supports "à trous" algorithm, cross-correlation,
    different boundary extensions
- - performance: beats FFT approach for small kernels
+ - performance: competitive compared to FFT approach for small kernels
  - implements: basic filtering operations like Savitzky-Golay filters
    or the decimated/undecimated wavelet transform.
 
