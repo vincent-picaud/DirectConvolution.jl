@@ -69,7 +69,23 @@ var documenterSearchIndex = {"docs": [
     "page": "Home",
     "title": "DirectConvolution.directConv",
     "category": "Method",
-    "text": "directConv(tilde_α::AbstractArray{T,1},\n            α_offset::Int64,\n            λ::Int64,\n\n            β::AbstractArray{T,1},\n\n            LeftBoundary::Symbol,\n            RightBoundary::Symbol)\n\nCompute convolution.\n\nReturn γ, a created vector of length identical to β one.\n\n\n\n"
+    "text": "directConv(tilde_α::AbstractArray{T,1},\n            α_offset::Int64,\n                λ::Int64,\n\n                β::AbstractArray{T,1},\n\n                LeftBoundary::Symbol,\n                RightBoundary::Symbol)\n\nCompute convolution.\n\nReturn γ, a created vector of length identical to β one.\n\n\n\n"
+},
+
+{
+    "location": "index.html#DirectConvolution.inverse_udwt!-Union{Tuple{DirectConvolution.UDWT{T},AbstractArray{T,1}}, Tuple{T}} where T<:Number",
+    "page": "Home",
+    "title": "DirectConvolution.inverse_udwt!",
+    "category": "Method",
+    "text": "Performs an inverse 1D undecimated wavelet transform\n\n\n\n"
+},
+
+{
+    "location": "index.html#DirectConvolution.udwt-Union{Tuple{AbstractArray{T,1},DirectConvolution.UDWT_Filter_Biorthogonal{T}}, Tuple{T}} where T<:Number",
+    "page": "Home",
+    "title": "DirectConvolution.udwt",
+    "category": "Method",
+    "text": "Performs a 1D undecimated wavelet transform\n\nmathcalW_j+1f)u=(barg_j*(mathcalV_jf)u\n\nmathcalV_j+1f)u=(barh_j*(mathcalV_jf)u\n\n\n\n"
 },
 
 {
