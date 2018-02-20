@@ -6,4 +6,6 @@ using Base.Test
     include("directConvolution.jl")
 
     include("SG_Filter.jl")
+
+    include("udwt.jl")
 end;
