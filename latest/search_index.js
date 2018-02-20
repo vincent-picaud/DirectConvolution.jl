@@ -37,7 +37,15 @@ var documenterSearchIndex = {"docs": [
     "page": "Home",
     "title": "α_offset parameter",
     "category": "section",
-    "text": "Let's start with a basic example, with zero padding boundary extensions. This example shows the role of the α_offset parameter.using DirectConvolution\nα=Float64[0,1,0];\nβ=collect(Float64,1:6);\nγ1=directConv(α,0,-1,β,:ZeroPadding,:ZeroPadding); # α_offset = 0\nγ2=directConv(α,1,-1,β,:ZeroPadding,:ZeroPadding); # α_offset = 1\nprintln(\"Filter coefficients\") # hide\nprintln(\"α = $(α)\") # hide\nprintln(\"Computation with α_offset=0 (observe the signal shift)\") # hide\nprintln(\"β  = $(β)\") # hide\nprintln(\"γ1 = $(γ1)\") # hide\nprintln(\"Computation with α_offset=1 (observe the phase is corrected)\") # hide\nprintln(\"β  = $(β)\") # hide\nprintln(\"γ2 = $(γ2)\") # hideCAVEAT: under construction"
+    "text": "Let\'s start with a basic example, with zero padding boundary extensions. This example shows the role of the α_offset parameter.using DirectConvolution\nα=Float64[0,1,0];\nβ=collect(Float64,1:6);\nγ1=directConv(α,0,-1,β,:ZeroPadding,:ZeroPadding); # α_offset = 0\nγ2=directConv(α,1,-1,β,:ZeroPadding,:ZeroPadding); # α_offset = 1\nprintln(\"Filter coefficients\") # hide\nprintln(\"α = $(α)\") # hide\nprintln(\"Computation with α_offset=0 (observe the signal shift)\") # hide\nprintln(\"β  = $(β)\") # hide\nprintln(\"γ1 = $(γ1)\") # hide\nprintln(\"Computation with α_offset=1 (observe the phase is corrected)\") # hide\nprintln(\"β  = $(β)\") # hide\nprintln(\"γ2 = $(γ2)\") # hide"
+},
+
+{
+    "location": "index.html#Filters-1",
+    "page": "Home",
+    "title": "Filters",
+    "category": "section",
+    "text": "Plot testusing Plots\nmaldi_data = readcsv(\"../data/Maldi_ToF.txt\")\nplot(maldi_data[:,1], maldi_data[:,2], grid=false)\nsavefig(\"figures/plot.png\")\n\nnothing(Image: )CAVEAT: under construction"
 },
 
 {
@@ -49,7 +57,15 @@ var documenterSearchIndex = {"docs": [
 },
 
 {
-    "location": "index.html#DirectConvolution.directConv-Union{Tuple{T}, Tuple{AbstractArray{T,1},Int64,Int64,AbstractArray{T,1},Symbol,Symbol}} where T",
+    "location": "index.html#DirectConvolution.SG_Filter",
+    "page": "Home",
+    "title": "DirectConvolution.SG_Filter",
+    "category": "Function",
+    "text": "SG_Filter(;halfWidth::Int=5,degree=2,T::Type=Float64)::Array{T,2}\n\nReturns Savitzky-Golay filter matrix.\n\nfilter length is 2*halfWidth+1\npolynomial degree is degree\n\n\n\n"
+},
+
+{
+    "location": "index.html#DirectConvolution.directConv-Union{Tuple{AbstractArray{T,1},Int64,Int64,AbstractArray{T,1},Symbol,Symbol}, Tuple{T}} where T",
     "page": "Home",
     "title": "DirectConvolution.directConv",
     "category": "Method",
