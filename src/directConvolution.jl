@@ -187,10 +187,10 @@ doc"""
                     LeftBoundary::Symbol,
                     RightBoundary::Symbol)
 
-        Compute convolution.
+Compute convolution.
 
-        Return γ, a created vector of length identical to β one.
-        """
+Return γ, a created vector of length identical to β one.
+"""
 function directConv(tilde_α::AbstractArray{T,1},
                     α_offset::Int64,
                     λ::Int64,

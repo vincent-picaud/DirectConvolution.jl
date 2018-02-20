@@ -6,3 +6,4 @@ docs/build/
 docs/site/
 /src/.juliahistory
 /test/.juliahistory
+*.ipynb

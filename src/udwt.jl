@@ -1,6 +1,6 @@
 export UDWT_Filter_Haar
 export ϕ_filter,ψ_filter,tildeϕ_filter,tildeψ_filter,ϕ_offset,ψ_offset,tildeϕ_offset,tildeψ_offset
-export udwt
+export udwt, scale, inverse_udwt!
 
 
 
@@ -32,9 +32,9 @@ struct UDWT_Filter_Haar{T<:AbstractFloat} <: UDWT_Filter{T}
     _ψ_offset::Int
 
     UDWT_Filter_Haar{T}() where {T<:Real} = new(SVector{2,T}([sqrt(2.)*1/2 sqrt(2.)*1/2]),
-                                                        SVector{2,T}([sqrt(2.)*1/2 -sqrt(2.)*1/2]),
-                                                        0,
-                                                        0)
+                                                SVector{2,T}([-sqrt(2.)*1/2 sqrt(2.)*1/2]),
+                                                1,
+                                                1)
 end
 
 ϕ_filter(udwt_filter::UDWT_Filter_Haar{T}) where {T} = udwt_filter._ϕ
@@ -44,13 +44,24 @@ end
 
 
 
-struct UDWT{T<:Number} 
+struct UDWT{T<:Number}
+
+    filter::UDWT_Filter_Biorthogonal{T}
+    # TODO also store boundary condition
+
     W::Array{T,2}
     V::Array{T,1}
 
-    UDWT{T}(;n::Int=0,scale::Int=0) where {T<:Number} = new(Array{T,2}(scale,n),
-                                                       Array{T,1}(n))
+    UDWT{T}(filter::UDWT_Filter_Biorthogonal{T};
+            n::Int=0,
+            scale::Int=0) where {T<:Number} =
+                new(filter,
+                    Array{T,2}(scale,n),
+                    Array{T,1}(n))
 end
+
+scale(udwt::UDWT)::Int = size(udwt.W,1)
+Base.length(udwt::UDWT)::Int = size(udwt.W,2)
 
 doc"""
 
@@ -63,20 +74,20 @@ function udwt(signal::AbstractArray{T,1},filter::UDWT_Filter_Biorthogonal{T};sca
 
     @assert scale>=0
 
-    const boundary = :ZeroPadding
-    const n_signal = length(signal)
-    const udwt_domain = UDWT{T}(n=n_signal,scale=scale)
-    const Ωγ = 1:n_signal
+    const boundary = :Periodic
+    const n = length(signal)
+    const udwt_domain = UDWT{T}(filter,n=n,scale=scale)
+    const Ωγ = 1:n
 
-    Vs = Array{T,1}(n_signal)
-    Vsp1 = Array{T,1}(n_signal)
+    Vs = Array{T,1}(n)
+    Vsp1 = Array{T,1}(n)
     Vs .= signal
     
     for s in 1:scale
         const twoPowScale = 2^(s-1)
         const Wsp1 = @view udwt_domain.W[s,:]
-        
-        # Compute Vs+1 from Vs
+
+        # Computes Vs+1 from Vs
         #
         directConv!(ϕ_filter(filter),
                     ϕ_offset(filter),
@@ -91,7 +102,7 @@ function udwt(signal::AbstractArray{T,1},filter::UDWT_Filter_Biorthogonal{T};sca
                     boundary)
 
        
-        # Compute Ws+1 from Ws
+        # Computes Ws+1 from Ws
         #
         directConv!(ψ_filter(filter),
                     ψ_offset(filter),
@@ -117,8 +128,56 @@ end
 doc"""
 
 Performs an inverse 1D undecimated wavelet transform
-
-$$\mathcal{W}_{j+1}f)[u]=(\bar{g}_j*(\mathcal{V}_{j}f)[u]$$
-$$\mathcal{V}_{j+1}f)[u]=(\bar{h}_j*(\mathcal{V}_{j}f)[u]$$
 """
-#function udwt(signal::AbstractArray{T,1},filter::UDWT_Filter_Biorthogonal{T};scale::Int=3) where {T<:Number}
+function inverse_udwt!(udwt_domain::UDWT{T},signal::AbstractArray{T,1}) where {T<:Number}
+
+    @assert length(udwt_domain) == length(signal)
+
+    const boundary = :Periodic
+    const maxScale = scale(udwt_domain)
+    const n = length(signal)
+    const Ωγ = 1:n
+    const buffer = Array{T,1}(n)
+    
+    signal .= udwt_domain.V
+
+    
+    for s in maxScale:-1:1
+        const twoPowScale = 2^(s-1)
+        
+        # Computes Vs from Vs+1
+        #
+        directConv!(tildeϕ_filter(udwt_domain.filter),
+                    tildeϕ_offset(udwt_domain.filter),
+                    -twoPowScale,
+                    
+                    signal,
+                    
+                    buffer,
+                    Ωγ,
+                      
+                    boundary,
+                    boundary)
+
+        # Computes Ws from Ws+1
+        #
+        const Ws = @view udwt_domain.W[s,:]
+
+        directConv!(tildeψ_filter(udwt_domain.filter),
+                    tildeψ_offset(udwt_domain.filter),
+                    -twoPowScale,
+                    
+                    Ws,
+                    
+                    buffer,
+                    Ωγ,
+                      
+                    boundary,
+                    boundary,
+                    accumulate=true)
+
+        for i in Ωγ
+            signal[i]=0.5*buffer[i]
+        end
+    end
+end

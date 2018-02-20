@@ -4,7 +4,12 @@
 
     @test ϕ_filter(haar_udwt) ≈ [sqrt(2.)*1/2, sqrt(2.)*1/2]
     @test tildeϕ_filter(haar_udwt) ≈ [sqrt(2.)*1/2, sqrt(2.)*1/2]
-    @test ϕ_offset(haar_udwt) == 0
+    @test ϕ_offset(haar_udwt) == 1
+
+    @test ψ_filter(haar_udwt) ≈ [-sqrt(2.)*1/2, sqrt(2.)*1/2]
+    @test tildeψ_filter(haar_udwt) ≈ [-sqrt(2.)*1/2, sqrt(2.)*1/2]
+    @test ψ_offset(haar_udwt) == 1
+
 end
 
 @testset "UDWT Transform" begin
@@ -16,4 +21,5 @@ end
 
     @test size(m.W) == (2,length(signal))
     @test size(m.V) == (length(signal),)
+    @test scale(m) == 2
 end
