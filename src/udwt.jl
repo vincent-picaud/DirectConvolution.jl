@@ -32,9 +32,9 @@ struct UDWT_Filter_Haar{T<:AbstractFloat} <: UDWT_Filter{T}
     _ψ_offset::Int
 
     UDWT_Filter_Haar{T}() where {T<:Real} = new(SVector{2,T}([sqrt(2.)*1/2 sqrt(2.)*1/2]),
-                                                SVector{2,T}([sqrt(2.)*1/2 -sqrt(2.)*1/2]),
-                                                0,
-                                                0)
+                                                        SVector{2,T}([sqrt(2.)*1/2 -sqrt(2.)*1/2]),
+                                                        0,
+                                                        0)
 end
 
 ϕ_filter(udwt_filter::UDWT_Filter_Haar{T}) where {T} = udwt_filter._ϕ
@@ -90,9 +90,9 @@ function udwt(signal::AbstractArray{T,1},filter::UDWT_Filter_Biorthogonal{T};sca
                     boundary,
                     boundary)
 
+       
         # Compute Ws+1 from Ws
         #
-        
         directConv!(ψ_filter(filter),
                     ψ_offset(filter),
                     twoPowScale,
@@ -105,10 +105,20 @@ function udwt(signal::AbstractArray{T,1},filter::UDWT_Filter_Biorthogonal{T};sca
                     boundary,
                     boundary)
 
-        Vs=Vsp1 # shallow copy
+        @swap(Vs,Vsp1)
+        
     end
 
     udwt_domain.V .= Vs
 
     return udwt_domain
 end
+
+doc"""
+
+Performs an inverse 1D undecimated wavelet transform
+
+$$\mathcal{W}_{j+1}f)[u]=(\bar{g}_j*(\mathcal{V}_{j}f)[u]$$
+$$\mathcal{V}_{j+1}f)[u]=(\bar{h}_j*(\mathcal{V}_{j}f)[u]$$
+"""
+#function udwt(signal::AbstractArray{T,1},filter::UDWT_Filter_Biorthogonal{T};scale::Int=3) where {T<:Number}

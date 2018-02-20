@@ -86,13 +86,14 @@ boundaryExtension =
          :Mirror=>boundaryExtension_mirror)
 
 function directConv!(tilde_α::AbstractArray{T,1},
-                      Ωα::UnitRange,
-                      λ::Int64,
-                      β::AbstractArray{T,1},
-                      γ::AbstractArray{T,1},
-                      Ωγ::UnitRange,
-                      LeftBoundary::Symbol,
-                      RightBoundary::Symbol) where T
+                     Ωα::UnitRange,
+                     λ::Int64,
+                     β::AbstractArray{T,1},
+                     γ::AbstractArray{T,1},
+                     Ωγ::UnitRange,
+                     LeftBoundary::Symbol,
+                     RightBoundary::Symbol;
+                     accumulate::Bool=false) where T
     # Sanity check
     @assert λ!=0
     @assert length(tilde_α)==length(Ωα)
@@ -101,10 +102,12 @@ function directConv!(tilde_α::AbstractArray{T,1},
     # Initialization
     Ωβ = UnitRange(1,length(β))
     tilde_Ωα = 1:length(Ωα)
-    
-    for k in Ωγ
-        γ[k]=0 
-    end
+
+    if !accumulate
+        for k in Ωγ
+            γ[k]=0 
+        end
+    end 
 
     rΩγ1=intersect(Ωγ,compute_Ωγ1(Ωα,λ,Ωβ))
     
@@ -143,31 +146,33 @@ end
 # Some UI functions, γ inplace modification 
 #
 function directConv!(tilde_α::AbstractArray{T,1},
-                      α_offset::Int64,
-                      λ::Int64,
+                     α_offset::Int64,
+                     λ::Int64,
 
-                      β::AbstractArray{T,1},
+                     β::AbstractArray{T,1},
 
-                      γ::AbstractArray{T,1},
-                      Ωγ::UnitRange,
-                      
-                      LeftBoundary::Symbol,
-                      RightBoundary::Symbol) where T
+                     γ::AbstractArray{T,1},
+                     Ωγ::UnitRange,
+                     
+                     LeftBoundary::Symbol,
+                     RightBoundary::Symbol;
+                     accumulate::Bool=false) where T
 
     Ωα = UnitRange(-α_offset,
                    length(tilde_α)-α_offset-1)
     
     directConv!(tilde_α,
-                 Ωα,
-                 λ,
-                 
-                 β,
+                Ωα,
+                λ,
+                
+                β,
 
-                 γ,
-                 Ωγ,
+                γ,
+                Ωγ,
 
-                 LeftBoundary,
-                 RightBoundary)
+                LeftBoundary,
+                RightBoundary,
+                accumulate=accumulate)
 end
 
 # Some UI functions, allocates γ 
@@ -175,39 +180,40 @@ end
 doc"""
     directConv(tilde_α::AbstractArray{T,1},
                 α_offset::Int64,
-                λ::Int64,
+                    λ::Int64,
 
-                β::AbstractArray{T,1},
+                    β::AbstractArray{T,1},
 
-                LeftBoundary::Symbol,
-                RightBoundary::Symbol)
+                    LeftBoundary::Symbol,
+                    RightBoundary::Symbol)
 
-Compute convolution.
+        Compute convolution.
 
-Return γ, a created vector of length identical to β one.
-"""
+        Return γ, a created vector of length identical to β one.
+        """
 function directConv(tilde_α::AbstractArray{T,1},
-                     α_offset::Int64,
-                     λ::Int64,
+                    α_offset::Int64,
+                    λ::Int64,
 
-                     β::AbstractArray{T,1},
+                    β::AbstractArray{T,1},
 
-                     LeftBoundary::Symbol,
-                     RightBoundary::Symbol) where T
+                    LeftBoundary::Symbol,
+                    RightBoundary::Symbol) where T
 
     γ = Array{T,1}(length(β))
     
     directConv!(tilde_α,
-                 α_offset,
-                 λ,
+                α_offset,
+                λ,
 
-                 β,
+                β,
 
-                 γ,
-                 UnitRange(1,length(γ)),
+                γ,
+                UnitRange(1,length(γ)),
 
-                 LeftBoundary,
-                 RightBoundary)
+                LeftBoundary,
+                RightBoundary,
+                accumulate=false)
 
     γ
 end
