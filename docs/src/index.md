@@ -72,6 +72,21 @@ println("β  = $(β)") # hide
 println("γ2 = $(γ2)") # hide
 ```
 
+### Filters
+
+Plot test
+
+```@eval 
+using Plots
+maldi_data = readcsv("../data/Maldi_ToF.txt")
+plot(maldi_data[:,1], maldi_data[:,2], grid=false)
+savefig("figures/plot.png")
+
+nothing
+```
+
+![](figures/plot.png)
+
 
 **CAVEAT**: under construction
 
