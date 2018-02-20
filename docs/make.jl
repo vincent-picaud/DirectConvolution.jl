@@ -17,7 +17,7 @@ makedocs(modules=[DirectConvolution],
 deploydocs(
     repo   = "github.com/vincent-picaud/DirectConvolution.jl.git",
     target = "build",
-    julia = "nightly",
+    julia = "0.6",
     deps   = nothing,
     make   = nothing
 )
