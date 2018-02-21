@@ -82,11 +82,11 @@ function udwt(signal::AbstractArray{T,1},filter::UDWT_Filter_Biorthogonal{T};sca
     Vs = Array{T,1}(n)
     Vsp1 = Array{T,1}(n)
     Vs .= signal
-    
+
     for s in 1:scale
         const twoPowScale = 2^(s-1)
         const Wsp1 = @view udwt_domain.W[s,:]
-
+        
         # Computes Vs+1 from Vs
         #
         directConv!(ϕ_filter(filter),

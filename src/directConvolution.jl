@@ -3,15 +3,15 @@ export directConv, directConv!
 # CAVEAT: do not use builtin 2*UnitRange as it returns a StepRange.
 # We want -2*(6:8) -> -16:-12 and not -12:-2:-16
 #
-function scale(λ::Int64,Ω::UnitRange)
+function scale(λ::Int,Ω::UnitRange{Int})
     ifelse(λ>0,
            UnitRange(λ*start(Ω),λ*last(Ω)),
            UnitRange(λ*last(Ω),λ*start(Ω)))
 end
 
-function compute_Ωγ1(Ωα::UnitRange,
-                     λ::Int64,
-                     Ωβ::UnitRange)
+function compute_Ωγ1(Ωα::UnitRange{Int},
+                     λ::Int,
+                     Ωβ::UnitRange{Int})
     
     λΩα = scale(λ,Ωα)
 
@@ -21,22 +21,22 @@ end
 
 # Left & Right relative complements A\B
 #
-function relativeComplement_left(A::UnitRange,
-                                   B::UnitRange)
+function relativeComplement_left(A::UnitRange{Int},
+                                 B::UnitRange{Int})
     UnitRange(start(A),
               min(last(A),start(B)-1))
 end
 
-function relativeComplement_right(A::UnitRange,
-                                    B::UnitRange)
+function relativeComplement_right(A::UnitRange{Int},
+                                  B::UnitRange{Int})
     UnitRange(max(start(A),last(B)+1),
               last(A))
 end
 
-const tilde_i0 = Int64(1)
+const tilde_i0 = Int(1)
 
 function boundaryExtension_zeroPadding(β::AbstractArray{T,1},
-                                       k::Int64) where T
+                                       k::Int) where T
     kmin = tilde_i0
     kmax = length(β) + kmin - 1
     
@@ -48,7 +48,7 @@ function boundaryExtension_zeroPadding(β::AbstractArray{T,1},
 end
 
 function boundaryExtension_constant(β::AbstractArray{T,1},
-                                    k::Int64) where T
+                                    k::Int) where T
     kmin = tilde_i0
     kmax = length(β) + kmin - 1
 
@@ -62,7 +62,7 @@ function boundaryExtension_constant(β::AbstractArray{T,1},
 end
 
 function boundaryExtension_periodic(β::AbstractArray{T,1},
-                                    k::Int64)  where T
+                                    k::Int)  where T
     kmin = tilde_i0
     kmax = length(β) + kmin - 1
 
@@ -70,7 +70,7 @@ function boundaryExtension_periodic(β::AbstractArray{T,1},
 end
 
 function boundaryExtension_mirror(β::AbstractArray{T,1},
-                                  k::Int64) where T
+                                  k::Int) where T
     kmin = tilde_i0
     kmax = length(β) + kmin - 1
 
@@ -86,11 +86,11 @@ boundaryExtension =
          :Mirror=>boundaryExtension_mirror)
 
 function directConv!(tilde_α::AbstractArray{T,1},
-                     Ωα::UnitRange,
-                     λ::Int64,
+                     Ωα::UnitRange{Int},
+                     λ::Int,
                      β::AbstractArray{T,1},
                      γ::AbstractArray{T,1},
-                     Ωγ::UnitRange,
+                     Ωγ::UnitRange{Int},
                      LeftBoundary::Symbol,
                      RightBoundary::Symbol;
                      accumulate::Bool=false) where T
@@ -146,13 +146,13 @@ end
 # Some UI functions, γ inplace modification 
 #
 function directConv!(tilde_α::AbstractArray{T,1},
-                     α_offset::Int64,
-                     λ::Int64,
+                     α_offset::Int,
+                     λ::Int,
 
                      β::AbstractArray{T,1},
 
                      γ::AbstractArray{T,1},
-                     Ωγ::UnitRange,
+                     Ωγ::UnitRange{Int},
                      
                      LeftBoundary::Symbol,
                      RightBoundary::Symbol;
