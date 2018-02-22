@@ -1,4 +1,21 @@
 export directConv, directConv!
+export BoundaryExtension, ZeroPaddingBE, ConstantBE, PeriodicBE, MirrorBE
+
+
+
+# first index 
+const tilde_i0 = Int(1)
+
+
+
+abstract type BoundaryExtension end
+
+struct ZeroPaddingBE end
+struct ConstantBE end
+struct PeriodicBE end
+struct MirrorBE end
+
+
 
 # CAVEAT: do not use builtin 2*UnitRange as it returns a StepRange.
 # We want -2*(6:8) -> -16:-12 and not -12:-2:-16
@@ -33,10 +50,11 @@ function relativeComplement_right(A::UnitRange{Int},
               last(A))
 end
 
-const tilde_i0 = Int(1)
+
 
-function boundaryExtension_zeroPadding(β::AbstractArray{T,1},
-                                       k::Int) where T
+function boundaryExtension(β::AbstractArray{T,1},
+                           k::Int,
+                           ::ZeroPaddingBE) where T
     kmin = tilde_i0
     kmax = length(β) + kmin - 1
     
@@ -47,8 +65,9 @@ function boundaryExtension_zeroPadding(β::AbstractArray{T,1},
     end
 end
 
-function boundaryExtension_constant(β::AbstractArray{T,1},
-                                    k::Int) where T
+function boundaryExtension(β::AbstractArray{T,1},
+                           k::Int,
+                           ::ConstantBE) where T
     kmin = tilde_i0
     kmax = length(β) + kmin - 1
 
@@ -61,38 +80,87 @@ function boundaryExtension_constant(β::AbstractArray{T,1},
     end
 end
 
-function boundaryExtension_periodic(β::AbstractArray{T,1},
-                                    k::Int)  where T
+function boundaryExtension(β::AbstractArray{T,1},
+                           k::Int,
+                           ::PeriodicBE) where T
     kmin = tilde_i0
     kmax = length(β) + kmin - 1
 
     β[kmin+mod(k-kmin,1+kmax-kmin)]
 end
 
-function boundaryExtension_mirror(β::AbstractArray{T,1},
-                                  k::Int) where T
+function boundaryExtension(β::AbstractArray{T,1},
+                           k::Int,
+                           ::MirrorBE) where T
     kmin = tilde_i0
     kmax = length(β) + kmin - 1
 
     β[kmax-abs(kmax-kmin-mod(k-kmin,2*(kmax-kmin)))]
 end
 
-# For the user interface
-#
-boundaryExtension = 
-    Dict(:ZeroPadding=>boundaryExtension_zeroPadding,
-         :Constant=>boundaryExtension_constant,
-         :Periodic=>boundaryExtension_periodic,
-         :Mirror=>boundaryExtension_mirror)
+
+
+
+# function boundaryExtension_zeroPadding(β::AbstractArray{T,1},
+#                                        k::Int) where T
+#     kmin = tilde_i0
+#     kmax = length(β) + kmin - 1
+    
+#     if (k>=kmin)&&(k<=kmax)
+#         β[k]
+#     else
+#         T(0)
+#     end
+# end
+
+# function boundaryExtension_constant(β::AbstractArray{T,1},
+#                                     k::Int) where T
+#     kmin = tilde_i0
+#     kmax = length(β) + kmin - 1
+
+#     if k<kmin
+#         β[kmin]
+#     elseif k<=kmax
+#         β[k]
+#     else
+#         β[kmax]
+#     end
+# end
+
+# function boundaryExtension_periodic(β::AbstractArray{T,1},
+#                                     k::Int)  where T
+#     kmin = tilde_i0
+#     kmax = length(β) + kmin - 1
+
+#     β[kmin+mod(k-kmin,1+kmax-kmin)]
+# end
+
+# function boundaryExtension_mirror(β::AbstractArray{T,1},
+#                                   k::Int) where T
+#     kmin = tilde_i0
+#     kmax = length(β) + kmin - 1
+
+#     β[kmax-abs(kmax-kmin-mod(k-kmin,2*(kmax-kmin)))]
+# end
+
+# # For the user interface
+# #
+# boundaryExtension = 
+#     Dict(:ZeroPadding=>boundaryExtension_zeroPadding,
+#          :Constant=>boundaryExtension_constant,
+#          :Periodic=>boundaryExtension_periodic,
+#          :Mirror=>boundaryExtension_mirror)
+
+
 
 function directConv!(tilde_α::AbstractArray{T,1},
                      Ωα::UnitRange{Int},
                      λ::Int,
                      β::AbstractArray{T,1},
                      γ::AbstractArray{T,1},
-                     Ωγ::UnitRange{Int},
-                     LeftBoundary::Symbol,
-                     RightBoundary::Symbol;
+                     Ωγ::UnitRange{Int};
+                     left::BoundaryExtension=be_zeroPadding,
+                     right::BoundaryExtension=be_zeroPadding,
                      accumulate::Bool=false) where T
     # Sanity check
     @assert λ!=0
