@@ -43,6 +43,39 @@ end
 ψ_offset(udwt_filter::UDWT_Filter_Haar{T}) where {T} = udwt_filter._ψ_offset
 
 
+# Eq. 6 from http://ieeexplore.ieee.org/stamp/stamp.jsp?tp=&arnumber=4060954
+
+# TODO
+# struct UDWT_Filter_Haar{T<:AbstractFloat} <: UDWT_Filter_Biorthogonal{T}
+#     _ϕ::SVector{2,T}
+#     _ψ::SVector{2,T}
+#     _ϕ_offset::Int
+#     _ψ_offset::Int
+
+#     UDWT_Filter_Haar{T}() where {T<:Real} = new(SVector{2,T}([sqrt(2.)*1/2 sqrt(2.)*1/2]),
+#                                                 SVector{2,T}([-sqrt(2.)*1/2 sqrt(2.)*1/2]),
+#                                                 1,
+#                                                 1)
+# end
+
+# ϕ_filter(udwt_filter::UDWT_Filter_Haar{T}) where {T} = udwt_filter._ϕ
+# ψ_filter(udwt_filter::UDWT_Filter_Haar{T}) where {T} = udwt_filter._ψ
+# ϕ_offset(udwt_filter::UDWT_Filter_Haar{T}) where {T} = udwt_filter._ϕ_offset
+# ψ_offset(udwt_filter::UDWT_Filter_Haar{T}) where {T} = udwt_filter._ψ_offset
+
+#   static const double starck2_phi[]           = {   sqrt(2.)*1/16.,  sqrt(2.)*4/16.,  
+# 						      sqrt(2.)*6/16.,  
+# 						      sqrt(2.)*4/16.,  sqrt(2.)*1/16. };
+    
+#     static const double starck2_psi[]           =  {  -sqrt(2.)*1/16., -sqrt(2.)*4/16.,  
+# 						      sqrt(2.)*10/16.,
+# 						      -sqrt(2.)*4/16.,  -sqrt(2.)*1/16. };
+
+#     static const double starck2_phiTilde[]      = {  sqrt(2.)*1. };
+#     static const double starck2_psiTilde[]      = {  sqrt(2.)*1. };
+
+
+
 
 struct UDWT{T<:Number}
 
@@ -67,8 +100,8 @@ doc"""
 
 Performs a 1D undecimated wavelet transform
 
-$$\mathcal{W}_{j+1}f)[u]=(\bar{g}_j*(\mathcal{V}_{j}f)[u]$$
-$$\mathcal{V}_{j+1}f)[u]=(\bar{h}_j*(\mathcal{V}_{j}f)[u]$$
+$$(\mathcal{W}_{j+1}f)[u]=\bar{g}_j*(\mathcal{V}_{j}f)[u]$$
+$$(\mathcal{V}_{j+1}f)[u]=\bar{h}_j*(\mathcal{V}_{j}f)[u]$$
 """
 function udwt(signal::AbstractArray{T,1},filter::UDWT_Filter_Biorthogonal{T};scale::Int=3) where {T<:Number}
 
@@ -181,3 +214,8 @@ function inverse_udwt!(udwt_domain::UDWT{T},signal::AbstractArray{T,1}) where {T
         end
     end
 end
+
+doc"""
+
+TODO: adjoint computation
+"""
