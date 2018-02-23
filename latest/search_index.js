@@ -85,7 +85,7 @@ var documenterSearchIndex = {"docs": [
     "page": "Home",
     "title": "DirectConvolution.udwt",
     "category": "Method",
-    "text": "Performs a 1D undecimated wavelet transform\n\nmathcalW_j+1f)u=(barg_j*(mathcalV_jf)u\n\nmathcalV_j+1f)u=(barh_j*(mathcalV_jf)u\n\n\n\n"
+    "text": "Performs a 1D undecimated wavelet transform\n\n(mathcalW_j+1f)u=barg_j*(mathcalV_jf)u\n\n(mathcalV_j+1f)u=barh_j*(mathcalV_jf)u\n\n\n\n"
 },
 
 {
