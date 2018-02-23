@@ -74,7 +74,7 @@ function udwt(signal::AbstractArray{T,1},filter::UDWT_Filter_Biorthogonal{T};sca
 
     @assert scale>=0
 
-    const boundary = :Periodic
+    const boundary = PeriodicBE
     const n = length(signal)
     const udwt_domain = UDWT{T}(filter,n=n,scale=scale)
     const Ωγ = 1:n
@@ -133,7 +133,7 @@ function inverse_udwt!(udwt_domain::UDWT{T},signal::AbstractArray{T,1}) where {T
 
     @assert length(udwt_domain) == length(signal)
 
-    const boundary = :Periodic
+    const boundary = PeriodicBE
     const maxScale = scale(udwt_domain)
     const n = length(signal)
     const Ωγ = 1:n

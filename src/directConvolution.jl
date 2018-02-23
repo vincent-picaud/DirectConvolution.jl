@@ -10,10 +10,10 @@ const tilde_i0 = Int(1)
 
 abstract type BoundaryExtension end
 
-struct ZeroPaddingBE end
-struct ConstantBE end
-struct PeriodicBE end
-struct MirrorBE end
+struct ZeroPaddingBE <: BoundaryExtension end
+struct ConstantBE <: BoundaryExtension end
+struct PeriodicBE <: BoundaryExtension end
+struct MirrorBE <: BoundaryExtension end
 
 
 
@@ -54,7 +54,7 @@ end
 
 function boundaryExtension(β::AbstractArray{T,1},
                            k::Int,
-                           ::ZeroPaddingBE) where T
+                           ::Type{ZeroPaddingBE}) where {T <: Number}
     kmin = tilde_i0
     kmax = length(β) + kmin - 1
     
@@ -67,7 +67,7 @@ end
 
 function boundaryExtension(β::AbstractArray{T,1},
                            k::Int,
-                           ::ConstantBE) where T
+                           ::Type{ConstantBE}) where {T <: Number}
     kmin = tilde_i0
     kmax = length(β) + kmin - 1
 
@@ -82,7 +82,7 @@ end
 
 function boundaryExtension(β::AbstractArray{T,1},
                            k::Int,
-                           ::PeriodicBE) where T
+                           ::Type{PeriodicBE}) where {T <: Number}
     kmin = tilde_i0
     kmax = length(β) + kmin - 1
 
@@ -91,7 +91,7 @@ end
 
 function boundaryExtension(β::AbstractArray{T,1},
                            k::Int,
-                           ::MirrorBE) where T
+                           ::Type{MirrorBE}) where {T <: Number}
     kmin = tilde_i0
     kmax = length(β) + kmin - 1
 
@@ -101,67 +101,17 @@ end
 
 
 
-# function boundaryExtension_zeroPadding(β::AbstractArray{T,1},
-#                                        k::Int) where T
-#     kmin = tilde_i0
-#     kmax = length(β) + kmin - 1
-    
-#     if (k>=kmin)&&(k<=kmax)
-#         β[k]
-#     else
-#         T(0)
-#     end
-# end
-
-# function boundaryExtension_constant(β::AbstractArray{T,1},
-#                                     k::Int) where T
-#     kmin = tilde_i0
-#     kmax = length(β) + kmin - 1
-
-#     if k<kmin
-#         β[kmin]
-#     elseif k<=kmax
-#         β[k]
-#     else
-#         β[kmax]
-#     end
-# end
-
-# function boundaryExtension_periodic(β::AbstractArray{T,1},
-#                                     k::Int)  where T
-#     kmin = tilde_i0
-#     kmax = length(β) + kmin - 1
-
-#     β[kmin+mod(k-kmin,1+kmax-kmin)]
-# end
-
-# function boundaryExtension_mirror(β::AbstractArray{T,1},
-#                                   k::Int) where T
-#     kmin = tilde_i0
-#     kmax = length(β) + kmin - 1
-
-#     β[kmax-abs(kmax-kmin-mod(k-kmin,2*(kmax-kmin)))]
-# end
-
-# # For the user interface
-# #
-# boundaryExtension = 
-#     Dict(:ZeroPadding=>boundaryExtension_zeroPadding,
-#          :Constant=>boundaryExtension_constant,
-#          :Periodic=>boundaryExtension_periodic,
-#          :Mirror=>boundaryExtension_mirror)
-
-
-
 function directConv!(tilde_α::AbstractArray{T,1},
                      Ωα::UnitRange{Int},
                      λ::Int,
                      β::AbstractArray{T,1},
                      γ::AbstractArray{T,1},
-                     Ωγ::UnitRange{Int};
-                     left::BoundaryExtension=be_zeroPadding,
-                     right::BoundaryExtension=be_zeroPadding,
-                     accumulate::Bool=false) where T
+                     Ωγ::UnitRange{Int},
+                     ::Type{LeftBE}=ZeroPaddingBE,
+                     ::Type{RightBE}=ZeroPaddingBE;
+                     accumulate::Bool=false) where {T <: Number,
+                                                    LeftBE <: BoundaryExtension,
+                                                    RightBE <: BoundaryExtension}
     # Sanity check
     @assert λ!=0
     @assert length(tilde_α)==length(Ωα)
@@ -191,22 +141,20 @@ function directConv!(tilde_α::AbstractArray{T,1},
     # Left part
     #
     rΩγ1_left = relativeComplement_left(Ωγ,rΩγ1)
-    Φ_left = boundaryExtension[LeftBoundary]
     
     for k in rΩγ1_left
         for i in tilde_Ωα
-            γ[k]+=tilde_α[i]*Φ_left(β,k+λ*i+β_offset)
+            γ[k]+=tilde_α[i]*boundaryExtension(β,k+λ*i+β_offset,LeftBE)
         end
     end
 
     # Right part
     #
     rΩγ1_right = relativeComplement_right(Ωγ,rΩγ1)
-    Φ_right = boundaryExtension[RightBoundary]
     
     for k in rΩγ1_right
         for i in tilde_Ωα
-            γ[k]+=tilde_α[i]*Φ_right(β,k+λ*i+β_offset)
+            γ[k]+=tilde_α[i]*boundaryExtension(β,k+λ*i+β_offset,RightBE)
         end
     end
 end
@@ -222,9 +170,12 @@ function directConv!(tilde_α::AbstractArray{T,1},
                      γ::AbstractArray{T,1},
                      Ωγ::UnitRange{Int},
                      
-                     LeftBoundary::Symbol,
-                     RightBoundary::Symbol;
-                     accumulate::Bool=false) where T
+                     ::Type{LeftBE}=ZeroPaddingBE,
+                     ::Type{RightBE}=ZeroPaddingBE;
+                     
+                     accumulate::Bool=false) where {T <: Number,
+                                                    LeftBE <: BoundaryExtension,
+                                                    RightBE <: BoundaryExtension}
 
     Ωα = UnitRange(-α_offset,
                    length(tilde_α)-α_offset-1)
@@ -238,8 +189,9 @@ function directConv!(tilde_α::AbstractArray{T,1},
                 γ,
                 Ωγ,
 
-                LeftBoundary,
-                RightBoundary,
+                LeftBE,
+                RightBE,
+                
                 accumulate=accumulate)
 end
 
@@ -258,15 +210,17 @@ doc"""
 Compute convolution.
 
 Return γ, a created vector of length identical to β one.
-"""
+    """
 function directConv(tilde_α::AbstractArray{T,1},
                     α_offset::Int64,
                     λ::Int64,
 
                     β::AbstractArray{T,1},
 
-                    LeftBoundary::Symbol,
-                    RightBoundary::Symbol) where T
+                    ::Type{LeftBE}=ZeroPaddingBE,
+                    ::Type{RightBE}=ZeroPaddingBE) where {T <: Number,
+                                                          LeftBE <: BoundaryExtension,
+                                                          RightBE <: BoundaryExtension}
 
     γ = Array{T,1}(length(β))
     
@@ -279,8 +233,9 @@ function directConv(tilde_α::AbstractArray{T,1},
                 γ,
                 UnitRange(1,length(γ)),
 
-                LeftBoundary,
-                RightBoundary,
+                LeftBE,
+                RightBE,
+                
                 accumulate=false)
 
     γ
