@@ -8,6 +8,17 @@ const tilde_i0 = Int(1)
 
 
 
+"""
+     BoundaryExtension
+
+Available extenions are:
+```julia
+struct ZeroPaddingBE <: BoundaryExtension end
+struct ConstantBE <: BoundaryExtension end
+struct PeriodicBE <: BoundaryExtension end
+struct MirrorBE <: BoundaryExtension end
+```
+"""
 abstract type BoundaryExtension end
 
 struct ZeroPaddingBE <: BoundaryExtension end
@@ -161,6 +172,27 @@ end
 
 # Some UI functions, γ inplace modification 
 #
+doc"""
+         directConv!(tilde_α::AbstractArray{T,1},
+                     α_offset::Int,
+                     λ::Int,
+
+                     β::AbstractArray{T,1},
+
+                     γ::AbstractArray{T,1},
+                     Ωγ::UnitRange{Int},
+                     
+                     ::Type{LeftBE}=ZeroPaddingBE,
+                     ::Type{RightBE}=ZeroPaddingBE;
+                     
+                     accumulate::Bool=false) where {T <: Number,
+                                                    LeftBE <: BoundaryExtension,
+                                                    RightBE <: BoundaryExtension}
+
+Computes a convolution.
+
+Inplace modification of γ
+"""
 function directConv!(tilde_α::AbstractArray{T,1},
                      α_offset::Int,
                      λ::Int,
@@ -198,19 +230,21 @@ end
 # Some UI functions, allocates γ 
 #
 doc"""
-    directConv(tilde_α::AbstractArray{T,1},
-                α_offset::Int64,
+        directConv(tilde_α::AbstractArray{T,1},
+                    α_offset::Int64,
                     λ::Int64,
 
                     β::AbstractArray{T,1},
 
-                    LeftBoundary::Symbol,
-                    RightBoundary::Symbol)
+                    ::Type{LeftBE}=ZeroPaddingBE,
+                    ::Type{RightBE}=ZeroPaddingBE) where {T <: Number,
+                                                          LeftBE <: BoundaryExtension,
+                                                          RightBE <: BoundaryExtension}
 
-Compute convolution.
+Computes a convolution.
 
-Return γ, a created vector of length identical to β one.
-    """
+Returns γ, a created vector of length identical to β one.
+"""
 function directConv(tilde_α::AbstractArray{T,1},
                     α_offset::Int64,
                     λ::Int64,

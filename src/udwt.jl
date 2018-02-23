@@ -1,4 +1,4 @@
-export UDWT_Filter_Haar
+export UDWT_Filter_Haar, UDWT_Filter_Starck2
 export ϕ_filter,ψ_filter,tildeϕ_filter,tildeψ_filter,ϕ_offset,ψ_offset,tildeϕ_offset,tildeψ_offset
 export udwt, scale, inverse_udwt!
 
@@ -7,16 +7,14 @@ export udwt, scale, inverse_udwt!
 abstract type UDWT_Filter_Biorthogonal{T<:Number} end
 abstract type UDWT_Filter{T<:Number} <: UDWT_Filter_Biorthogonal{T} end
 
-function ϕ_filter end
-function ψ_filter end
-function tildeϕ_filter end
-function tildeψ_filter end
-function ϕ_offset end
-function ψ_offset end
-function tildeϕ_offset end
-function tildeψ_offset end
-
-
+ϕ_filter(c::UDWT_Filter_Biorthogonal) = c._ϕ_filter
+ψ_filter(c::UDWT_Filter_Biorthogonal) = c._ψ_filter
+tildeϕ_filter(c::UDWT_Filter_Biorthogonal) = c._tildeϕ_filter
+tildeψ_filter(c::UDWT_Filter_Biorthogonal) = c._tildeψ_filter
+ϕ_offset(c::UDWT_Filter_Biorthogonal) = c._ϕ_offset
+ψ_offset(c::UDWT_Filter_Biorthogonal) = c._ψ_offset
+tildeϕ_offset(c::UDWT_Filter_Biorthogonal) = c._tildeϕ_offset
+tildeψ_offset(c::UDWT_Filter_Biorthogonal) = c._tildeψ_offset
 
 tildeϕ_filter(c::UDWT_Filter)=ϕ_filter(c)
 tildeψ_filter(c::UDWT_Filter)=ψ_filter(c)
@@ -26,54 +24,40 @@ tildeψ_offset(c::UDWT_Filter)=ψ_offset(c)
 
 
 struct UDWT_Filter_Haar{T<:AbstractFloat} <: UDWT_Filter{T}
-    _ϕ::SVector{2,T}
-    _ψ::SVector{2,T}
+    _ϕ_filter::SVector{2,T}
+    _ψ_filter::SVector{2,T}
     _ϕ_offset::Int
     _ψ_offset::Int
 
-    UDWT_Filter_Haar{T}() where {T<:Real} = new(SVector{2,T}([sqrt(2.)*1/2 sqrt(2.)*1/2]),
-                                                SVector{2,T}([-sqrt(2.)*1/2 sqrt(2.)*1/2]),
-                                                1,
-                                                1)
+    UDWT_Filter_Haar{T}() where {T<:Real} = new(SVector{2,T}(sqrt(2.).*[+1/2 +1/2]),
+                                                SVector{2,T}(sqrt(2.).*[-1/2 +1/2]),
+                                                0,
+                                                0)
 end
-
-ϕ_filter(udwt_filter::UDWT_Filter_Haar{T}) where {T} = udwt_filter._ϕ
-ψ_filter(udwt_filter::UDWT_Filter_Haar{T}) where {T} = udwt_filter._ψ
-ϕ_offset(udwt_filter::UDWT_Filter_Haar{T}) where {T} = udwt_filter._ϕ_offset
-ψ_offset(udwt_filter::UDWT_Filter_Haar{T}) where {T} = udwt_filter._ψ_offset
 
 
 # Eq. 6 from http://ieeexplore.ieee.org/stamp/stamp.jsp?tp=&arnumber=4060954
 
-# TODO
-# struct UDWT_Filter_Haar{T<:AbstractFloat} <: UDWT_Filter_Biorthogonal{T}
-#     _ϕ::SVector{2,T}
-#     _ψ::SVector{2,T}
-#     _ϕ_offset::Int
-#     _ψ_offset::Int
 
-#     UDWT_Filter_Haar{T}() where {T<:Real} = new(SVector{2,T}([sqrt(2.)*1/2 sqrt(2.)*1/2]),
-#                                                 SVector{2,T}([-sqrt(2.)*1/2 sqrt(2.)*1/2]),
-#                                                 1,
-#                                                 1)
-# end
+struct UDWT_Filter_Starck2{T<:AbstractFloat} <: UDWT_Filter_Biorthogonal{T}
+    _ϕ_filter::SVector{5,T}
+    _ψ_filter::SVector{5,T}
+    _ϕ_offset::Int
+    _ψ_offset::Int
+    _tildeϕ_filter::SVector{1,T}
+    _tildeψ_filter::SVector{1,T}
+    _tildeϕ_offset::Int
+    _tildeψ_offset::Int
 
-# ϕ_filter(udwt_filter::UDWT_Filter_Haar{T}) where {T} = udwt_filter._ϕ
-# ψ_filter(udwt_filter::UDWT_Filter_Haar{T}) where {T} = udwt_filter._ψ
-# ϕ_offset(udwt_filter::UDWT_Filter_Haar{T}) where {T} = udwt_filter._ϕ_offset
-# ψ_offset(udwt_filter::UDWT_Filter_Haar{T}) where {T} = udwt_filter._ψ_offset
-
-#   static const double starck2_phi[]           = {   sqrt(2.)*1/16.,  sqrt(2.)*4/16.,  
-# 						      sqrt(2.)*6/16.,  
-# 						      sqrt(2.)*4/16.,  sqrt(2.)*1/16. };
-    
-#     static const double starck2_psi[]           =  {  -sqrt(2.)*1/16., -sqrt(2.)*4/16.,  
-# 						      sqrt(2.)*10/16.,
-# 						      -sqrt(2.)*4/16.,  -sqrt(2.)*1/16. };
-
-#     static const double starck2_phiTilde[]      = {  sqrt(2.)*1. };
-#     static const double starck2_psiTilde[]      = {  sqrt(2.)*1. };
-
+    UDWT_Filter_Starck2{T}() where {T<:Real} = new(SVector{5,T}(sqrt(2.).*[+1/16 +4/16 +6/16 +4/16 +1/16]),
+                                                   SVector{5,T}(sqrt(2.).*[-1/16 -4/16 +10/16 -4/16 -1/16]),
+                                                   2,
+                                                   2,
+                                                   SVector{1,T}(sqrt(2.).*[+1]),
+                                                   SVector{1,T}(sqrt(2.).*[+1]),
+                                                   0,
+                                                   0)
+end
 
 
 
@@ -100,8 +84,8 @@ doc"""
 
 Performs a 1D undecimated wavelet transform
 
-$$(\mathcal{W}_{j+1}f)[u]=\bar{g}_j*(\mathcal{V}_{j}f)[u]$$
-$$(\mathcal{V}_{j+1}f)[u]=\bar{h}_j*(\mathcal{V}_{j}f)[u]$$
+$$(\mathcal{W}_{j+1}f)[u]=(\bar{g}_j*\mathcal{V}_{j}f)[u]$$
+$$(\mathcal{V}_{j+1}f)[u]=(\bar{h}_j*\mathcal{V}_{j}f)[u]$$
 """
 function udwt(signal::AbstractArray{T,1},filter::UDWT_Filter_Biorthogonal{T};scale::Int=3) where {T<:Number}
 
