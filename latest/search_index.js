@@ -29,7 +29,7 @@ var documenterSearchIndex = {"docs": [
     "page": "Home",
     "title": "Performance",
     "category": "section",
-    "text": "Typically wavelet transform involve small filters, of size 5 for instance. We want to compare directConv to native Julia conv function.First one must check that the two methods return the same result. Note that conv function return a vector γ of length |α|+|β|-1 whereas our function respect initial β bounds, hence the returned γ vector has same size as input β.using DirectConvolution\nα=rand(5);\nβ=rand(1000);\nr1=conv(α,β);\nr2=directConv(α,0,-1,β,:ZeroPadding,:ZeroPadding);\nprintln(\"Result comparison $(r1[1:1000] ≈ r2)\")\nprintln(\"Julia conv()\")\n@time conv(α,β);\nprintln(\"This directConv()\")\n@time directConv(α,0,-1,β,:ZeroPadding,:ZeroPadding);"
+    "text": "Typically wavelet transform involve small filters, of size 5 for instance. We want to compare directConv to native Julia conv function.First one must check that the two methods return the same result. Note that conv function return a vector γ of length |α|+|β|-1 whereas our function respect initial β bounds, hence the returned γ vector has same size as input β.using DirectConvolution\nα=rand(5);\nβ=rand(1000);\nr1=conv(α,β);\nr2=directConv(α,0,-1,β,ZeroPaddingBE,ZeroPaddingBE);\nprintln(\"Result comparison $(r1[1:1000] ≈ r2)\")\nprintln(\"Julia conv()\")\n@time conv(α,β);\nprintln(\"This directConv()\")\n@time directConv(α,0,-1,β,ZeroPaddingBE,ZeroPaddingBE);"
 },
 
 {
@@ -37,7 +37,7 @@ var documenterSearchIndex = {"docs": [
     "page": "Home",
     "title": "α_offset parameter",
     "category": "section",
-    "text": "Let\'s start with a basic example, with zero padding boundary extensions. This example shows the role of the α_offset parameter.using DirectConvolution\nα=Float64[0,1,0];\nβ=collect(Float64,1:6);\nγ1=directConv(α,0,-1,β,:ZeroPadding,:ZeroPadding); # α_offset = 0\nγ2=directConv(α,1,-1,β,:ZeroPadding,:ZeroPadding); # α_offset = 1\nprintln(\"Filter coefficients\") # hide\nprintln(\"α = $(α)\") # hide\nprintln(\"Computation with α_offset=0 (observe the signal shift)\") # hide\nprintln(\"β  = $(β)\") # hide\nprintln(\"γ1 = $(γ1)\") # hide\nprintln(\"Computation with α_offset=1 (observe the phase is corrected)\") # hide\nprintln(\"β  = $(β)\") # hide\nprintln(\"γ2 = $(γ2)\") # hide"
+    "text": "Let\'s start with a basic example, with zero padding boundary extensions. This example shows the role of the α_offset parameter.using DirectConvolution\nα=Float64[0,1,0];\nβ=collect(Float64,1:6);\nγ1=directConv(α,0,-1,β,ZeroPaddingBE,ZeroPaddingBE); # α_offset = 0\nγ2=directConv(α,1,-1,β,ZeroPaddingBE,ZeroPaddingBE); # α_offset = 1\nprintln(\"Filter coefficients\") # hide\nprintln(\"α = $(α)\") # hide\nprintln(\"Computation with α_offset=0 (observe the signal shift)\") # hide\nprintln(\"β  = $(β)\") # hide\nprintln(\"γ1 = $(γ1)\") # hide\nprintln(\"Computation with α_offset=1 (observe the phase is corrected)\") # hide\nprintln(\"β  = $(β)\") # hide\nprintln(\"γ2 = $(γ2)\") # hide"
 },
 
 {
@@ -65,7 +65,7 @@ var documenterSearchIndex = {"docs": [
 },
 
 {
-    "location": "index.html#DirectConvolution.directConv-Union{Tuple{AbstractArray{T,1},Int64,Int64,AbstractArray{T,1},Symbol,Symbol}, Tuple{T}} where T",
+    "location": "index.html#DirectConvolution.directConv-Union{Tuple{AbstractArray{T,1},Int64,Int64,AbstractArray{T,1},Type{LeftBE},Type{RightBE}}, Tuple{AbstractArray{T,1},Int64,Int64,AbstractArray{T,1},Type{LeftBE}}, Tuple{AbstractArray{T,1},Int64,Int64,AbstractArray{T,1}}, Tuple{LeftBE}, Tuple{RightBE}, Tuple{T}} where RightBE<:DirectConvolution.BoundaryExtension where LeftBE<:DirectConvolution.BoundaryExtension where T<:Number",
     "page": "Home",
     "title": "DirectConvolution.directConv",
     "category": "Method",
