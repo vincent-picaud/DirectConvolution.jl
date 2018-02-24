@@ -28,7 +28,7 @@ end
 
     m = udwt(signal,haar_udwt,scale=2)
 
-    @test size(m.W) == (2,length(signal))
+    @test size(m.W) == (length(signal),2)
     @test size(m.V) == (length(signal),)
     @test scale(m) == 2
 

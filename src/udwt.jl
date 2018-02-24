@@ -73,12 +73,12 @@ struct UDWT{T<:Number}
             n::Int=0,
             scale::Int=0) where {T<:Number} =
                 new(filter,
-                    Array{T,2}(scale,n),
+                    Array{T,2}(n,scale),
                     Array{T,1}(n))
 end
 
-scale(udwt::UDWT)::Int = size(udwt.W,1)
-Base.length(udwt::UDWT)::Int = size(udwt.W,2)
+scale(udwt::UDWT)::Int = size(udwt.W,2)
+Base.length(udwt::UDWT)::Int = size(udwt.W,1)
 
 doc"""
 
@@ -102,7 +102,7 @@ function udwt(signal::AbstractArray{T,1},filter::UDWT_Filter_Biorthogonal{T};sca
 
     for s in 1:scale
         const twoPowScale = 2^(s-1)
-        const Wsp1 = @view udwt_domain.W[s,:]
+        const Wsp1 = @view udwt_domain.W[:,s]
         
         # Computes Vs+1 from Vs
         #
@@ -178,7 +178,7 @@ function inverse_udwt!(udwt_domain::UDWT{T},signal::AbstractArray{T,1}) where {T
 
         # Computes Ws from Ws+1
         #
-        const Ws = @view udwt_domain.W[s,:]
+        const Ws = @view udwt_domain.W[:,s]
 
         directConv!(tildeψ_filter(udwt_domain.filter),
                     tildeψ_offset(udwt_domain.filter),
