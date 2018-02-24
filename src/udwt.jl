@@ -1,6 +1,6 @@
 export UDWT_Filter_Haar, UDWT_Filter_Starck2
 export ϕ_filter,ψ_filter,tildeϕ_filter,tildeψ_filter,ϕ_offset,ψ_offset,tildeϕ_offset,tildeψ_offset
-export udwt, scale, inverse_udwt!
+export udwt, scale, inverse_udwt!, inverse_udwt
 
 
 
@@ -198,6 +198,17 @@ function inverse_udwt!(udwt_domain::UDWT{T},signal::AbstractArray{T,1}) where {T
         end
     end
 end
+
+doc"""
+
+Performs an inverse 1D undecimated wavelet transform
+"""
+function inverse_udwt(udwt_domain::UDWT{T})::Array{T,1} where {T<:Number}
+    signal=Array{T,1}(length(udwt_domain))
+    inverse_udwt!(udwt_domain,signal)
+    return signal
+end
+
 
 doc"""
 

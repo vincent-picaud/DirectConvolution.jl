@@ -31,4 +31,8 @@ end
     @test size(m.W) == (2,length(signal))
     @test size(m.V) == (length(signal),)
     @test scale(m) == 2
+
+    signal_from_inv = inverse_udwt(m)
+
+    @test signal ≈ signal_from_inv
 end
