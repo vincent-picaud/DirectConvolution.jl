@@ -57,6 +57,14 @@ var documenterSearchIndex = {"docs": [
 },
 
 {
+    "location": "index.html#DirectConvolution.BoundaryExtension",
+    "page": "Home",
+    "title": "DirectConvolution.BoundaryExtension",
+    "category": "Type",
+    "text": " BoundaryExtension\n\nAvailable extenions are:\n\nstruct ZeroPaddingBE <: BoundaryExtension end\nstruct ConstantBE <: BoundaryExtension end\nstruct PeriodicBE <: BoundaryExtension end\nstruct MirrorBE <: BoundaryExtension end\n\n\n\n"
+},
+
+{
     "location": "index.html#DirectConvolution.SG_Filter",
     "page": "Home",
     "title": "DirectConvolution.SG_Filter",
@@ -65,11 +73,19 @@ var documenterSearchIndex = {"docs": [
 },
 
 {
+    "location": "index.html#DirectConvolution.directConv!-Union{Tuple{AbstractArray{T,1},Int64,Int64,AbstractArray{T,1},AbstractArray{T,1},UnitRange{Int64},Type{LeftBE},Type{RightBE}}, Tuple{AbstractArray{T,1},Int64,Int64,AbstractArray{T,1},AbstractArray{T,1},UnitRange{Int64},Type{LeftBE}}, Tuple{AbstractArray{T,1},Int64,Int64,AbstractArray{T,1},AbstractArray{T,1},UnitRange{Int64}}, Tuple{LeftBE}, Tuple{RightBE}, Tuple{T}} where RightBE<:DirectConvolution.BoundaryExtension where LeftBE<:DirectConvolution.BoundaryExtension where T<:Number",
+    "page": "Home",
+    "title": "DirectConvolution.directConv!",
+    "category": "Method",
+    "text": "     directConv!(tilde_α::AbstractArray{T,1},\n                 α_offset::Int,\n                 λ::Int,\n\n                 β::AbstractArray{T,1},\n\n                 γ::AbstractArray{T,1},\n                 Ωγ::UnitRange{Int},\n                 \n                 ::Type{LeftBE}=ZeroPaddingBE,\n                 ::Type{RightBE}=ZeroPaddingBE;\n                 \n                 accumulate::Bool=false) where {T <: Number,\n                                                LeftBE <: BoundaryExtension,\n                                                RightBE <: BoundaryExtension}\n\nComputes a convolution.\n\nInplace modification of γ\n\n\n\n"
+},
+
+{
     "location": "index.html#DirectConvolution.directConv-Union{Tuple{AbstractArray{T,1},Int64,Int64,AbstractArray{T,1},Type{LeftBE},Type{RightBE}}, Tuple{AbstractArray{T,1},Int64,Int64,AbstractArray{T,1},Type{LeftBE}}, Tuple{AbstractArray{T,1},Int64,Int64,AbstractArray{T,1}}, Tuple{LeftBE}, Tuple{RightBE}, Tuple{T}} where RightBE<:DirectConvolution.BoundaryExtension where LeftBE<:DirectConvolution.BoundaryExtension where T<:Number",
     "page": "Home",
     "title": "DirectConvolution.directConv",
     "category": "Method",
-    "text": "directConv(tilde_α::AbstractArray{T,1},\n            α_offset::Int64,\n                λ::Int64,\n\n                β::AbstractArray{T,1},\n\n                LeftBoundary::Symbol,\n                RightBoundary::Symbol)\n\nCompute convolution.\n\nReturn γ, a created vector of length identical to β one.\n\n\n\n"
+    "text": "    directConv(tilde_α::AbstractArray{T,1},\n                α_offset::Int64,\n                λ::Int64,\n\n                β::AbstractArray{T,1},\n\n                ::Type{LeftBE}=ZeroPaddingBE,\n                ::Type{RightBE}=ZeroPaddingBE) where {T <: Number,\n                                                      LeftBE <: BoundaryExtension,\n                                                      RightBE <: BoundaryExtension}\n\nComputes a convolution.\n\nReturns γ, a created vector of length identical to β one.\n\n\n\n"
 },
 
 {
@@ -81,11 +97,19 @@ var documenterSearchIndex = {"docs": [
 },
 
 {
+    "location": "index.html#DirectConvolution.inverse_udwt-Union{Tuple{DirectConvolution.UDWT{T}}, Tuple{T}} where T<:Number",
+    "page": "Home",
+    "title": "DirectConvolution.inverse_udwt",
+    "category": "Method",
+    "text": "Performs an inverse 1D undecimated wavelet transform\n\n\n\n"
+},
+
+{
     "location": "index.html#DirectConvolution.udwt-Union{Tuple{AbstractArray{T,1},DirectConvolution.UDWT_Filter_Biorthogonal{T}}, Tuple{T}} where T<:Number",
     "page": "Home",
     "title": "DirectConvolution.udwt",
     "category": "Method",
-    "text": "Performs a 1D undecimated wavelet transform\n\n(mathcalW_j+1f)u=barg_j*(mathcalV_jf)u\n\n(mathcalV_j+1f)u=barh_j*(mathcalV_jf)u\n\n\n\n"
+    "text": "Performs a 1D undecimated wavelet transform\n\n(mathcalW_j+1f)u=(barg_j*mathcalV_jf)u\n\n(mathcalV_j+1f)u=(barh_j*mathcalV_jf)u\n\n\n\n"
 },
 
 {
