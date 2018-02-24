@@ -23,16 +23,20 @@ end
 
 @testset "UDWT Transform" begin
 
-    const signal = rand(10)
-    const haar_udwt = UDWT_Filter_Haar{Float64}()
+    const signal = rand(20)
 
-    m = udwt(signal,haar_udwt,scale=2)
+    for filter in [UDWT_Filter_Haar{Float64}()
+                   UDWT_Filter_Starck2{Float64}()]
 
-    @test size(m.W) == (length(signal),2)
-    @test size(m.V) == (length(signal),)
-    @test scale(m) == 2
-
-    signal_from_inv = inverse_udwt(m)
-
-    @test signal ≈ signal_from_inv
-end
+        s = 4
+        m = udwt(signal,filter,scale=s)
+        
+        @test size(m.W) == (length(signal),s)
+        @test size(m.V) == (length(signal),)
+        @test scale(m) == s
+        
+        signal_from_inv = inverse_udwt(m)
+        
+        @test signal ≈ signal_from_inv
+    end
+end 
