@@ -53,7 +53,7 @@ var documenterSearchIndex = {"docs": [
     "page": "Home",
     "title": "Undecimated Wavelet Transform",
     "category": "section",
-    "text": ""
+    "text": "using DirectConvolution\nusing Plots\nsignal=readcsv(\"../data/Maldi_ToF.txt\");\nsignal=signal[:,2];\n\nfilter = UDWT_Filter_Starck2{Float64}()\nm = udwt(signal,filter,scale=8)\nlabel=[\"W$i\" for i in 1:scale(m)];\nplot(m.W,label=reshape(label,1,scale(m)))\nplot!(m.V,label=\"V$(scale(m))\");\nplot!(signal,label=\"signal\");\nsavefig(\"./figures/udwt.png\")(Image: )"
 },
 
 {
