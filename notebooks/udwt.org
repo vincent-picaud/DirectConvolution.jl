@@ -21,7 +21,7 @@ savefig(p_signal,"signal.png")
 [[file:signal.png]]
 
 #+BEGIN_SRC julia :session *UDWT_session* :results graphics :file W.png :exports both
-filter = UDWT_Filter_Starck2{Float64}()
+filter = UDWT_Filter_Haar{Float64}()
 m = udwt(signal,filter,scale=10)
 p_W=plot(m.W);
 p_W=plot!(signal,label="signal");
@@ -46,8 +46,55 @@ norm(signal-reconst)
 #+END_SRC
 
 #+RESULTS:
-: 
-: 4.880628263500003e-12
+#+begin_example
+
+ERROR: MethodError: no method matching start(::Void)
+Closest candidates are:
+  start(!Matched::SimpleVector) at essentials.jl:258
+  start(!Matched::Base.MethodList) at reflection.jl:560
+  start(!Matched::ExponentialBackOff) at error.jl:107
+  ...
+Stacktrace:
+ [1] #writedlm#18(::Array{Any,1}, ::Function, ::IOStream, ::Void, ::Char) at ./datafmt.jl:673
+ [2] #20 at ./datafmt.jl:683 [inlined]
+ [3] open(::Base.DataFmt.##20#21{Array{Any,1},Void,Char}, ::String, ::String) at ./iostream.jl:152
+ [4] #writecsv#23(::Array{Any,1}, ::Function, ::String, ::Void) at ./datafmt.jl:705
+ [5] writecsv(::String, ::Void) at ./datafmt.jl:705
+DirectConvolution.UDWT_Filter_Haar{Float64}([0.5, 0.5], [-0.5, 0.5], 0, 0)
+DirectConvolution.UDWT{Float64}(DirectConvolution.UDWT_Filter_Haar{Float64}([0.5, 0.5], [-0.5, 0.5], 0, 0), [-17.5 -22.75 … 10.7715 -4.76563; -15.0 -0.25 … 10.4414 -4.78516; … ; 17.0 -15.75 … 12.0547 -5.00977; -15.5 -32.75 … 11.2793 -4.91211], [132.834, 132.789, 132.796, 132.855, 132.901, 132.918, 132.91, 132.919, 132.932, 132.942  …  132.6, 132.649, 132.719, 132.747, 132.762, 132.758, 132.765, 132.801, 132.826, 132.848])
+
+
+
+ERROR: MethodError: no method matching start(::Void)
+Closest candidates are:
+  start(!Matched::SimpleVector) at essentials.jl:258
+  start(!Matched::Base.MethodList) at reflection.jl:560
+  start(!Matched::ExponentialBackOff) at error.jl:107
+  ...
+Stacktrace:
+ [1] #writedlm#18(::Array{Any,1}, ::Function, ::IOStream, ::Void, ::Char) at ./datafmt.jl:673
+ [2] #20 at ./datafmt.jl:683 [inlined]
+ [3] open(::Base.DataFmt.##20#21{Array{Any,1},Void,Char}, ::String, ::String) at ./iostream.jl:152
+ [4] #writecsv#23(::Array{Any,1}, ::Function, ::String, ::Void) at ./datafmt.jl:705
+ [5] writecsv(::String, ::Void) at ./datafmt.jl:705
+
+
+
+ERROR: MethodError: no method matching start(::Void)
+Closest candidates are:
+  start(!Matched::SimpleVector) at essentials.jl:258
+  start(!Matched::Base.MethodList) at reflection.jl:560
+  start(!Matched::ExponentialBackOff) at error.jl:107
+  ...
+Stacktrace:
+ [1] #writedlm#18(::Array{Any,1}, ::Function, ::IOStream, ::Void, ::Char) at ./datafmt.jl:673
+ [2] #20 at ./datafmt.jl:683 [inlined]
+ [3] open(::Base.DataFmt.##20#21{Array{Any,1},Void,Char}, ::String, ::String) at ./iostream.jl:152
+ [4] #writecsv#23(::Array{Any,1}, ::Function, ::String, ::Void) at ./datafmt.jl:705
+ [5] writecsv(::String, ::Void) at ./datafmt.jl:705
+
+0.0
+#+end_example
 
 #+BEGIN_SRC julia :session *UDWT_session* :results graphics :file recons.png :exports both
 p=plot(reconst);
@@ -68,6 +115,8 @@ s2/s1
 #+RESULTS:
 #+begin_example
 
+
+
 ERROR: MethodError: no method matching start(::Void)
 Closest candidates are:
   start(!Matched::SimpleVector) at essentials.jl:258
@@ -81,7 +130,7 @@ Stacktrace:
  [4] #writecsv#23(::Array{Any,1}, ::Function, ::String, ::Void) at ./datafmt.jl:705
  [5] writecsv(::String, ::Void) at ./datafmt.jl:705
 
-2.3564229986588404e8
+2.8559687788901906e6
 2.1187991e7
-0.08991590649072412
+7.418845456788748
 #+end_example

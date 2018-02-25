@@ -90,6 +90,44 @@ nothing
 
 **CAVEAT**: under construction
 
+## Undecimated Wavelet Transform
+
+### Filters
+
+```@docs
+DirectConvolution.UDWT_Filter_Biorthogonal
+```
+
+```@docs
+DirectConvolution.UDWT_Filter
+```
+
+### UDWT (transform)
+
+
+```@docs
+udwt
+```
+
+```@docs
+udwt!
+```
+
+
+```@docs
+inverse_udwt
+```
+
+```@docs
+inverse_udwt!
+```
+
+### UDWT adjoint operator (todo)
+
+### Example
+
+### Filtering, iterative reconstruction... (todo)
+
 ## Demos
 
 ```@contents
