@@ -92,6 +92,23 @@ nothing
 
 ## Undecimated Wavelet Transform
 
+```@example
+using DirectConvolution
+using Plots
+signal=readcsv("../data/Maldi_ToF.txt");
+signal=signal[:,2];
+
+filter = UDWT_Filter_Starck2{Float64}()
+m = udwt(signal,filter,scale=8)
+label=["W$i" for i in 1:scale(m)];
+plot(m.W,label=reshape(label,1,scale(m)))
+plot!(m.V,label="V$(scale(m))");
+plot!(signal,label="signal");
+savefig("./figures/udwt.png")
+```
+
+![](./figures/udwt.png)
+
 ### Filters
 
 ```@docs
