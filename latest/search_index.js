@@ -49,6 +49,94 @@ var documenterSearchIndex = {"docs": [
 },
 
 {
+    "location": "index.html#Undecimated-Wavelet-Transform-1",
+    "page": "Home",
+    "title": "Undecimated Wavelet Transform",
+    "category": "section",
+    "text": ""
+},
+
+{
+    "location": "index.html#DirectConvolution.UDWT_Filter_Biorthogonal",
+    "page": "Home",
+    "title": "DirectConvolution.UDWT_Filter_Biorthogonal",
+    "category": "Type",
+    "text": " abstract type UDWT_Filter_Biorthogonal{T<:Number}\n\nAbstract type defining the phi, psi, tildephi and tildepsi filters associated to an undecimated biorthogonal wavelet transform\n\nGeneric methods are:\n\nphi: ϕ_filter(c::UDWT_Filter_Biorthogonal)\nphi support: ϕ_offset(c::UDWT_Filter_Biorthogonal)\npsi: ψ_filter(c::UDWT_Filter_Biorthogonal)\npsi support: ψ_offset(c::UDWT_Filter_Biorthogonal)\n\n\n\n"
+},
+
+{
+    "location": "index.html#DirectConvolution.UDWT_Filter",
+    "page": "Home",
+    "title": "DirectConvolution.UDWT_Filter",
+    "category": "Type",
+    "text": " abstract type UDWT_Filter{T<:Number} <: UDWT_Filter_Biorthogonal{T}\n\nSpecialization of UDWT_Filter_Biorthogonal to orthogonal filters\n\nFor these filters, we have:\n\ntildeϕ_filter(c::UDWT_Filter)=ϕ_filter(c)\ntildeψ_filter(c::UDWT_Filter)=ψ_filter(c)\ntildeϕ_offset(c::UDWT_Filter)=ϕ_offset(c)\ntildeψ_offset(c::UDWT_Filter)=ψ_offset(c)\n\n\n\n"
+},
+
+{
+    "location": "index.html#Filters-2",
+    "page": "Home",
+    "title": "Filters",
+    "category": "section",
+    "text": "DirectConvolution.UDWT_Filter_BiorthogonalDirectConvolution.UDWT_Filter"
+},
+
+{
+    "location": "index.html#DirectConvolution.udwt",
+    "page": "Home",
+    "title": "DirectConvolution.udwt",
+    "category": "Function",
+    "text": "udwt(signal::AbstractArray{T,1},filter::UDWT_Filter_Biorthogonal{T};scale::Int=3) where {T<:Number}\n\nPerforms a 1D undecimated wavelet transform\n\n(mathcalW_j+1f)u=(barg_j*mathcalV_jf)u\n\n(mathcalV_j+1f)u=(barh_j*mathcalV_jf)u\n\n\n\n"
+},
+
+{
+    "location": "index.html#DirectConvolution.inverse_udwt",
+    "page": "Home",
+    "title": "DirectConvolution.inverse_udwt",
+    "category": "Function",
+    "text": "inverse_udwt(udwt_domain::UDWT{T})::Array{T,1} where {T<:Number}\n\nPerforms an inverse 1D undecimated wavelet transform and returns a new vector containing the reconstructed signal.\n\n\n\n"
+},
+
+{
+    "location": "index.html#DirectConvolution.inverse_udwt!",
+    "page": "Home",
+    "title": "DirectConvolution.inverse_udwt!",
+    "category": "Function",
+    "text": "inverse_udwt(udwt_domain::UDWT{T})::Array{T,1} where {T<:Number}\n\nPerforms an inverse 1D undecimated wavelet transform using a pre-allocated vector reconstructed_signal.\n\n\n\n"
+},
+
+{
+    "location": "index.html#UDWT-(transform)-1",
+    "page": "Home",
+    "title": "UDWT (transform)",
+    "category": "section",
+    "text": "udwtudwt!inverse_udwtinverse_udwt!"
+},
+
+{
+    "location": "index.html#UDWT-adjoint-operator-(todo)-1",
+    "page": "Home",
+    "title": "UDWT adjoint operator (todo)",
+    "category": "section",
+    "text": ""
+},
+
+{
+    "location": "index.html#Example-1",
+    "page": "Home",
+    "title": "Example",
+    "category": "section",
+    "text": ""
+},
+
+{
+    "location": "index.html#Filtering,-iterative-reconstruction...-(todo)-1",
+    "page": "Home",
+    "title": "Filtering, iterative reconstruction... (todo)",
+    "category": "section",
+    "text": ""
+},
+
+{
     "location": "index.html#Demos-1",
     "page": "Home",
     "title": "Demos",
@@ -93,7 +181,7 @@ var documenterSearchIndex = {"docs": [
     "page": "Home",
     "title": "DirectConvolution.inverse_udwt!",
     "category": "Method",
-    "text": "Performs an inverse 1D undecimated wavelet transform\n\n\n\n"
+    "text": "inverse_udwt(udwt_domain::UDWT{T})::Array{T,1} where {T<:Number}\n\nPerforms an inverse 1D undecimated wavelet transform using a pre-allocated vector reconstructed_signal.\n\n\n\n"
 },
 
 {
@@ -101,7 +189,7 @@ var documenterSearchIndex = {"docs": [
     "page": "Home",
     "title": "DirectConvolution.inverse_udwt",
     "category": "Method",
-    "text": "Performs an inverse 1D undecimated wavelet transform\n\n\n\n"
+    "text": "inverse_udwt(udwt_domain::UDWT{T})::Array{T,1} where {T<:Number}\n\nPerforms an inverse 1D undecimated wavelet transform and returns a new vector containing the reconstructed signal.\n\n\n\n"
 },
 
 {
@@ -109,7 +197,15 @@ var documenterSearchIndex = {"docs": [
     "page": "Home",
     "title": "DirectConvolution.udwt",
     "category": "Method",
-    "text": "Performs a 1D undecimated wavelet transform\n\n(mathcalW_j+1f)u=(barg_j*mathcalV_jf)u\n\n(mathcalV_j+1f)u=(barh_j*mathcalV_jf)u\n\n\n\n"
+    "text": "udwt(signal::AbstractArray{T,1},filter::UDWT_Filter_Biorthogonal{T};scale::Int=3) where {T<:Number}\n\nPerforms a 1D undecimated wavelet transform\n\n(mathcalW_j+1f)u=(barg_j*mathcalV_jf)u\n\n(mathcalV_j+1f)u=(barh_j*mathcalV_jf)u\n\n\n\n"
+},
+
+{
+    "location": "index.html#DirectConvolution.ϕ_filter-Tuple{DirectConvolution.UDWT_Filter_Biorthogonal}",
+    "page": "Home",
+    "title": "DirectConvolution.ϕ_filter",
+    "category": "Method",
+    "text": "See UDWT_Filter_Biorthogonal \n\n\n\n"
 },
 
 {
