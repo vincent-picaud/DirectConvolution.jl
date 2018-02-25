@@ -5,6 +5,10 @@
 
 Under construction!
 
+## UDWT 
+
+![](docs/src/figures/udwt.png)
+
 Docs
 [![Doc](https://img.shields.io/badge/docs-latest-blue.svg)](https://vincent-picaud.github.io/DirectConvolution.jl/latest/)
 [![Doc](https://img.shields.io/badge/docs-stable-blue.svg)](https://vincent-picaud.github.io/DirectConvolution.jl/stable/)
