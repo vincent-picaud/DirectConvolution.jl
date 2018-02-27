@@ -1,5 +1,6 @@
 export SG_Filter
-
+export SavitzkyGolay_Filter, SavitzkyGolay_Filter_Set
+export maxDerivativeOrder, polynomialOrder
 
 function _Vandermonde(T::DataType=Float64;halfWidth::Int=5,degree::Int=2)::Array{T,2}
     
@@ -25,8 +26,29 @@ function _Vandermonde(T::DataType=Float64;halfWidth::Int=5,degree::Int=2)::Array
     return V
 end
 
+struct SavitzkyGolay_Filter{T<:AbstractFloat,N} <: LinearFilter{T}
+    _filter::SVector{N,T}
+end
+
+function SavitzkyGolay_Filter(c::Array{T}) where {T<:AbstractFloat}
+    const N = length(c)
+    @assert isodd(length(c))
+    return SavitzkyGolay_Filter{T,N}(SVector{N,T}(c))
+end
 
 
+offset(f::SavitzkyGolay_Filter{T,N}) where {T<:AbstractFloat,N} = (N-1)>>1
+
+# todo
+struct SavitzkyGolay_Filter_Set{T<:AbstractFloat,N}
+    _filter_set::Array{SavitzkyGolay_Filter{T,N},1}
+end
+
+Base.filter(sg::SavitzkyGolay_Filter_Set{T,N};derivativeOrder::Int=0) where {T<:AbstractFloat,N} = filter(sg._filter_set[derivativeOrder+1])
+Base.length(sg::SavitzkyGolay_Filter_Set{T,N}) where {T<:AbstractFloat,N} = length(filter(sg))
+maxDerivativeOrder(sg::SavitzkyGolay_Filter_Set{T,N}) where {T<:AbstractFloat,N} = size(sg._filter_set,1)-1
+polynomialOrder(sg::SavitzkyGolay_Filter_Set{T,N}) where {T<:AbstractFloat,N} = maxDerivativeOrder(sg)
+    
 doc"""
     SG_Filter(;halfWidth::Int=5,degree=2,T::Type=Float64)::Array{T,2}
 
@@ -44,11 +66,16 @@ function SG_Filter(T::DataType=Float64;halfWidth::Int=5,degree::Int=2)
     Q,R=qr(V)
     SG=R\Q'
 
-    for i in 1:size(SG,1)
+    const n_filter,n_coef = size(SG)
+    const sg_type = SavitzkyGolay_Filter{T,n_coef}
+
+    buffer=Array{sg_type,1}()
+    
+    for i in 1:n_filter
         SG[i,:]*=factorial(i-1)
+        push!(buffer,sg_type(SVector{n_coef,T}(SG[i,:])))
     end
     
-# CAVEAT: returns the transposed matrix
-    
-    return SG'
+# Returns filters set
+    return SavitzkyGolay_Filter_Set{T,n_coef}(buffer)
 end

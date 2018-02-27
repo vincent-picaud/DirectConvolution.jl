@@ -95,7 +95,7 @@ nothing
 ```@example
 using DirectConvolution
 using Plots
-signal=readcsv("../data/Maldi_ToF.txt");
+signal=readcsv("data/Maldi_ToF.txt");
 signal=signal[:,2];
 
 filter = UDWT_Filter_Starck2{Float64}()
