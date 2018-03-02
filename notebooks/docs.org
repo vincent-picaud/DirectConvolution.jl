@@ -1,0 +1,81 @@
+#+TITLE: DirectConvolution docs
+
+#+BEGIN_SRC julia :session *doc_session* :exports none
+using Revise
+using DirectConvolution
+using Plots
+
+signal=readcsv("../docs/src/data/Maldi_ToF.txt")
+signal=signal[:,2];
+nothing
+#+END_SRC
+
+#+RESULTS:
+
+* Usage examples
+** Savitzky-Golay filter
+
+Creates a set of Savitzky-Golay filters, window width is $11=2*5+1$ and polynomial degree is $3$.
+
+#+BEGIN_SRC julia :session *doc_session* :exports code :results output
+sg = SG_Filter(Float64,halfWidth=5,degree=3)
+#+END_SRC
+
+#+RESULTS:
+: DirectConvolution.SavitzkyGolay_Filter_Set{Float64,11}(DirectConvolution.SavitzkyGolay_Filter{Float64,11}[DirectConvolution.SavitzkyGolay_Filter{Float64,11}([-0.0839161, 0.020979, 0.102564, 0.160839, 0.195804, 0.207459, 0.195804, 0.160839, 0.102564, 0.020979, -0.0839161]), DirectConvolution.SavitzkyGolay_Filter{Float64,11}([0.0582751, -0.0571096, -0.103341, -0.0977078, -0.0574981, -1.15551e-19, 0.0574981, 0.0977078, 0.103341, 0.0571096, -0.0582751]), DirectConvolution.SavitzkyGolay_Filter{Float64,11}([0.034965, 0.013986, -0.002331, -0.013986, -0.020979, -0.02331, -0.020979, -0.013986, -0.002331, 0.013986, 0.034965]), DirectConvolution.SavitzkyGolay_Filter{Float64,11}([-0.034965, 0.00699301, 0.025641, 0.0268065, 0.016317, 1.58911e-18, -0.016317, -0.0268065, -0.025641, -0.00699301, 0.034965])])
+
+This can be checked with
+
+#+BEGIN_SRC julia :session *doc_session* :exports both :results output
+length(sg)
+polynomialOrder(sg)
+#+END_SRC
+
+#+RESULTS:
+: 11
+: 3
+
+Savitzky-Golay filters can be used to smooth or to compute smoothed
+derivatives of a signal. The associated filters is obtained thanks to
+the =filter= function.
+
+#+BEGIN_SRC julia :session *doc_session* :exports both :results output
+filter(sg,derivativeOrder=2)
+#+END_SRC
+
+#+RESULTS:
+: DirectConvolution.SavitzkyGolay_Filter{Float64,11}([0.034965, 0.013986, -0.002331, -0.013986, -0.020979, -0.02331, -0.020979, -0.013986, -0.002331, 0.013986, 0.034965])
+
+Maximum derivative order is equal to the polynomial order, however there is a dedicated function:
+
+#+BEGIN_SRC julia :session *doc_session* :exports both :results output
+maxDerivativeOrder(sg)
+#+END_SRC
+
+#+RESULTS:
+: 3
+
+#+BEGIN_SRC julia :session *doc_session* :exports code 
+smoothed   =directConv(filter(sg,derivativeOrder=0),signal)
+smoothed_d2=directConv(filter(sg,derivativeOrder=2),signal)
+
+plot(signal,label="signal")
+plot!(smoothed, label="smoothed",linewidth=2)
+plot!(signal-smoothed, label="residue")
+#+END_SRC
+
+#+RESULTS:
+
+#+BEGIN_SRC julia :session *doc_session* :results graphics :file figures/sg.png :exports results
+savefig("figures/sg.png")
+#+END_SRC
+
+#+CAPTION: test
+#+RESULTS:
+[[file:figures/sg.png]]
+
+
+
+* TODO [0/1]
+
+- [ ] change filter -> coefficient

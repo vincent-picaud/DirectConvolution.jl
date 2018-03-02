@@ -44,7 +44,7 @@ struct SavitzkyGolay_Filter_Set{T<:AbstractFloat,N}
     _filter_set::Array{SavitzkyGolay_Filter{T,N},1}
 end
 
-Base.filter(sg::SavitzkyGolay_Filter_Set{T,N};derivativeOrder::Int=0) where {T<:AbstractFloat,N} = filter(sg._filter_set[derivativeOrder+1])
+Base.filter(sg::SavitzkyGolay_Filter_Set{T,N};derivativeOrder::Int=0) where {T<:AbstractFloat,N} = sg._filter_set[derivativeOrder+1]
 Base.length(sg::SavitzkyGolay_Filter_Set{T,N}) where {T<:AbstractFloat,N} = length(filter(sg))
 maxDerivativeOrder(sg::SavitzkyGolay_Filter_Set{T,N}) where {T<:AbstractFloat,N} = size(sg._filter_set,1)-1
 polynomialOrder(sg::SavitzkyGolay_Filter_Set{T,N}) where {T<:AbstractFloat,N} = maxDerivativeOrder(sg)

@@ -275,3 +275,21 @@ function directConv(tilde_α::AbstractArray{T,1},
     γ
 end
 
+
+
+
+function directConv(α::LinearFilter{T},
+                    β::AbstractArray{T,1},
+
+                    ::Type{LeftBE}=ZeroPaddingBE,
+                    ::Type{RightBE}=ZeroPaddingBE) where {T <: Number,
+                                                          LeftBE <: BoundaryExtension,
+                                                          RightBE <: BoundaryExtension}
+
+    return directConv(filter(α),
+                      offset(α),
+                      -1,
+                      β,
+                      LeftBE,
+                      RightBE)
+end
