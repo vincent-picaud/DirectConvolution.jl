@@ -17,12 +17,14 @@ nothing
 
 Creates a set of Savitzky-Golay filters, window width is $11=2*5+1$ and polynomial degree is $3$.
 
-#+BEGIN_SRC julia :session *doc_session* :exports code :results output
+#+BEGIN_SRC julia :session *doc_session* :exports code :results output :wrap "SRC julia :eval never"
 sg = SG_Filter(Float64,halfWidth=5,degree=3)
 #+END_SRC
 
 #+RESULTS:
-: DirectConvolution.SavitzkyGolay_Filter_Set{Float64,11}(DirectConvolution.SavitzkyGolay_Filter{Float64,11}[DirectConvolution.SavitzkyGolay_Filter{Float64,11}([-0.0839161, 0.020979, 0.102564, 0.160839, 0.195804, 0.207459, 0.195804, 0.160839, 0.102564, 0.020979, -0.0839161]), DirectConvolution.SavitzkyGolay_Filter{Float64,11}([0.0582751, -0.0571096, -0.103341, -0.0977078, -0.0574981, -1.15551e-19, 0.0574981, 0.0977078, 0.103341, 0.0571096, -0.0582751]), DirectConvolution.SavitzkyGolay_Filter{Float64,11}([0.034965, 0.013986, -0.002331, -0.013986, -0.020979, -0.02331, -0.020979, -0.013986, -0.002331, 0.013986, 0.034965]), DirectConvolution.SavitzkyGolay_Filter{Float64,11}([-0.034965, 0.00699301, 0.025641, 0.0268065, 0.016317, 1.58911e-18, -0.016317, -0.0268065, -0.025641, -0.00699301, 0.034965])])
+#+BEGIN_SRC julia :eval never
+DirectConvolution.SavitzkyGolay_Filter_Set{Float64,11}(DirectConvolution.SavitzkyGolay_Filter{Float64,11}[DirectConvolution.SavitzkyGolay_Filter{Float64,11}([-0.0839161, 0.020979, 0.102564, 0.160839, 0.195804, 0.207459, 0.195804, 0.160839, 0.102564, 0.020979, -0.0839161]), DirectConvolution.SavitzkyGolay_Filter{Float64,11}([0.0582751, -0.0571096, -0.103341, -0.0977078, -0.0574981, -1.15551e-19, 0.0574981, 0.0977078, 0.103341, 0.0571096, -0.0582751]), DirectConvolution.SavitzkyGolay_Filter{Float64,11}([0.034965, 0.013986, -0.002331, -0.013986, -0.020979, -0.02331, -0.020979, -0.013986, -0.002331, 0.013986, 0.034965]), DirectConvolution.SavitzkyGolay_Filter{Float64,11}([-0.034965, 0.00699301, 0.025641, 0.0268065, 0.016317, 1.58911e-18, -0.016317, -0.0268065, -0.025641, -0.00699301, 0.034965])])
+#+END_SRC
 
 This can be checked with
 
@@ -36,10 +38,10 @@ polynomialOrder(sg)
 : 3
 
 Savitzky-Golay filters can be used to smooth or to compute smoothed
-derivatives of a signal. The associated filters is obtained thanks to
+derivatives of a signal. The associated filter is obtained thanks to
 the =filter= function.
 
-#+BEGIN_SRC julia :session *doc_session* :exports both :results output
+#+BEGIN_SRC julia :session *doc_session* :exports both :results output 
 filter(sg,derivativeOrder=2)
 #+END_SRC
 
@@ -55,9 +57,10 @@ maxDerivativeOrder(sg)
 #+RESULTS:
 : 3
 
+Smoothing example:
+
 #+BEGIN_SRC julia :session *doc_session* :exports code 
-smoothed   =directConv(filter(sg,derivativeOrder=0),signal)
-smoothed_d2=directConv(filter(sg,derivativeOrder=2),signal)
+smoothed   =directConv(filter(sg,derivativeOrder=0),signal,ConstantBE,ConstantBE)
 
 plot(signal,label="signal")
 plot!(smoothed, label="smoothed",linewidth=2)
@@ -70,12 +73,90 @@ plot!(signal-smoothed, label="residue")
 savefig("figures/sg.png")
 #+END_SRC
 
-#+CAPTION: test
+#+CAPTION: Savitzky-Golay smoothing
 #+RESULTS:
 [[file:figures/sg.png]]
 
+Smoothed first order derivative example:
 
+#+BEGIN_SRC julia :session *doc_session* :exports code 
+smoothed_d1 = directConv(filter(sg,derivativeOrder=1),signal)
+
+plot(signal,label="signal")
+plot!(smoothed_d1, label="smoothed derivative",linewidth=2)
+#+END_SRC
+
+#+RESULTS:
+
+#+BEGIN_SRC julia :session *doc_session* :results graphics :file figures/sg_d1.png :exports results
+savefig("figures/sg_d1.png")
+#+END_SRC
+
+#+CAPTION: Savitzky-Golay smoothed first order derivative
+#+RESULTS:
+[[file:figures/sg_d1.png]]
+
+* Code documentation
+
+** Convolution functions
+
+This is the main contribution of this package. The [[id:59e21a70-6395-4a06-9979-8e4449ac4c64][=directConv!=]] fonction is used to compute:
+
+$$\gamma[k]=\sum\limits_{i\in\Omega^\alpha}\alpha[i]\beta[k+\lambda i],\text{ with }\lambda\in\mathbb{Z}^*$$
+
+*** =directConv!=
+    :PROPERTIES:
+    :ID:       59e21a70-6395-4a06-9979-8e4449ac4c64
+    :END:
+
+ #+BEGIN_SRC sh :results output :exports results :wrap "SRC julia :eval never"
+orgExtractSnippet.sh "../src/directConvolution.jl" directConv!
+ #+END_SRC
+
+ #+RESULTS:
+ #+BEGIN_SRC julia :eval never
+ function directConv!(tilde_α::AbstractArray{T,1},
+		      α_offset::Int,
+		      λ::Int,
+
+		      β::AbstractArray{T,1},
+
+		      γ::AbstractArray{T,1},
+		      Ωγ::UnitRange{Int},
+
+		      ::Type{LeftBE}=ZeroPaddingBE,
+		      ::Type{RightBE}=ZeroPaddingBE;
+
+		      accumulate::Bool=false)
+     where {T <: Number,
+	    LeftBE <: BoundaryExtension,
+	    RightBE <: BoundaryExtension}
+
+ #+END_SRC
+
+
+*** =directConv=
+
+ #+BEGIN_SRC sh :results output :exports results :wrap "SRC julia :eval never"
+orgExtractSnippet.sh "../src/directConvolution.jl" directConv
+ #+END_SRC
+
+ #+RESULTS:
+ #+BEGIN_SRC julia :eval never
+function directConv(tilde_α::AbstractArray{T,1},
+                    α_offset::Int64,
+                    λ::Int64,
+
+                    β::AbstractArray{T,1},
+
+                    ::Type{LeftBE}=ZeroPaddingBE,
+                    ::Type{RightBE}=ZeroPaddingBE) where {T <: Number,
+                                                          LeftBE <: BoundaryExtension,
+                                                          RightBE <: BoundaryExtension}
+
+ #+END_SRC
 
 * TODO [0/1]
 
 - [ ] change filter -> coefficient
+- [ ] add example with derivative taking X into account

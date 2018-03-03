@@ -170,8 +170,6 @@ function directConv!(tilde_α::AbstractArray{T,1},
     end
 end
 
-# Some UI functions, γ inplace modification 
-#
 doc"""
          directConv!(tilde_α::AbstractArray{T,1},
                      α_offset::Int,
@@ -193,6 +191,7 @@ Computes a convolution.
 
 Inplace modification of γ
 """
+# [BEGIN_directConv!]
 function directConv!(tilde_α::AbstractArray{T,1},
                      α_offset::Int,
                      λ::Int,
@@ -205,10 +204,11 @@ function directConv!(tilde_α::AbstractArray{T,1},
                      ::Type{LeftBE}=ZeroPaddingBE,
                      ::Type{RightBE}=ZeroPaddingBE;
                      
-                     accumulate::Bool=false) where {T <: Number,
-                                                    LeftBE <: BoundaryExtension,
-                                                    RightBE <: BoundaryExtension}
-
+                     accumulate::Bool=false)
+    where {T <: Number,
+           LeftBE <: BoundaryExtension,
+           RightBE <: BoundaryExtension}
+# [END_directConv!]
     Ωα = UnitRange(-α_offset,
                    length(tilde_α)-α_offset-1)
     
@@ -245,6 +245,7 @@ Computes a convolution.
 
 Returns γ, a created vector of length identical to β one.
 """
+# [BEGIN_directConv]
 function directConv(tilde_α::AbstractArray{T,1},
                     α_offset::Int64,
                     λ::Int64,
@@ -252,10 +253,11 @@ function directConv(tilde_α::AbstractArray{T,1},
                     β::AbstractArray{T,1},
 
                     ::Type{LeftBE}=ZeroPaddingBE,
-                    ::Type{RightBE}=ZeroPaddingBE) where {T <: Number,
-                                                          LeftBE <: BoundaryExtension,
-                                                          RightBE <: BoundaryExtension}
-
+                    ::Type{RightBE}=ZeroPaddingBE)
+    where {T <: Number,
+           LeftBE <: BoundaryExtension,
+           RightBE <: BoundaryExtension}
+# [END_directConv]
     γ = Array{T,1}(length(β))
     
     directConv!(tilde_α,
