@@ -9,16 +9,16 @@ const tilde_i0 = Int(1)
 
 
 """
-     BoundaryExtension
+         BoundaryExtension
 
-Available extenions are:
-```julia
-struct ZeroPaddingBE <: BoundaryExtension end
-struct ConstantBE <: BoundaryExtension end
-struct PeriodicBE <: BoundaryExtension end
-struct MirrorBE <: BoundaryExtension end
-```
-"""
+    Available extenions are:
+    ```julia
+    struct ZeroPaddingBE <: BoundaryExtension end
+    struct ConstantBE <: BoundaryExtension end
+    struct PeriodicBE <: BoundaryExtension end
+    struct MirrorBE <: BoundaryExtension end
+    ```
+    """
 abstract type BoundaryExtension end
 
 struct ZeroPaddingBE <: BoundaryExtension end
@@ -171,7 +171,28 @@ function directConv!(tilde_α::AbstractArray{T,1},
 end
 
 doc"""
-         directConv!(tilde_α::AbstractArray{T,1},
+             directConv!(tilde_α::AbstractArray{T,1},
+                         α_offset::Int,
+                         λ::Int,
+
+                         β::AbstractArray{T,1},
+
+                         γ::AbstractArray{T,1},
+                         Ωγ::UnitRange{Int},
+                         
+                         ::Type{LeftBE}=ZeroPaddingBE,
+                         ::Type{RightBE}=ZeroPaddingBE;
+                         
+                         accumulate::Bool=false) where {T <: Number,
+                                                        LeftBE <: BoundaryExtension,
+                                                        RightBE <: BoundaryExtension}
+
+    Computes a convolution.
+
+    Inplace modification of γ
+        """
+# [BEGIN_directConv!]
+function directConv!(tilde_α::AbstractArray{T,1},
                      α_offset::Int,
                      λ::Int,
 
@@ -186,29 +207,7 @@ doc"""
                      accumulate::Bool=false) where {T <: Number,
                                                     LeftBE <: BoundaryExtension,
                                                     RightBE <: BoundaryExtension}
-
-Computes a convolution.
-
-Inplace modification of γ
-"""
-# [BEGIN_directConv!]
-function directConv!(tilde_α::AbstractArray{T,1},
-                     α_offset::Int,
-                     λ::Int,
-
-                     β::AbstractArray{T,1},
-
-                     γ::AbstractArray{T,1},
-                     Ωγ::UnitRange{Int},
-                     
-                     ::Type{LeftBE}=ZeroPaddingBE,
-                     ::Type{RightBE}=ZeroPaddingBE;
-                     
-                     accumulate::Bool=false)
-    where {T <: Number,
-           LeftBE <: BoundaryExtension,
-           RightBE <: BoundaryExtension}
-# [END_directConv!]
+    # [END_directConv!]
     Ωα = UnitRange(-α_offset,
                    length(tilde_α)-α_offset-1)
     
@@ -230,7 +229,23 @@ end
 # Some UI functions, allocates γ 
 #
 doc"""
-        directConv(tilde_α::AbstractArray{T,1},
+            directConv(tilde_α::AbstractArray{T,1},
+                        α_offset::Int64,
+                        λ::Int64,
+
+                        β::AbstractArray{T,1},
+
+                        ::Type{LeftBE}=ZeroPaddingBE,
+                        ::Type{RightBE}=ZeroPaddingBE) where {T <: Number,
+                                                              LeftBE <: BoundaryExtension,
+                                                              RightBE <: BoundaryExtension}
+
+    Computes a convolution.
+
+    Returns γ, a created vector of length identical to β one.
+    """
+# [BEGIN_directConv]
+function directConv(tilde_α::AbstractArray{T,1},
                     α_offset::Int64,
                     λ::Int64,
 
@@ -240,24 +255,7 @@ doc"""
                     ::Type{RightBE}=ZeroPaddingBE) where {T <: Number,
                                                           LeftBE <: BoundaryExtension,
                                                           RightBE <: BoundaryExtension}
-
-Computes a convolution.
-
-Returns γ, a created vector of length identical to β one.
-"""
-# [BEGIN_directConv]
-function directConv(tilde_α::AbstractArray{T,1},
-                    α_offset::Int64,
-                    λ::Int64,
-
-                    β::AbstractArray{T,1},
-
-                    ::Type{LeftBE}=ZeroPaddingBE,
-                    ::Type{RightBE}=ZeroPaddingBE)
-    where {T <: Number,
-           LeftBE <: BoundaryExtension,
-           RightBE <: BoundaryExtension}
-# [END_directConv]
+    # [END_directConv]
     γ = Array{T,1}(length(β))
     
     directConv!(tilde_α,
