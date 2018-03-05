@@ -1,10 +1,13 @@
 # to compile with lualatex -shell-escape docs.tex
 #+TITLE: DirectConvolution docs
+#+LATEX_HEADER: \usepackage{minted}
 #+LATEX_HEADER: \usepackage{fontspec}
-# minted automatically added thanks to (setq org-latex-listings 'minted)
 #+LATEX_HEADER: \setmonofont{DejaVu Sans Mono}[Scale=MatchLowercase]
 
+#+STYLE: :width=200
+
 #+BEGIN_SRC emacs-lisp :exports none
+(setq org-image-actual-width (/ (display-pixel-width) 4))
 (setq org-latex-listings 'minted
       org-latex-pdf-process
       '("lualatex -shell-escape -interaction nonstopmode -output-directory %o %f"
@@ -27,6 +30,7 @@
 using Revise
 using DirectConvolution
 using Plots
+pyplot()
 
 signal=readcsv("../docs/src/data/Maldi_ToF.txt")
 signal=signal[:,2];
@@ -64,13 +68,16 @@ Savitzky-Golay filters can be used to smooth or to compute smoothed
 derivatives of a signal. The associated filter is obtained thanks to
 the =filter= function.
 
-#+BEGIN_SRC julia :session *doc_session* :exports both :results output 
+#+BEGIN_SRC julia :session *doc_session* :exports both :results output :wrap "SRC julia :eval never"
 # $\int sin(x) dx$
 filter(sg,derivativeOrder=2)
 #+END_SRC
 
 #+RESULTS:
-: DirectConvolution.SavitzkyGolay_Filter{Float64,11}([0.034965, 0.013986, -0.002331, -0.013986, -0.020979, -0.02331, -0.020979, -0.013986, -0.002331, 0.013986, 0.034965])
+#+BEGIN_SRC julia :eval never
+
+DirectConvolution.SavitzkyGolay_Filter{Float64,11}([0.034965, 0.013986, -0.002331, -0.013986, -0.020979, -0.02331, -0.020979, -0.013986, -0.002331, 0.013986, 0.034965])
+#+END_SRC
 
 Maximum derivative order is equal to the polynomial order, however there is a dedicated function:
 
@@ -93,13 +100,22 @@ plot!(signal-smoothed, label="residue")
 
 #+RESULTS:
 
+
+
 #+BEGIN_SRC julia :session *doc_session* :results graphics :file figures/sg.png :exports results
 savefig("figures/sg.png")
 #+END_SRC
 
+# +ATTR_HTML: :align center :width 
 #+CAPTION: Savitzky-Golay smoothing
 #+RESULTS:
 [[file:figures/sg.png]]
+
+
+
+
+
+
 
 Smoothed first order derivative example:
 
@@ -184,3 +200,4 @@ function directConv(tilde_α::AbstractArray{T,1},
 
 - [ ] change filter -> coefficient
 - [ ] add example with derivative taking X into account
+
