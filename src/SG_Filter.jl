@@ -26,22 +26,24 @@ function _Vandermonde(T::DataType=Float64;halfWidth::Int=5,degree::Int=2)::Array
     return V
 end
 
-struct SavitzkyGolay_Filter{T<:AbstractFloat,N} <: LinearFilter{T}
-    _fcoef::SVector{N,T}
-end
+# const SavitzkyGolay_Filter{T,N} = LinearFilter_DefaultCentered{T,N}
+#
+# struct SavitzkyGolay_Filter{T<:AbstractFloat,N} <: LinearFilter{T}
+#     _fcoef::SVector{N,T}
+# end
 
-function SavitzkyGolay_Filter(c::Array{T}) where {T<:AbstractFloat}
-    const N = length(c)
-    @assert isodd(length(c))
-    return SavitzkyGolay_Filter{T,N}(SVector{N,T}(c))
-end
+# function SavitzkyGolay_Filter(c::Array{T}) where {T<:AbstractFloat}
+#     const N = length(c)
+#     @assert isodd(length(c))
+#     return SavitzkyGolay_Filter{T,N}(SVector{N,T}(c))
+# end
 
 
-offset(f::SavitzkyGolay_Filter{T,N}) where {T<:AbstractFloat,N} = (N-1)>>1
+# offset(f::SavitzkyGolay_Filter{T,N}) where {T<:AbstractFloat,N} = (N-1)>>1
 
 # todo
 struct SavitzkyGolay_Filter_Set{T<:AbstractFloat,N}
-    _filter_set::Array{SavitzkyGolay_Filter{T,N},1}
+    _filter_set::Array{LinearFilter_DefaultCentered{T,N},1}
 end
 
 Base.filter(sg::SavitzkyGolay_Filter_Set{T,N};derivativeOrder::Int=0) where {T<:AbstractFloat,N} = sg._filter_set[derivativeOrder+1]
@@ -67,7 +69,7 @@ function SG_Filter(T::DataType=Float64;halfWidth::Int=5,degree::Int=2)
     SG=R\Q'
 
     const n_filter,n_coef = size(SG)
-    const sg_type = SavitzkyGolay_Filter{T,n_coef}
+    const sg_type = LinearFilter_DefaultCentered{T,n_coef}
 
     buffer=Array{sg_type,1}()
     

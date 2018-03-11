@@ -4,6 +4,8 @@ using Base.Test
 @testset "DirectConvolution" begin
 
     include("utils.jl")
+
+    include("linearFilter.jl")
     
     include("directConvolution.jl")
 

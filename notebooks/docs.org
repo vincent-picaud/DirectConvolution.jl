@@ -41,6 +41,7 @@ Eq. \ref{eq:main} has several applications:
 
 #+BEGIN_SRC julia
 using Plots
+using Revise
 using DirectConvolution
 #+END_SRC
 
@@ -68,6 +69,18 @@ polynomialOrder(sg)
 
 #+RESULTS:
 #+BEGIN_SRC julia :exports code :eval never
+ERROR: MethodError: no method matching start(::DirectConvolution.SavitzkyGolay_Filter_Set{Float64,11})
+Closest candidates are:
+  start(!Matched::SimpleVector) at essentials.jl:258
+  start(!Matched::Base.MethodList) at reflection.jl:560
+  start(!Matched::ExponentialBackOff) at error.jl:107
+  ...
+Stacktrace:
+ [1] #writedlm#18(::Array{Any,1}, ::Function, ::IOStream, ::DirectConvolution.SavitzkyGolay_Filter_Set{Float64,11}, ::Char) at ./datafmt.jl:673
+ [2] #20 at ./datafmt.jl:683 [inlined]
+ [3] open(::Base.DataFmt.##20#21{Array{Any,1},DirectConvolution.SavitzkyGolay_Filter_Set{Float64,11},Char}, ::String, ::String) at ./iostream.jl:152
+ [4] #writecsv#23(::Array{Any,1}, ::Function, ::String, ::DirectConvolution.SavitzkyGolay_Filter_Set{Float64,11}) at ./datafmt.jl:705
+ [5] writecsv(::String, ::DirectConvolution.SavitzkyGolay_Filter_Set{Float64,11}) at ./datafmt.jl:705
 11
 3
 #+END_SRC
@@ -82,7 +95,7 @@ filter(sg,derivativeOrder=2)
 
 #+RESULTS:
 #+BEGIN_SRC julia :exports code :eval never
-DirectConvolution.SavitzkyGolay_Filter{Float64,11}([0.034965, 0.013986, -0.002331, -0.013986, -0.020979, -0.02331, -0.020979, -0.013986, -0.002331, 0.013986, 0.034965])
+DirectConvolution.LinearFilter_DefaultCentered{Float64,11}([0.034965, 0.013986, -0.002331, -0.013986, -0.020979, -0.02331, -0.020979, -0.013986, -0.002331, 0.013986, 0.034965])
 #+END_SRC
 
 Maximum derivative order is equal to the polynomial order, however there is a dedicated function:
@@ -150,20 +163,19 @@ savefig("figures/sg_d1.png")
 
 ** Linear filter
 
-There is nothing fundamental here. We only define a convenience
-wrapper to store filter coefficients and an [[id:bc38afbb-e108-4e1b-8f88-4026f9f5e860][offset]] used to define
-filter support.
-The wrapper is an abstract type:
+An abstract type to represent linear filters is defined.
+
 
 #+CALL: Julia_Extract_Snippet("../src/linearFilter.jl","AbstractLinearFilter")
 
 #+RESULTS:
 #+BEGIN_SRC julia :eval never :exports code
+
 abstract type LinearFilter{T<:Number} end
 
 #+END_SRC
 
-User must define these methods:
+LinearFilter must provide filter coefficients and an [[id:bc38afbb-e108-4e1b-8f88-4026f9f5e860][offset]] used to define its support.
 
 #+CALL: Julia_Extract_Snippet("../src/linearFilter.jl","AbstractLinearFilterMethods")
 
@@ -176,13 +188,9 @@ Base.range(c::LinearFilter) = UnitRange(-offset(c),length(c)-offset(c)-1)
 
 #+END_SRC
 
-By default, the structure is assumed to have two fields: *_filter* and
+By default, the structure is assumed to have two fields: *_fcoef* and
 *_offset*. However, if you do not want that, simply overload the
 associated method.
-
-*** Filter coefficient array
-
-By default the *_filter_coef* field. For efficiency you can use StaticArrays.
 
 *** Offset and support 
     :PROPERTIES:
@@ -198,6 +206,8 @@ The filter support is defined as follows:
 $$
 \Omega_\alpha = [ -\text{offset},\text{length}-\text{offset} -1 ]
 $$
+
+
 
 ** Convolution functions
 
@@ -275,18 +285,23 @@ struct MirrorBE <: BoundaryExtension end
 
 * UTest
 
-#+BEGIN_SRC sh :eval no-export :exports results :results output :wrap "EXAMPLE"
-julia ../test/runtests.jl
+#+BEGIN_SRC julia :results output
+include("../test/runtests.jl")
 #+END_SRC
 
 #+RESULTS:
+: Test Summary:     | Pass  Total
+: DirectConvolution |   35     35
+: Base.Test.DefaultTestSet("DirectConvolution", Any[Base.Test.DefaultTestSet("swap", Any[], 4, false), Base.Test.DefaultTestSet("LinearFilter_DefaultCentered", Any[], 3, false), Base.Test.DefaultTestSet("Example α_offset", Any[], 2, false), Base.Test.DefaultTestSet("Adjoint operator", Any[], 2, false), Base.Test.DefaultTestSet("Convolution commutativity", Any[], 1, false), Base.Test.DefaultTestSet("Interval split", Any[], 1, false), Base.Test.DefaultTestSet("Savitzky-Golay", Any[], 6, false), Base.Test.DefaultTestSet("Haar", Any[], 6, false), Base.Test.DefaultTestSet("Starck2", Any[], 2, false), Base.Test.DefaultTestSet("UDWT Transform", Any[], 8, false)], 0, false)
+
+# #+BEGIN_SRC sh :eval no-export :exports results :results output :wrap "EXAMPLE"
+# julia ../test/runtests.jl
+# #+END_SRC
+
+#+RESULTS:
 #+BEGIN_EXAMPLE
-Test Summary:     | Pass  Total
-DirectConvolution |   35     35
 #+END_EXAMPLE
 
 * TODO [0/1]
-
-- [ ] change filter -> coefficient
 - [ ] add example with derivative taking X into account
 
