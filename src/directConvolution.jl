@@ -8,23 +8,14 @@ const tilde_i0 = Int(1)
 
 
 
-"""
-         BoundaryExtension
-
-    Available extenions are:
-    ```julia
-    struct ZeroPaddingBE <: BoundaryExtension end
-    struct ConstantBE <: BoundaryExtension end
-    struct PeriodicBE <: BoundaryExtension end
-    struct MirrorBE <: BoundaryExtension end
-    ```
-    """
+# [BEGIN_BoundaryExtension]
 abstract type BoundaryExtension end
 
 struct ZeroPaddingBE <: BoundaryExtension end
 struct ConstantBE <: BoundaryExtension end
 struct PeriodicBE <: BoundaryExtension end
 struct MirrorBE <: BoundaryExtension end
+# [END_BoundaryExtension]
 
 
 
