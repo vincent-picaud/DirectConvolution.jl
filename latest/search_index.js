@@ -53,14 +53,14 @@ var documenterSearchIndex = {"docs": [
     "page": "Home",
     "title": "Undecimated Wavelet Transform",
     "category": "section",
-    "text": "using DirectConvolution\nusing Plots\nsignal=readcsv(\"../data/Maldi_ToF.txt\");\nsignal=signal[:,2];\n\nfilter = UDWT_Filter_Starck2{Float64}()\nm = udwt(signal,filter,scale=8)\nlabel=[\"W$i\" for i in 1:scale(m)];\nplot(m.W,label=reshape(label,1,scale(m)))\nplot!(m.V,label=\"V$(scale(m))\");\nplot!(signal,label=\"signal\");\nsavefig(\"./figures/udwt.png\")(Image: )"
+    "text": "using DirectConvolution\nusing Plots\nsignal=readcsv(\"data/Maldi_ToF.txt\");\nsignal=signal[:,2];\n\nfilter = UDWT_Filter_Starck2{Float64}()\nm = udwt(signal,filter,scale=8)\nlabel=[\"W$i\" for i in 1:scale(m)];\nplot(m.W,label=reshape(label,1,scale(m)))\nplot!(m.V,label=\"V$(scale(m))\");\nplot!(signal,label=\"signal\");\nsavefig(\"./figures/udwt.png\")(Image: )"
 },
 
 {
     "location": "index.html#DirectConvolution.UDWT_Filter_Biorthogonal",
     "page": "Home",
     "title": "DirectConvolution.UDWT_Filter_Biorthogonal",
-    "category": "Type",
+    "category": "type",
     "text": " abstract type UDWT_Filter_Biorthogonal{T<:Number}\n\nAbstract type defining the phi, psi, tildephi and tildepsi filters associated to an undecimated biorthogonal wavelet transform\n\nGeneric methods are:\n\nphi: ϕ_filter(c::UDWT_Filter_Biorthogonal)\nphi support: ϕ_offset(c::UDWT_Filter_Biorthogonal)\npsi: ψ_filter(c::UDWT_Filter_Biorthogonal)\npsi support: ψ_offset(c::UDWT_Filter_Biorthogonal)\n\n\n\n"
 },
 
@@ -68,7 +68,7 @@ var documenterSearchIndex = {"docs": [
     "location": "index.html#DirectConvolution.UDWT_Filter",
     "page": "Home",
     "title": "DirectConvolution.UDWT_Filter",
-    "category": "Type",
+    "category": "type",
     "text": " abstract type UDWT_Filter{T<:Number} <: UDWT_Filter_Biorthogonal{T}\n\nSpecialization of UDWT_Filter_Biorthogonal to orthogonal filters\n\nFor these filters, we have:\n\ntildeϕ_filter(c::UDWT_Filter)=ϕ_filter(c)\ntildeψ_filter(c::UDWT_Filter)=ψ_filter(c)\ntildeϕ_offset(c::UDWT_Filter)=ϕ_offset(c)\ntildeψ_offset(c::UDWT_Filter)=ψ_offset(c)\n\n\n\n"
 },
 
@@ -84,7 +84,7 @@ var documenterSearchIndex = {"docs": [
     "location": "index.html#DirectConvolution.udwt",
     "page": "Home",
     "title": "DirectConvolution.udwt",
-    "category": "Function",
+    "category": "function",
     "text": "udwt(signal::AbstractArray{T,1},filter::UDWT_Filter_Biorthogonal{T};scale::Int=3) where {T<:Number}\n\nPerforms a 1D undecimated wavelet transform\n\n(mathcalW_j+1f)u=(barg_j*mathcalV_jf)u\n\n(mathcalV_j+1f)u=(barh_j*mathcalV_jf)u\n\n\n\n"
 },
 
@@ -92,7 +92,7 @@ var documenterSearchIndex = {"docs": [
     "location": "index.html#DirectConvolution.inverse_udwt",
     "page": "Home",
     "title": "DirectConvolution.inverse_udwt",
-    "category": "Function",
+    "category": "function",
     "text": "inverse_udwt(udwt_domain::UDWT{T})::Array{T,1} where {T<:Number}\n\nPerforms an inverse 1D undecimated wavelet transform and returns a new vector containing the reconstructed signal.\n\n\n\n"
 },
 
@@ -100,7 +100,7 @@ var documenterSearchIndex = {"docs": [
     "location": "index.html#DirectConvolution.inverse_udwt!",
     "page": "Home",
     "title": "DirectConvolution.inverse_udwt!",
-    "category": "Function",
+    "category": "function",
     "text": "inverse_udwt(udwt_domain::UDWT{T})::Array{T,1} where {T<:Number}\n\nPerforms an inverse 1D undecimated wavelet transform using a pre-allocated vector reconstructed_signal.\n\n\n\n"
 },
 
@@ -145,18 +145,10 @@ var documenterSearchIndex = {"docs": [
 },
 
 {
-    "location": "index.html#DirectConvolution.BoundaryExtension",
-    "page": "Home",
-    "title": "DirectConvolution.BoundaryExtension",
-    "category": "Type",
-    "text": " BoundaryExtension\n\nAvailable extenions are:\n\nstruct ZeroPaddingBE <: BoundaryExtension end\nstruct ConstantBE <: BoundaryExtension end\nstruct PeriodicBE <: BoundaryExtension end\nstruct MirrorBE <: BoundaryExtension end\n\n\n\n"
-},
-
-{
     "location": "index.html#DirectConvolution.SG_Filter",
     "page": "Home",
     "title": "DirectConvolution.SG_Filter",
-    "category": "Function",
+    "category": "function",
     "text": "SG_Filter(;halfWidth::Int=5,degree=2,T::Type=Float64)::Array{T,2}\n\nReturns Savitzky-Golay filter matrix.\n\nfilter length is 2*halfWidth+1\npolynomial degree is degree\n\n\n\n"
 },
 
@@ -164,7 +156,7 @@ var documenterSearchIndex = {"docs": [
     "location": "index.html#DirectConvolution.directConv!-Union{Tuple{AbstractArray{T,1},Int64,Int64,AbstractArray{T,1},AbstractArray{T,1},UnitRange{Int64},Type{LeftBE},Type{RightBE}}, Tuple{AbstractArray{T,1},Int64,Int64,AbstractArray{T,1},AbstractArray{T,1},UnitRange{Int64},Type{LeftBE}}, Tuple{AbstractArray{T,1},Int64,Int64,AbstractArray{T,1},AbstractArray{T,1},UnitRange{Int64}}, Tuple{LeftBE}, Tuple{RightBE}, Tuple{T}} where RightBE<:DirectConvolution.BoundaryExtension where LeftBE<:DirectConvolution.BoundaryExtension where T<:Number",
     "page": "Home",
     "title": "DirectConvolution.directConv!",
-    "category": "Method",
+    "category": "method",
     "text": "     directConv!(tilde_α::AbstractArray{T,1},\n                 α_offset::Int,\n                 λ::Int,\n\n                 β::AbstractArray{T,1},\n\n                 γ::AbstractArray{T,1},\n                 Ωγ::UnitRange{Int},\n                 \n                 ::Type{LeftBE}=ZeroPaddingBE,\n                 ::Type{RightBE}=ZeroPaddingBE;\n                 \n                 accumulate::Bool=false) where {T <: Number,\n                                                LeftBE <: BoundaryExtension,\n                                                RightBE <: BoundaryExtension}\n\nComputes a convolution.\n\nInplace modification of γ\n\n\n\n"
 },
 
@@ -172,7 +164,7 @@ var documenterSearchIndex = {"docs": [
     "location": "index.html#DirectConvolution.directConv-Union{Tuple{AbstractArray{T,1},Int64,Int64,AbstractArray{T,1},Type{LeftBE},Type{RightBE}}, Tuple{AbstractArray{T,1},Int64,Int64,AbstractArray{T,1},Type{LeftBE}}, Tuple{AbstractArray{T,1},Int64,Int64,AbstractArray{T,1}}, Tuple{LeftBE}, Tuple{RightBE}, Tuple{T}} where RightBE<:DirectConvolution.BoundaryExtension where LeftBE<:DirectConvolution.BoundaryExtension where T<:Number",
     "page": "Home",
     "title": "DirectConvolution.directConv",
-    "category": "Method",
+    "category": "method",
     "text": "    directConv(tilde_α::AbstractArray{T,1},\n                α_offset::Int64,\n                λ::Int64,\n\n                β::AbstractArray{T,1},\n\n                ::Type{LeftBE}=ZeroPaddingBE,\n                ::Type{RightBE}=ZeroPaddingBE) where {T <: Number,\n                                                      LeftBE <: BoundaryExtension,\n                                                      RightBE <: BoundaryExtension}\n\nComputes a convolution.\n\nReturns γ, a created vector of length identical to β one.\n\n\n\n"
 },
 
@@ -180,7 +172,7 @@ var documenterSearchIndex = {"docs": [
     "location": "index.html#DirectConvolution.inverse_udwt!-Union{Tuple{DirectConvolution.UDWT{T},AbstractArray{T,1}}, Tuple{T}} where T<:Number",
     "page": "Home",
     "title": "DirectConvolution.inverse_udwt!",
-    "category": "Method",
+    "category": "method",
     "text": "inverse_udwt(udwt_domain::UDWT{T})::Array{T,1} where {T<:Number}\n\nPerforms an inverse 1D undecimated wavelet transform using a pre-allocated vector reconstructed_signal.\n\n\n\n"
 },
 
@@ -188,7 +180,7 @@ var documenterSearchIndex = {"docs": [
     "location": "index.html#DirectConvolution.inverse_udwt-Union{Tuple{DirectConvolution.UDWT{T}}, Tuple{T}} where T<:Number",
     "page": "Home",
     "title": "DirectConvolution.inverse_udwt",
-    "category": "Method",
+    "category": "method",
     "text": "inverse_udwt(udwt_domain::UDWT{T})::Array{T,1} where {T<:Number}\n\nPerforms an inverse 1D undecimated wavelet transform and returns a new vector containing the reconstructed signal.\n\n\n\n"
 },
 
@@ -196,7 +188,7 @@ var documenterSearchIndex = {"docs": [
     "location": "index.html#DirectConvolution.udwt-Union{Tuple{AbstractArray{T,1},DirectConvolution.UDWT_Filter_Biorthogonal{T}}, Tuple{T}} where T<:Number",
     "page": "Home",
     "title": "DirectConvolution.udwt",
-    "category": "Method",
+    "category": "method",
     "text": "udwt(signal::AbstractArray{T,1},filter::UDWT_Filter_Biorthogonal{T};scale::Int=3) where {T<:Number}\n\nPerforms a 1D undecimated wavelet transform\n\n(mathcalW_j+1f)u=(barg_j*mathcalV_jf)u\n\n(mathcalV_j+1f)u=(barh_j*mathcalV_jf)u\n\n\n\n"
 },
 
@@ -204,7 +196,7 @@ var documenterSearchIndex = {"docs": [
     "location": "index.html#DirectConvolution.ϕ_filter-Tuple{DirectConvolution.UDWT_Filter_Biorthogonal}",
     "page": "Home",
     "title": "DirectConvolution.ϕ_filter",
-    "category": "Method",
+    "category": "method",
     "text": "See UDWT_Filter_Biorthogonal \n\n\n\n"
 },
 
