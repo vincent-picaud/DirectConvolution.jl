@@ -1,61 +1,51 @@
-# to compile with lualatex -shell-escape docs.tex
 #+TITLE: DirectConvolution docs
+#+PROPERTY: header-args:julia :session *doc_session* :eval no-export 
 #+LATEX_HEADER: \usepackage{minted}
 #+LATEX_HEADER: \usepackage{fontspec}
 #+LATEX_HEADER: \setmonofont{DejaVu Sans Mono}[Scale=MatchLowercase]
 
 #+STYLE: :width=200
 
-#+BEGIN_SRC emacs-lisp :exports none
-(setq org-image-actual-width (/ (display-pixel-width) 4))
-(setq org-latex-listings 'minted
-      org-latex-pdf-process
-      '("lualatex -shell-escape -interaction nonstopmode -output-directory %o %f"
-        "lualatex -shell-escape -interaction nonstopmode -output-directory %o %f"))
-#+END_SRC
-
 #+RESULTS:
-| lualatex -shell-escape -interaction nonstopmode -output-directory %o %f | lualatex -shell-escape -interaction nonstopmode -output-directory %o %f |
-
-#+BEGIN_SRC latex :exports results
+#+BEGIN_EXPORT latex
 \definecolor{bg}{rgb}{0.95,0.95,0.95}
 \setminted[julia]{
   bgcolor=bg,
   breaklines=true,
   mathescape,
   fontsize=\footnotesize}
-#+END_SRC
+#+END_EXPORT
 
-#+BEGIN_SRC julia :session *doc_session* :exports none
-using Revise
-using DirectConvolution
-using Plots
-pyplot()
+* Introduction
 
-signal=readcsv("../docs/src/data/Maldi_ToF.txt")
-signal=signal[:,2];
-nothing
-#+END_SRC
+This package goal is to compute convolution products 
 
-#+RESULTS:
+\begin{equatation}
+\label{eq:main}
+\gamma[k]=\sum\limits_{i\in\Omega^\alpha}\alpha[i]\beta[k+\lambda i],\text{ with }\lambda\in\mathbb{Z}^*
+\end{equation}
+
+using direct (no FFT) methods. For this we provide the [[id:59e21a70-6395-4a06-9979-8e4449ac4c64][=directConv!=]] function.
+
+Eq. \ref{eq:main} has several applications:
+- [[id:e51770f6-45da-4051-b6ab-d0835187f438][Savitzky-Golay filters]] 
+- [[id:32475da6-a0b9-4103-a58f-04eebdb75785][Undecimated Wavelet Transform]]
 
 * Usage examples
-** Savitzky-Golay filter
+** Savitzky-Golay filters
+   :PROPERTIES:
+   :ID:       e51770f6-45da-4051-b6ab-d0835187f438
+   :END:
 
 Creates a set of Savitzky-Golay filters, window width is $11=2*5+1$ and polynomial degree is $3$.
 
-#+BEGIN_SRC julia :session *doc_session* :exports code :results output :wrap "SRC julia :eval never"
+#+BEGIN_SRC julia
 sg = SG_Filter(Float64,halfWidth=5,degree=3)
-#+END_SRC
-
-#+RESULTS:
-#+BEGIN_SRC julia :eval never
-DirectConvolution.SavitzkyGolay_Filter_Set{Float64,11}(DirectConvolution.SavitzkyGolay_Filter{Float64,11}[DirectConvolution.SavitzkyGolay_Filter{Float64,11}([-0.0839161, 0.020979, 0.102564, 0.160839, 0.195804, 0.207459, 0.195804, 0.160839, 0.102564, 0.020979, -0.0839161]), DirectConvolution.SavitzkyGolay_Filter{Float64,11}([0.0582751, -0.0571096, -0.103341, -0.0977078, -0.0574981, -1.15551e-19, 0.0574981, 0.0977078, 0.103341, 0.0571096, -0.0582751]), DirectConvolution.SavitzkyGolay_Filter{Float64,11}([0.034965, 0.013986, -0.002331, -0.013986, -0.020979, -0.02331, -0.020979, -0.013986, -0.002331, 0.013986, 0.034965]), DirectConvolution.SavitzkyGolay_Filter{Float64,11}([-0.034965, 0.00699301, 0.025641, 0.0268065, 0.016317, 1.58911e-18, -0.016317, -0.0268065, -0.025641, -0.00699301, 0.034965])])
 #+END_SRC
 
 This can be checked with
 
-#+BEGIN_SRC julia :session *doc_session* :exports both :results output
+#+BEGIN_SRC julia
 length(sg)
 polynomialOrder(sg)
 #+END_SRC
@@ -68,20 +58,20 @@ Savitzky-Golay filters can be used to smooth or to compute smoothed
 derivatives of a signal. The associated filter is obtained thanks to
 the =filter= function.
 
-#+BEGIN_SRC julia :session *doc_session* :exports both :results output :wrap "SRC julia :eval never"
+#+BEGIN_SRC julia
 # $\int sin(x) dx$
 filter(sg,derivativeOrder=2)
 #+END_SRC
 
 #+RESULTS:
-#+BEGIN_SRC julia :eval never
+#+BEGIN_SRC julia
 
 DirectConvolution.SavitzkyGolay_Filter{Float64,11}([0.034965, 0.013986, -0.002331, -0.013986, -0.020979, -0.02331, -0.020979, -0.013986, -0.002331, 0.013986, 0.034965])
 #+END_SRC
 
 Maximum derivative order is equal to the polynomial order, however there is a dedicated function:
 
-#+BEGIN_SRC julia :session *doc_session* :exports both :results output
+#+BEGIN_SRC julia
 maxDerivativeOrder(sg)
 #+END_SRC
 
@@ -90,7 +80,7 @@ maxDerivativeOrder(sg)
 
 Smoothing example:
 
-#+BEGIN_SRC julia :session *doc_session* :exports code 
+#+BEGIN_SRC julia
 smoothed   =directConv(filter(sg,derivativeOrder=0),signal,ConstantBE,ConstantBE)
 
 plot(signal,label="signal")
@@ -98,13 +88,7 @@ plot!(smoothed, label="smoothed",linewidth=2)
 plot!(signal-smoothed, label="residue")
 #+END_SRC
 
-#+RESULTS:
 
-
-
-#+BEGIN_SRC julia :session *doc_session* :results graphics :file figures/sg.png :exports results
-savefig("figures/sg.png")
-#+END_SRC
 
 # +ATTR_HTML: :align center :width 
 #+CAPTION: Savitzky-Golay smoothing
@@ -119,70 +103,57 @@ savefig("figures/sg.png")
 
 Smoothed first order derivative example:
 
-#+BEGIN_SRC julia :session *doc_session* :exports code 
+#+BEGIN_SRC julia
 smoothed_d1 = directConv(filter(sg,derivativeOrder=1),signal)
 
 plot(signal,label="signal")
 plot!(smoothed_d1, label="smoothed derivative",linewidth=2)
 #+END_SRC
 
-#+RESULTS:
-
-#+BEGIN_SRC julia :session *doc_session* :results graphics :file figures/sg_d1.png :exports results
-savefig("figures/sg_d1.png")
-#+END_SRC
-
 #+CAPTION: Savitzky-Golay smoothed first order derivative
 #+RESULTS:
 [[file:figures/sg_d1.png]]
 
+** Undecimated Wavelet Transform
+   :PROPERTIES:
+   :ID:       32475da6-a0b9-4103-a58f-04eebdb75785
+   :END:
+
 * Code documentation
 
 ** Convolution functions
-
-This is the main contribution of this package. The [[id:59e21a70-6395-4a06-9979-8e4449ac4c64][=directConv!=]] fonction is used to compute:
-
-$$\gamma[k]=\sum\limits_{i\in\Omega^\alpha}\alpha[i]\beta[k+\lambda i],\text{ with }\lambda\in\mathbb{Z}^*$$
 
 *** =directConv!=
     :PROPERTIES:
     :ID:       59e21a70-6395-4a06-9979-8e4449ac4c64
     :END:
 
- #+BEGIN_SRC sh :results output :exports results :wrap "SRC julia :eval never"
-orgExtractSnippet.sh "../src/directConvolution.jl" directConv!
- #+END_SRC
+#+RESULTS:
+#+BEGIN_SRC julia :eval never :exports code
+function directConv!(tilde_α::AbstractArray{T,1},
+                     α_offset::Int,
+                     λ::Int,
 
- #+RESULTS:
- #+BEGIN_SRC julia :eval never
- function directConv!(tilde_α::AbstractArray{T,1},
-		      α_offset::Int,
-		      λ::Int,
+                     β::AbstractArray{T,1},
 
-		      β::AbstractArray{T,1},
-
-		      γ::AbstractArray{T,1},
-		      Ωγ::UnitRange{Int},
-
-		      ::Type{LeftBE}=ZeroPaddingBE,
-		      ::Type{RightBE}=ZeroPaddingBE;
-
-		      accumulate::Bool=false)
-     where {T <: Number,
-	    LeftBE <: BoundaryExtension,
-	    RightBE <: BoundaryExtension}
-
- #+END_SRC
-
+                     γ::AbstractArray{T,1},
+                     Ωγ::UnitRange{Int},
+                     
+                     ::Type{LeftBE}=ZeroPaddingBE,
+                     ::Type{RightBE}=ZeroPaddingBE;
+                     
+                     accumulate::Bool=false) where {T <: Number,
+                                                    LeftBE <: BoundaryExtension,
+                                                    RightBE <: BoundaryExtension}
+    
+#+END_SRC
 
 *** =directConv=
 
- #+BEGIN_SRC sh :results output :exports results :wrap "SRC julia :eval never"
-orgExtractSnippet.sh "../src/directConvolution.jl" directConv
- #+END_SRC
+#+CALL: Julia_Extract_Snippet("../src/directConvolution.jl","directConv")
 
- #+RESULTS:
- #+BEGIN_SRC julia :eval never
+#+RESULTS:
+#+BEGIN_SRC julia :eval never :exports code
 function directConv(tilde_α::AbstractArray{T,1},
                     α_offset::Int64,
                     λ::Int64,
@@ -193,8 +164,8 @@ function directConv(tilde_α::AbstractArray{T,1},
                     ::Type{RightBE}=ZeroPaddingBE) where {T <: Number,
                                                           LeftBE <: BoundaryExtension,
                                                           RightBE <: BoundaryExtension}
-
- #+END_SRC
+    
+#+END_SRC
  
 * TODO [0/1]
 
