@@ -20,12 +20,17 @@
 
 This package goal is to compute convolution products 
 
-\begin{equatation}
+\begin{equation}
 \label{eq:main}
 \gamma[k]=\sum\limits_{i\in\Omega^\alpha}\alpha[i]\beta[k+\lambda i],\text{ with }\lambda\in\mathbb{Z}^*
 \end{equation}
 
-using direct (no FFT) methods. For this we provide the [[id:59e21a70-6395-4a06-9979-8e4449ac4c64][=directConv!=]] function.
+using direct (no FFT) methods. 
+
+We provide the
+- [[id:59e21a70-6395-4a06-9979-8e4449ac4c64][=directConv!=]] 
+- [[id:093c1821-7217-46fb-9e1b-1a397554fa0e][=directConv=]]
+functions.
 
 Eq. \ref{eq:main} has several applications:
 - [[id:e51770f6-45da-4051-b6ab-d0835187f438][Savitzky-Golay filters]] 
@@ -149,6 +154,9 @@ function directConv!(tilde_α::AbstractArray{T,1},
 #+END_SRC
 
 *** =directConv=
+    :PROPERTIES:
+    :ID:       093c1821-7217-46fb-9e1b-1a397554fa0e
+    :END:
 
 #+CALL: Julia_Extract_Snippet("../src/directConvolution.jl","directConv")
 
