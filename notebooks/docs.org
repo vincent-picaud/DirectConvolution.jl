@@ -58,7 +58,6 @@ sg = SG_Filter(Float64,halfWidth=5,degree=3)
 #+END_SRC
 
 #+RESULTS:
-: DirectConvolution.SavitzkyGolay_Filter_Set{Float64,11}(DirectConvolution.SavitzkyGolay_Filter{Float64,11}[DirectConvolution.SavitzkyGolay_Filter{Float64,11}([-0.0839161, 0.020979, 0.102564, 0.160839, 0.195804, 0.207459, 0.195804, 0.160839, 0.102564, 0.020979, -0.0839161]), DirectConvolution.SavitzkyGolay_Filter{Float64,11}([0.0582751, -0.0571096, -0.103341, -0.0977078, -0.0574981, -1.15551e-19, 0.0574981, 0.0977078, 0.103341, 0.0571096, -0.0582751]), DirectConvolution.SavitzkyGolay_Filter{Float64,11}([0.034965, 0.013986, -0.002331, -0.013986, -0.020979, -0.02331, -0.020979, -0.013986, -0.002331, 0.013986, 0.034965]), DirectConvolution.SavitzkyGolay_Filter{Float64,11}([-0.034965, 0.00699301, 0.025641, 0.0268065, 0.016317, 1.58911e-18, -0.016317, -0.0268065, -0.025641, -0.00699301, 0.034965])])
 
 This can be checked with
 
@@ -100,7 +99,7 @@ maxDerivativeOrder(sg)
 Smoothing example:
 
 #+BEGIN_SRC julia
-smoothed   =directConv(filter(sg,derivativeOrder=0),signal,ConstantBE,ConstantBE)
+smoothed=directConv(filter(sg,derivativeOrder=0),signal,ConstantBE,ConstantBE)
 
 plot(signal,label="signal")
 plot!(smoothed, label="smoothed",linewidth=2)
@@ -281,43 +280,9 @@ include("../test/runtests.jl")
 #+END_SRC
 
 #+RESULTS:
-#+begin_example
-Savitzky-Golay: Test Failed
-  Expression: (fcoef(filter(m, derivativeOrder=0)))' == [1 / 5; 1 / 5; 1 / 5; 1 / 5; 1 / 5]
-   Evaluated: [0.2 0.2 0.2 0.2 0.2] == [0.2, 0.2, 0.2, 0.2, 0.2]
-Stacktrace:
- [1] macro expansion at /home/picaud/GitHub/DirectConvolution.jl/test/SG_Filter.jl:12 [inlined]
- [2] macro expansion at ./test.jl:860 [inlined]
- [3] anonymous at ./<missing>:?
-Savitzky-Golay: Test Failed
-  Expression: fcoef(filter(m, derivativeOrder=1)) == [-(3 / 28); -(1 / 14); -(1 / 28); 0; 1 / 28; 1 / 14; 3 / 28]
-   Evaluated: [-0.107143, -0.0714286, -0.0357143, -7.24352e-18, 0.0357143, 0.0714286, 0.107143] == [-0.107143, -0.0714286, -0.0357143, 0.0, 0.0357143, 0.0714286, 0.107143]
-Stacktrace:
- [1] macro expansion at /home/picaud/GitHub/DirectConvolution.jl/test/SG_Filter.jl:16 [inlined]
- [2] macro expansion at ./test.jl:860 [inlined]
- [3] anonymous at ./<missing>:?
-Savitzky-Golay: Test Failed
-  Expression: fcoef(filter(m, derivativeOrder=2)) == [5 / 42; 0; -(1 / 14); -(2 / 21); -(1 / 14); 0; 5 / 42]
-   Evaluated: [0.119048, -3.63406e-17, -0.0714286, -0.0952381, -0.0714286, -1.21135e-17, 0.119048] == [0.119048, 0.0, -0.0714286, -0.0952381, -0.0714286, 0.0, 0.119048]
-Stacktrace:
- [1] macro expansion at /home/picaud/GitHub/DirectConvolution.jl/test/SG_Filter.jl:17 [inlined]
- [2] macro expansion at ./test.jl:860 [inlined]
- [3] anonymous at ./<missing>:?
-Test Summary:               | Pass  Fail  Total
-DirectConvolution           |   32     3     35
-  swap                      |    4            4
-  Example α_offset          |    2            2
-  Adjoint operator          |    2            2
-  Convolution commutativity |    1            1
-  Interval split            |    1            1
-  Savitzky-Golay definition |    3            3
-  Savitzky-Golay            |    3     3      6
-  Haar                      |    6            6
-  Starck2                   |    2            2
-  UDWT Transform            |    8            8
-ERROR: LoadError: Some tests did not pass: 32 passed, 3 failed, 0 errored, 0 broken.
-while loading /home/picaud/GitHub/DirectConvolution.jl/test/runtests.jl, in expression starting on line 4
-#+end_example
+: Test Summary:     | Pass  Total
+: DirectConvolution |   35     35
+: Base.Test.DefaultTestSet("DirectConvolution", Any[Base.Test.DefaultTestSet("swap", Any[], 4, false), Base.Test.DefaultTestSet("Example α_offset", Any[], 2, false), Base.Test.DefaultTestSet("Adjoint operator", Any[], 2, false), Base.Test.DefaultTestSet("Convolution commutativity", Any[], 1, false), Base.Test.DefaultTestSet("Interval split", Any[], 1, false), Base.Test.DefaultTestSet("Savitzky-Golay definition", Any[], 3, false), Base.Test.DefaultTestSet("Savitzky-Golay", Any[], 6, false), Base.Test.DefaultTestSet("Haar", Any[], 6, false), Base.Test.DefaultTestSet("Starck2", Any[], 2, false), Base.Test.DefaultTestSet("UDWT Transform", Any[], 8, false)], 0, false)
 
 * TODO [0/1]
 
