@@ -152,9 +152,9 @@ savefig("figures/sg_d1.png")
 
 There is nothing fundamental here. We only define a convenience
 wrapper to store filter coefficients and an [[id:bc38afbb-e108-4e1b-8f88-4026f9f5e860][offset]] used to define
-filter support
-
+filter support.
 The wrapper is an abstract type:
+
 #+CALL: Julia_Extract_Snippet("../src/linearFilter.jl","AbstractLinearFilter")
 
 #+RESULTS:
@@ -275,14 +275,15 @@ struct MirrorBE <: BoundaryExtension end
 
 * UTest
 
-#+BEGIN_SRC julia :exports results :results output
-include("../test/runtests.jl")
+#+BEGIN_SRC sh :eval no-export :exports results :results output :wrap "EXAMPLE"
+julia ../test/runtests.jl
 #+END_SRC
 
 #+RESULTS:
-: Test Summary:     | Pass  Total
-: DirectConvolution |   35     35
-: Base.Test.DefaultTestSet("DirectConvolution", Any[Base.Test.DefaultTestSet("swap", Any[], 4, false), Base.Test.DefaultTestSet("Example α_offset", Any[], 2, false), Base.Test.DefaultTestSet("Adjoint operator", Any[], 2, false), Base.Test.DefaultTestSet("Convolution commutativity", Any[], 1, false), Base.Test.DefaultTestSet("Interval split", Any[], 1, false), Base.Test.DefaultTestSet("Savitzky-Golay definition", Any[], 3, false), Base.Test.DefaultTestSet("Savitzky-Golay", Any[], 6, false), Base.Test.DefaultTestSet("Haar", Any[], 6, false), Base.Test.DefaultTestSet("Starck2", Any[], 2, false), Base.Test.DefaultTestSet("UDWT Transform", Any[], 8, false)], 0, false)
+#+BEGIN_EXAMPLE
+Test Summary:     | Pass  Total
+DirectConvolution |   35     35
+#+END_EXAMPLE
 
 * TODO [0/1]
 
