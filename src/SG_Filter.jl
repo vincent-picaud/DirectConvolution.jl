@@ -27,7 +27,7 @@ function _Vandermonde(T::DataType=Float64;halfWidth::Int=5,degree::Int=2)::Array
 end
 
 struct SavitzkyGolay_Filter{T<:AbstractFloat,N} <: LinearFilter{T}
-    _filter::SVector{N,T}
+    _fcoef::SVector{N,T}
 end
 
 function SavitzkyGolay_Filter(c::Array{T}) where {T<:AbstractFloat}

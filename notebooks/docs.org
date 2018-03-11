@@ -41,7 +41,6 @@ Eq. \ref{eq:main} has several applications:
 
 #+BEGIN_SRC julia
 using Plots
-using Revise
 using DirectConvolution
 #+END_SRC
 
@@ -59,36 +58,44 @@ sg = SG_Filter(Float64,halfWidth=5,degree=3)
 #+END_SRC
 
 #+RESULTS:
+: DirectConvolution.SavitzkyGolay_Filter_Set{Float64,11}(DirectConvolution.SavitzkyGolay_Filter{Float64,11}[DirectConvolution.SavitzkyGolay_Filter{Float64,11}([-0.0839161, 0.020979, 0.102564, 0.160839, 0.195804, 0.207459, 0.195804, 0.160839, 0.102564, 0.020979, -0.0839161]), DirectConvolution.SavitzkyGolay_Filter{Float64,11}([0.0582751, -0.0571096, -0.103341, -0.0977078, -0.0574981, -1.15551e-19, 0.0574981, 0.0977078, 0.103341, 0.0571096, -0.0582751]), DirectConvolution.SavitzkyGolay_Filter{Float64,11}([0.034965, 0.013986, -0.002331, -0.013986, -0.020979, -0.02331, -0.020979, -0.013986, -0.002331, 0.013986, 0.034965]), DirectConvolution.SavitzkyGolay_Filter{Float64,11}([-0.034965, 0.00699301, 0.025641, 0.0268065, 0.016317, 1.58911e-18, -0.016317, -0.0268065, -0.025641, -0.00699301, 0.034965])])
 
 This can be checked with
 
-#+BEGIN_SRC julia
+#+BEGIN_SRC julia :exports both :wrap "SRC julia :exports code :eval never" :results output
 length(sg)
 polynomialOrder(sg)
 #+END_SRC
 
 #+RESULTS:
-: 3
+#+BEGIN_SRC julia :exports code :eval never
+11
+3
+#+END_SRC
 
 Savitzky-Golay filters can be used to smooth or to compute smoothed
 derivatives of a signal. The associated filter is obtained thanks to
 the =filter= function.
 
-#+BEGIN_SRC julia
-# $\int sin(x) dx$
+#+BEGIN_SRC julia :exports both :wrap "SRC julia :exports code :eval never" :results output
 filter(sg,derivativeOrder=2)
 #+END_SRC
 
 #+RESULTS:
+#+BEGIN_SRC julia :exports code :eval never
+DirectConvolution.SavitzkyGolay_Filter{Float64,11}([0.034965, 0.013986, -0.002331, -0.013986, -0.020979, -0.02331, -0.020979, -0.013986, -0.002331, 0.013986, 0.034965])
+#+END_SRC
 
 Maximum derivative order is equal to the polynomial order, however there is a dedicated function:
 
-#+BEGIN_SRC julia
+#+BEGIN_SRC julia :exports both :wrap "SRC julia :exports code :eval never" :results output
 maxDerivativeOrder(sg)
 #+END_SRC
 
 #+RESULTS:
-: 3
+#+BEGIN_SRC julia :exports code :eval never
+3
+#+END_SRC
 
 Smoothing example:
 
@@ -163,8 +170,8 @@ User must define these methods:
 
 #+RESULTS:
 #+BEGIN_SRC julia :eval never :exports code
-Base.filter(c::LinearFilter) = c._filter
-Base.length(c::LinearFilter) = length(filter(c))
+fcoef(c::LinearFilter) = c._fcoef
+Base.length(c::LinearFilter) = length(fcoef(c))
 offset(c::LinearFilter) = c._offset
 Base.range(c::LinearFilter) = UnitRange(-offset(c),length(c)-offset(c)-1)
 
@@ -275,52 +282,40 @@ include("../test/runtests.jl")
 
 #+RESULTS:
 #+begin_example
-Savitzky-Golay: Error During Test
-  Test threw an exception of type MethodError
-  Expression: filter(m, derivativeOrder=0) ≈ [1 / 5; 1 / 5; 1 / 5; 1 / 5; 1 / 5]
-  MethodError: no method matching isapprox(::DirectConvolution.SavitzkyGolay_Filter{Float64,5}, ::Array{Float64,1})
-  Closest candidates are:
-    isapprox(!Matched::AbstractArray, ::AbstractArray; rtol, atol, nans, norm) at linalg/generic.jl:1297
-  Stacktrace:
-   [1] eval_comparison(::Expr, ::Expr) at ./test.jl:198
-   [2] macro expansion at /home/picaud/GitHub/DirectConvolution.jl/test/SG_Filter.jl:12 [inlined]
-   [3] macro expansion at ./test.jl:860 [inlined]
-   [4] anonymous at ./<missing>:?
-Savitzky-Golay: Error During Test
-  Test threw an exception of type MethodError
-  Expression: filter(m, derivativeOrder=1) ≈ [-(3 / 28); -(1 / 14); -(1 / 28); 0; 1 / 28; 1 / 14; 3 / 28]
-  MethodError: no method matching isapprox(::DirectConvolution.SavitzkyGolay_Filter{Float64,7}, ::Array{Float64,1})
-  Closest candidates are:
-    isapprox(!Matched::AbstractArray, ::AbstractArray; rtol, atol, nans, norm) at linalg/generic.jl:1297
-  Stacktrace:
-   [1] eval_comparison(::Expr, ::Expr) at ./test.jl:198
-   [2] macro expansion at /home/picaud/GitHub/DirectConvolution.jl/test/SG_Filter.jl:16 [inlined]
-   [3] macro expansion at ./test.jl:860 [inlined]
-   [4] anonymous at ./<missing>:?
-Savitzky-Golay: Error During Test
-  Test threw an exception of type MethodError
-  Expression: filter(m, derivativeOrder=2) ≈ [5 / 42; 0; -(1 / 14); -(2 / 21); -(1 / 14); 0; 5 / 42]
-  MethodError: no method matching isapprox(::DirectConvolution.SavitzkyGolay_Filter{Float64,7}, ::Array{Float64,1})
-  Closest candidates are:
-    isapprox(!Matched::AbstractArray, ::AbstractArray; rtol, atol, nans, norm) at linalg/generic.jl:1297
-  Stacktrace:
-   [1] eval_comparison(::Expr, ::Expr) at ./test.jl:198
-   [2] macro expansion at /home/picaud/GitHub/DirectConvolution.jl/test/SG_Filter.jl:17 [inlined]
-   [3] macro expansion at ./test.jl:860 [inlined]
-   [4] anonymous at ./<missing>:?
-Test Summary:               | Pass  Error  Total
-DirectConvolution           |   32      3     35
-  swap                      |    4             4
-  Example α_offset          |    2             2
-  Adjoint operator          |    2             2
-  Convolution commutativity |    1             1
-  Interval split            |    1             1
-  Savitzky-Golay definition |    3             3
-  Savitzky-Golay            |    3      3      6
-  Haar                      |    6             6
-  Starck2                   |    2             2
-  UDWT Transform            |    8             8
-ERROR: LoadError: Some tests did not pass: 32 passed, 0 failed, 3 errored, 0 broken.
+Savitzky-Golay: Test Failed
+  Expression: (fcoef(filter(m, derivativeOrder=0)))' == [1 / 5; 1 / 5; 1 / 5; 1 / 5; 1 / 5]
+   Evaluated: [0.2 0.2 0.2 0.2 0.2] == [0.2, 0.2, 0.2, 0.2, 0.2]
+Stacktrace:
+ [1] macro expansion at /home/picaud/GitHub/DirectConvolution.jl/test/SG_Filter.jl:12 [inlined]
+ [2] macro expansion at ./test.jl:860 [inlined]
+ [3] anonymous at ./<missing>:?
+Savitzky-Golay: Test Failed
+  Expression: fcoef(filter(m, derivativeOrder=1)) == [-(3 / 28); -(1 / 14); -(1 / 28); 0; 1 / 28; 1 / 14; 3 / 28]
+   Evaluated: [-0.107143, -0.0714286, -0.0357143, -7.24352e-18, 0.0357143, 0.0714286, 0.107143] == [-0.107143, -0.0714286, -0.0357143, 0.0, 0.0357143, 0.0714286, 0.107143]
+Stacktrace:
+ [1] macro expansion at /home/picaud/GitHub/DirectConvolution.jl/test/SG_Filter.jl:16 [inlined]
+ [2] macro expansion at ./test.jl:860 [inlined]
+ [3] anonymous at ./<missing>:?
+Savitzky-Golay: Test Failed
+  Expression: fcoef(filter(m, derivativeOrder=2)) == [5 / 42; 0; -(1 / 14); -(2 / 21); -(1 / 14); 0; 5 / 42]
+   Evaluated: [0.119048, -3.63406e-17, -0.0714286, -0.0952381, -0.0714286, -1.21135e-17, 0.119048] == [0.119048, 0.0, -0.0714286, -0.0952381, -0.0714286, 0.0, 0.119048]
+Stacktrace:
+ [1] macro expansion at /home/picaud/GitHub/DirectConvolution.jl/test/SG_Filter.jl:17 [inlined]
+ [2] macro expansion at ./test.jl:860 [inlined]
+ [3] anonymous at ./<missing>:?
+Test Summary:               | Pass  Fail  Total
+DirectConvolution           |   32     3     35
+  swap                      |    4            4
+  Example α_offset          |    2            2
+  Adjoint operator          |    2            2
+  Convolution commutativity |    1            1
+  Interval split            |    1            1
+  Savitzky-Golay definition |    3            3
+  Savitzky-Golay            |    3     3      6
+  Haar                      |    6            6
+  Starck2                   |    2            2
+  UDWT Transform            |    8            8
+ERROR: LoadError: Some tests did not pass: 32 passed, 3 failed, 0 errored, 0 broken.
 while loading /home/picaud/GitHub/DirectConvolution.jl/test/runtests.jl, in expression starting on line 4
 #+end_example
 
