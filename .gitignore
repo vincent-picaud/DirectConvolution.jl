@@ -7,3 +7,8 @@ docs/site/
 /src/.juliahistory
 /test/.juliahistory
 
+/notebooks/.juliahistory
+**/_minted-*/*
+/notebooks/docs.html
+/notebooks/docs.pdf
+/notebooks/docs.tex
