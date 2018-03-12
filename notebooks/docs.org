@@ -69,18 +69,6 @@ polynomialOrder(sg)
 
 #+RESULTS:
 #+BEGIN_SRC julia :exports code :eval never
-ERROR: MethodError: no method matching start(::DirectConvolution.SavitzkyGolay_Filter_Set{Float64,11})
-Closest candidates are:
-  start(!Matched::SimpleVector) at essentials.jl:258
-  start(!Matched::Base.MethodList) at reflection.jl:560
-  start(!Matched::ExponentialBackOff) at error.jl:107
-  ...
-Stacktrace:
- [1] #writedlm#18(::Array{Any,1}, ::Function, ::IOStream, ::DirectConvolution.SavitzkyGolay_Filter_Set{Float64,11}, ::Char) at ./datafmt.jl:673
- [2] #20 at ./datafmt.jl:683 [inlined]
- [3] open(::Base.DataFmt.##20#21{Array{Any,1},DirectConvolution.SavitzkyGolay_Filter_Set{Float64,11},Char}, ::String, ::String) at ./iostream.jl:152
- [4] #writecsv#23(::Array{Any,1}, ::Function, ::String, ::DirectConvolution.SavitzkyGolay_Filter_Set{Float64,11}) at ./datafmt.jl:705
- [5] writecsv(::String, ::DirectConvolution.SavitzkyGolay_Filter_Set{Float64,11}) at ./datafmt.jl:705
 11
 3
 #+END_SRC
@@ -191,6 +179,49 @@ Base.range(c::LinearFilter) = UnitRange(-offset(c),length(c)-offset(c)-1)
 By default, the structure is assumed to have two fields: *_fcoef* and
 *_offset*. However, if you do not want that, simply overload the
 associated method.
+
+*** Default implementation
+
+**** =LinearFilter_Default=
+
+#+CALL: Julia_Extract_Snippet("../src/linearFilter.jl","LinearFilter_Default")
+
+#+RESULTS:
+#+BEGIN_SRC julia :eval never :exports code
+struct LinearFilter_Default{T<:AbstractFloat,N} <: LinearFilter{T}
+    _fcoef::SVector{N,T}
+    _offset::Int
+end
+
+#+END_SRC
+
+**** =LinearFilter_DefaultCentered=
+
+These filter must have an odd number of coefficent (length =
+2N+1). The offset is not stored, its value is N.
+
+#+CALL: Julia_Extract_Snippet("../src/linearFilter.jl","LinearFilter_DefaultCentered")
+
+#+RESULTS:
+#+BEGIN_SRC julia :eval never :exports code
+struct LinearFilter_DefaultCentered{T<:AbstractFloat,N} <: LinearFilter{T}
+    _fcoef::SVector{N,T}
+end
+
+function LinearFilter_DefaultCentered(c::Array{T}) where {T<:AbstractFloat}  
+#+END_SRC
+
+Overloaded methods:
+
+#+CALL: Julia_Extract_Snippet("../src/linearFilter.jl","LinearFilter_DefaultCentered_Methods")
+
+#+RESULTS:
+#+BEGIN_SRC julia :eval never :exports code
+
+offset(f::LinearFilter_DefaultCentered{T,N}) where {T<:AbstractFloat,N} = (N-1)>>1
+
+#+END_SRC
+
 
 *** Offset and support 
     :PROPERTIES:
