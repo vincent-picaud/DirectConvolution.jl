@@ -25,12 +25,12 @@ end
 # Provide a default implementation
 #
 
-# [BEGIN_LinearFilter_Default]
+#+LinearFilter
+# Default linear filter
 struct LinearFilter_Default{T<:AbstractFloat,N} <: LinearFilter{T}
     _fcoef::SVector{N,T}
     _offset::Int
 end
-# [END_LinearFilter_Default]
 
 
 
@@ -38,19 +38,24 @@ end
 # Provide a default implementation of size 2n+1, with offset = n
 #
 
-# [BEGIN_LinearFilter_DefaultCentered]
+#+LinearFilter
+# Default centered linear filter, size = 2n+1
+# 
 struct LinearFilter_DefaultCentered{T<:AbstractFloat,N} <: LinearFilter{T}
     _fcoef::SVector{N,T}
 end
 
+#+LinearFilter
+# Creates a centered linear filter from an array of size = 2n+1
+# 
 function LinearFilter_DefaultCentered(c::Array{T}) where {T<:AbstractFloat}  # [END_LinearFilter_DefaultCentered]
     const N = length(c)
     @assert isodd(length(c))
     return LinearFilter_DefaultCentered{T,N}(SVector{N,T}(c))
 end
 
-# [BEGIN_LinearFilter_DefaultCentered_Methods]
-
+#+LinearFilter
+# Returns offset, if size = 2n+1 then offset = n
+# 
 offset(f::LinearFilter_DefaultCentered{T,N}) where {T<:AbstractFloat,N} = (N-1)>>1
 
-# [END_LinearFilter_DefaultCentered_Methods]

@@ -43,6 +43,14 @@ Eq. \ref{eq:main} has several applications:
 using Plots
 using Revise
 using DirectConvolution
+using J4Org
+#+END_SRC
+
+#+RESULTS:
+
+#+BEGIN_SRC julia 
+files=["../src/linearFilter.jl";
+       "../src/SG_Filter.jl";]
 #+END_SRC
 
 #+RESULTS:
@@ -239,6 +247,57 @@ $$
 $$
 
 
+* Documentation
+
+** Linear Filter
+
+#+BEGIN_SRC julia :results output drawer :eval no-export :exports result
+w=create_documented_item_array(files);
+print(generate_org_string(w,tag="LinearFilter",header=3))
+#+END_SRC
+
+#+RESULTS:
+:RESULTS:
+
+
+*Index:* <<hOg1wuf8>> [L]: [[gbXFJFCb][LinearFilter_Default]], [[FEm8VLSj][LinearFilter_DefaultCentered]], [o]: [[ejlMbiCi][offset]].
+
+*** *=LinearFilter_Default=*  <<gbXFJFCb>> 
+#+BEGIN_SRC julia :eval never :exports code
+struct LinearFilter_Default{T<:AbstractFloat,N} <: LinearFilter{T}
+#+END_SRC
+#+BEGIN_QUOTE
+Default linear filter
+#+END_QUOTE
+[[file:../src/linearFilter.jl::28][source]], [[hOg1wuf8][back to index]]
+*** *=LinearFilter_DefaultCentered=*  <<FEm8VLSj>> 
+#+BEGIN_SRC julia :eval never :exports code
+struct LinearFilter_DefaultCentered{T<:AbstractFloat,N} <: LinearFilter{T}
+#+END_SRC
+#+BEGIN_QUOTE
+Default centered linear filter, size = 2n+1
+
+#+END_QUOTE
+[[file:../src/linearFilter.jl::42][source]], [[hOg1wuf8][back to index]]
+
+#+BEGIN_SRC julia :eval never :exports code
+function LinearFilter_DefaultCentered(c::Array{T}) where {T<:AbstractFloat}
+#+END_SRC
+#+BEGIN_QUOTE
+Creates a centered linear filter from an array of size = 2n+1
+
+#+END_QUOTE
+[[file:../src/linearFilter.jl::49][source]], [[hOg1wuf8][back to index]]
+*** *=offset=*  <<ejlMbiCi>> 
+#+BEGIN_SRC julia :eval never :exports code
+offset(f::LinearFilter_DefaultCentered{T,N}) where {T<:AbstractFloat,N}
+#+END_SRC
+#+BEGIN_QUOTE
+Returns offset, if size = 2n+1 then offset = n
+
+#+END_QUOTE
+[[file:../src/linearFilter.jl::58][source]], [[hOg1wuf8][back to index]]
+:END:
 
 ** Convolution functions
 
