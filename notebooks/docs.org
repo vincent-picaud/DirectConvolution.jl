@@ -1,8 +1,10 @@
+#+OPTIONS: H:3 toc:t num:t \n:nil ::t |:t ^:{} -:t f:t *:t tex:t d:t tags:not-in-toc
 #+TITLE: Direct Convolution Package
 #+PROPERTY: header-args:julia :session *doc_session* :eval no-export 
 #+LATEX_HEADER: \usepackage{minted}
 #+LATEX_HEADER: \usepackage{fontspec}
 #+LATEX_HEADER: \setmonofont{DejaVu Sans Mono}[Scale=MatchLowercase]
+#+LATEX_HEADER: \hypersetup{colorlinks=true}
 
 #+STYLE: :width=200
 
@@ -260,17 +262,17 @@ print(generate_org_string(w,tag="LinearFilter",header=3))
 :RESULTS:
 
 
-*Index:* <<hOg1wuf8>> [L]: [[gbXFJFCb][LinearFilter_Default]], [[FEm8VLSj][LinearFilter_DefaultCentered]], [o]: [[ejlMbiCi][offset]].
+*Index:* <<y46OQhjL>> [L]: [[WGrA4lJw][LinearFilter_Default]], [[w9OBLOVw][LinearFilter_DefaultCentered]], [o]: [[5n8LJ7yU][offset]].
 
-*** *=LinearFilter_Default=*  <<gbXFJFCb>> 
+*** *=LinearFilter_Default=*  <<WGrA4lJw>> 
 #+BEGIN_SRC julia :eval never :exports code
 struct LinearFilter_Default{T<:AbstractFloat,N} <: LinearFilter{T}
 #+END_SRC
 #+BEGIN_QUOTE
 Default linear filter
 #+END_QUOTE
-[[file:../src/linearFilter.jl::28][source]], [[hOg1wuf8][back to index]]
-*** *=LinearFilter_DefaultCentered=*  <<FEm8VLSj>> 
+[[file:../src/linearFilter.jl::28][source]], [[y46OQhjL][back to index]]
+*** *=LinearFilter_DefaultCentered=*  <<w9OBLOVw>> 
 #+BEGIN_SRC julia :eval never :exports code
 struct LinearFilter_DefaultCentered{T<:AbstractFloat,N} <: LinearFilter{T}
 #+END_SRC
@@ -278,7 +280,7 @@ struct LinearFilter_DefaultCentered{T<:AbstractFloat,N} <: LinearFilter{T}
 Default centered linear filter, size = 2n+1
 
 #+END_QUOTE
-[[file:../src/linearFilter.jl::42][source]], [[hOg1wuf8][back to index]]
+[[file:../src/linearFilter.jl::41][source]], [[y46OQhjL][back to index]]
 
 #+BEGIN_SRC julia :eval never :exports code
 function LinearFilter_DefaultCentered(c::Array{T}) where {T<:AbstractFloat}
@@ -287,8 +289,8 @@ function LinearFilter_DefaultCentered(c::Array{T}) where {T<:AbstractFloat}
 Creates a centered linear filter from an array of size = 2n+1
 
 #+END_QUOTE
-[[file:../src/linearFilter.jl::49][source]], [[hOg1wuf8][back to index]]
-*** *=offset=*  <<ejlMbiCi>> 
+[[file:../src/linearFilter.jl::48][source]], [[y46OQhjL][back to index]]
+*** *=offset=*  <<5n8LJ7yU>> 
 #+BEGIN_SRC julia :eval never :exports code
 offset(f::LinearFilter_DefaultCentered{T,N}) where {T<:AbstractFloat,N}
 #+END_SRC
@@ -296,7 +298,7 @@ offset(f::LinearFilter_DefaultCentered{T,N}) where {T<:AbstractFloat,N}
 Returns offset, if size = 2n+1 then offset = n
 
 #+END_QUOTE
-[[file:../src/linearFilter.jl::58][source]], [[hOg1wuf8][back to index]]
+[[file:../src/linearFilter.jl::57][source]], [[y46OQhjL][back to index]]
 :END:
 
 ** Convolution functions
