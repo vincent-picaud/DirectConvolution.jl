@@ -41,7 +41,7 @@
       (setq org-agenda-files
 	    (mapcar 'abbreviate-file-name
 		    (split-string
-		     (shell-command-to-string (format "find %s -name \"*.org\" ! -name \"sitemap.org\"  ! -name \"theindex.org\" ! -path \"./Setup/*\"" my-project-root))
+		     (shell-command-to-string (format "find %s -name \"*.org\" ! -name \"sitemap.org\"  ! -path \"./Setup/*\"" my-project-root))
 		     "\n")))
       ;;
       ;; My my-workInProgress-filename and its associated captures
@@ -120,6 +120,12 @@
 
       (setq my-project-name "DirectConvolution")
 
+      (defun my-org-publish-sitemap (title list)
+	"As org-publish-sitemap-default but add #+SETUPFILE ... before title"
+	(concat "#+SETUPFILE: ./Setup/setupFile.org\n"
+		"#+TITLE: " title "\n\n"
+		(org-list-to-org list)))
+      
       (setq org-publish-project-alist
 	    `(
 	      (,(concat my-project-name "_Org")
@@ -128,12 +134,13 @@
 	       :recursive t
 	       :publishing-directory ,my-publish-dir
 	       :publishing-function org-html-publish-to-html
+	       :sitemap-function my-org-publish-sitemap
 	       :htmlize-source t
 	       :org-html-head-include-default-style nil
 	       :exclude "Setup*\\|sitemap.org"
 	       :makeindex t
 	       :auto-sitemap t
-	       :sitemap-title ,my-project-name 
+	       :sitemap-title ,my-project-name
 	      )
 
 	      ;; (,(concat my-project-name "_Tangle")
