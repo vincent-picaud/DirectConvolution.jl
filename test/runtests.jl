@@ -12,4 +12,6 @@ using Base.Test
     include("SG_Filter.jl")
 
     include("udwt.jl")
+
 end;
+nothing

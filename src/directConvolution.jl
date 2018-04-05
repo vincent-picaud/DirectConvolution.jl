@@ -277,7 +277,7 @@ function directConv(α::LinearFilter{T},
                                                           LeftBE <: BoundaryExtension,
                                                           RightBE <: BoundaryExtension}
 
-    return directConv(filter(α),
+    return directConv(fcoef(α),
                       offset(α),
                       -1,
                       β,

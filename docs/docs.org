@@ -1,21 +1,30 @@
-#+OPTIONS: H:3 toc:t num:t \n:nil ::t |:t ^:{} -:t f:t *:t tex:t d:t tags:not-in-toc
+#+SETUPFILE: ./Setup/setupFile.org
 #+TITLE: Direct Convolution Package
-#+PROPERTY: header-args:julia :session *doc_session* :eval no-export 
-#+LATEX_HEADER: \usepackage{minted}
-#+LATEX_HEADER: \usepackage{fontspec}
-#+LATEX_HEADER: \setmonofont{DejaVu Sans Mono}[Scale=MatchLowercase]
-#+LATEX_HEADER: \hypersetup{colorlinks=true}
-
+#+PROPERTY: header-args:julia :session *directConvolution_session*  :exports code :eval no-export
+#+HTML_HEAD_EXTRA: <style type="text/css"> blockquote {background:#EEEEEE; padding: 3px 13px}    </style>
+#+HTML_HEAD_EXTRA: <style type="text/css"> pre {background:#EEEEEE; padding: 3px 13px}    </style>
 #+STYLE: :width=200
 
-#+RESULTS:
 #+BEGIN_EXPORT latex
-\definecolor{bg}{rgb}{0.95,0.95,0.95}\setminted[julia]{
+\definecolor{bg}{rgb}{0.95,0.95,0.95}
+\setminted[]{
   bgcolor=bg,
   breaklines=true,
+  breakanywhere=true,
   mathescape,
   fontsize=\footnotesize}
 #+END_EXPORT
+
+#+BEGIN_SRC julia :exports none
+using Plots
+using Revise
+using DirectConvolution
+using J4Org
+
+documented_items=create_documented_item_array_dir("~/GitHub/DirectConvolution.jl/src/");
+#+END_SRC
+
+#+RESULTS:
 
 * Introduction
 
@@ -30,29 +39,32 @@ This package goal is to compute convolution products
 
 using direct (no FFT) methods. 
 
-We provide the
-- [[id:59e21a70-6395-4a06-9979-8e4449ac4c64][=directConv!=]] 
-- [[id:093c1821-7217-46fb-9e1b-1a397554fa0e][=directConv=]]
-functions.
-
 Eq. \ref{eq:main} has several applications:
 - [[id:e51770f6-45da-4051-b6ab-d0835187f438][Savitzky-Golay filters]] 
 - [[id:32475da6-a0b9-4103-a58f-04eebdb75785][Undecimated Wavelet Transform]]
 
 * Usage examples
 
+Our dependencies are as follows:
+
 #+BEGIN_SRC julia
-using Plots
-using Revise
 using DirectConvolution
-using J4Org
+using Plots
 #+END_SRC
 
 #+RESULTS:
 
-#+BEGIN_SRC julia 
-files=["../src/linearFilter.jl";
-       "../src/SG_Filter.jl";]
+We also need to load a toy signal:
+#+BEGIN_SRC julia :results output 
+signal=readcsv("./data/signal_1.csv");
+#+END_SRC
+
+#+RESULTS:
+
+For the moment we ignore the first column (X-axis) and only consider Y-values
+
+#+BEGIN_SRC julia :results output 
+signal=signal[:,2];
 #+END_SRC
 
 #+RESULTS:
@@ -64,8 +76,8 @@ files=["../src/linearFilter.jl";
 
 Creates a set of Savitzky-Golay filters, window width is $11=2*5+1$ and polynomial degree is $3$.
 
-#+BEGIN_SRC julia
-sg = SG_Filter(Float64,halfWidth=5,degree=3)
+#+BEGIN_SRC julia 
+sg = SG_Filter(Float64,halfWidth=5,degree=3);
 #+END_SRC
 
 #+RESULTS:
@@ -106,6 +118,7 @@ maxDerivativeOrder(sg)
 #+BEGIN_SRC julia :exports code :eval never
 3
 #+END_SRC
+
 
 Smoothing example:
 
@@ -156,123 +169,27 @@ savefig("figures/sg_d1.png")
    :PROPERTIES:
    :ID:       32475da6-a0b9-4103-a58f-04eebdb75785
    :END:
-
-* Code documentation
-
-** Linear filter
-
-An abstract type to represent linear filters is defined.
-
-
-#+CALL: Julia_Extract_Snippet("../src/linearFilter.jl","AbstractLinearFilter")
-
-#+RESULTS:
-#+BEGIN_SRC julia :eval never :exports code
-
-abstract type LinearFilter{T<:Number} end
-
-#+END_SRC
-
-LinearFilter must provide filter coefficients and an [[id:bc38afbb-e108-4e1b-8f88-4026f9f5e860][offset]] used to define its support.
-
-#+CALL: Julia_Extract_Snippet("../src/linearFilter.jl","AbstractLinearFilterMethods")
-
-#+RESULTS:
-#+BEGIN_SRC julia :eval never :exports code
-fcoef(c::LinearFilter) = c._fcoef
-Base.length(c::LinearFilter) = length(fcoef(c))
-offset(c::LinearFilter) = c._offset
-Base.range(c::LinearFilter) = UnitRange(-offset(c),length(c)-offset(c)-1)
-
-#+END_SRC
-
-By default, the structure is assumed to have two fields: *_fcoef* and
-*_offset*. However, if you do not want that, simply overload the
-associated method.
-
-*** Default implementation
-
-**** =LinearFilter_Default=
-
-#+CALL: Julia_Extract_Snippet("../src/linearFilter.jl","LinearFilter_Default")
-
-#+RESULTS:
-#+BEGIN_SRC julia :eval never :exports code
-struct LinearFilter_Default{T<:AbstractFloat,N} <: LinearFilter{T}
-    _fcoef::SVector{N,T}
-    _offset::Int
-end
-
-#+END_SRC
-
-**** =LinearFilter_DefaultCentered=
-
-These filter must have an odd number of coefficent (length =
-2N+1). The offset is not stored, its value is N.
-
-#+CALL: Julia_Extract_Snippet("../src/linearFilter.jl","LinearFilter_DefaultCentered")
-
-#+RESULTS:
-#+BEGIN_SRC julia :eval never :exports code
-struct LinearFilter_DefaultCentered{T<:AbstractFloat,N} <: LinearFilter{T}
-    _fcoef::SVector{N,T}
-end
-
-function LinearFilter_DefaultCentered(c::Array{T}) where {T<:AbstractFloat}  
-#+END_SRC
-
-Overloaded methods:
-
-#+CALL: Julia_Extract_Snippet("../src/linearFilter.jl","LinearFilter_DefaultCentered_Methods")
-
-#+RESULTS:
-#+BEGIN_SRC julia :eval never :exports code
-
-offset(f::LinearFilter_DefaultCentered{T,N}) where {T<:AbstractFloat,N} = (N-1)>>1
-
-#+END_SRC
-
-
-*** Offset and support 
-    :PROPERTIES:
-    :ID:       bc38afbb-e108-4e1b-8f88-4026f9f5e860
-    :END:
-
-Filter coefficient array also defines the number of coefficients, hence
-to define filter support $\Omega_\alpha$ one only needs an additional
-offset.
-
-The filter support is defined as follows:
-
-$$
-\Omega_\alpha = [ -\text{offset},\text{length}-\text{offset} -1 ]
-$$
-
-
-* Documentation
+   
+* API documentation
 
 ** Linear Filter
 
-#+BEGIN_SRC julia :results output drawer :eval no-export :exports result
-w=create_documented_item_array(files);
-print(generate_org_string(w,tag="LinearFilter",header=3))
+#+BEGIN_SRC julia :results output drawer :eval no-export :exports results
+print_org_doc(documented_items,tag="LinearFilter",header_level=0)
 #+END_SRC
 
 #+RESULTS:
 :RESULTS:
-
-
-*Index:* <<y46OQhjL>> [L]: [[WGrA4lJw][LinearFilter_Default]], [[w9OBLOVw][LinearFilter_DefaultCentered]], [o]: [[5n8LJ7yU][offset]].
-
-*** *=LinearFilter_Default=*  <<WGrA4lJw>> 
+<<mjpkhS2f>> *Index:* *[L]* [[2hnYs7Sa][LinearFilter_Default]], [[H4MbBa5H][LinearFilter_DefaultCentered]] *[O]* [[ey7vY1tt][offset]] 
+- @@latex:\phantomsection@@ *=LinearFilter_Default=*  <<2hnYs7Sa>>
 #+BEGIN_SRC julia :eval never :exports code
 struct LinearFilter_Default{T<:AbstractFloat,N} <: LinearFilter{T}
 #+END_SRC
 #+BEGIN_QUOTE
 Default linear filter
 #+END_QUOTE
-[[file:../src/linearFilter.jl::28][source]], [[y46OQhjL][back to index]]
-*** *=LinearFilter_DefaultCentered=*  <<w9OBLOVw>> 
+[[file:/home/picaud/GitHub/DirectConvolution.jl/src/linearFilter.jl::28][linearFilter.jl]], [[mjpkhS2f][back to index]]
+- @@latex:\phantomsection@@ *=LinearFilter_DefaultCentered=*  <<H4MbBa5H>>
 #+BEGIN_SRC julia :eval never :exports code
 struct LinearFilter_DefaultCentered{T<:AbstractFloat,N} <: LinearFilter{T}
 #+END_SRC
@@ -280,8 +197,7 @@ struct LinearFilter_DefaultCentered{T<:AbstractFloat,N} <: LinearFilter{T}
 Default centered linear filter, size = 2n+1
 
 #+END_QUOTE
-[[file:../src/linearFilter.jl::41][source]], [[y46OQhjL][back to index]]
-
+[[file:/home/picaud/GitHub/DirectConvolution.jl/src/linearFilter.jl::41][linearFilter.jl]], [[mjpkhS2f][back to index]]
 #+BEGIN_SRC julia :eval never :exports code
 function LinearFilter_DefaultCentered(c::Array{T}) where {T<:AbstractFloat}
 #+END_SRC
@@ -289,8 +205,8 @@ function LinearFilter_DefaultCentered(c::Array{T}) where {T<:AbstractFloat}
 Creates a centered linear filter from an array of size = 2n+1
 
 #+END_QUOTE
-[[file:../src/linearFilter.jl::48][source]], [[y46OQhjL][back to index]]
-*** *=offset=*  <<5n8LJ7yU>> 
+[[file:/home/picaud/GitHub/DirectConvolution.jl/src/linearFilter.jl::48][linearFilter.jl]], [[mjpkhS2f][back to index]]
+- @@latex:\phantomsection@@ *=offset=*  <<ey7vY1tt>>
 #+BEGIN_SRC julia :eval never :exports code
 offset(f::LinearFilter_DefaultCentered{T,N}) where {T<:AbstractFloat,N}
 #+END_SRC
@@ -298,101 +214,24 @@ offset(f::LinearFilter_DefaultCentered{T,N}) where {T<:AbstractFloat,N}
 Returns offset, if size = 2n+1 then offset = n
 
 #+END_QUOTE
-[[file:../src/linearFilter.jl::57][source]], [[y46OQhjL][back to index]]
+[[file:/home/picaud/GitHub/DirectConvolution.jl/src/linearFilter.jl::57][linearFilter.jl]], [[mjpkhS2f][back to index]]
 :END:
 
 ** Convolution functions
 
 These are the main functions of the package, allowing to compute Eq. \ref{eq:main}.
 
-*** =directConv!=
-    :PROPERTIES:
-    :ID:       59e21a70-6395-4a06-9979-8e4449ac4c64
-    :END:
-
-#+CALL: Julia_Extract_Snippet("../src/directConvolution.jl","directConv!")
-
-#+RESULTS:
-#+BEGIN_SRC julia :eval never :exports code
-function directConv!(tilde_α::AbstractArray{T,1},
-                     α_offset::Int,
-                     λ::Int,
-
-                     β::AbstractArray{T,1},
-
-                     γ::AbstractArray{T,1},
-                     Ωγ::UnitRange{Int},
-                     
-                     ::Type{LeftBE}=ZeroPaddingBE,
-                     ::Type{RightBE}=ZeroPaddingBE;
-                     
-                     accumulate::Bool=false) where {T <: Number,
-                                                    LeftBE <: BoundaryExtension,
-                                                    RightBE <: BoundaryExtension}
-    
-#+END_SRC
-
-*** =directConv=
-    :PROPERTIES:
-    :ID:       093c1821-7217-46fb-9e1b-1a397554fa0e
-    :END:
-
-#+CALL: Julia_Extract_Snippet("../src/directConvolution.jl","directConv")
-
-#+RESULTS:
-#+BEGIN_SRC julia :eval never :exports code
-function directConv(tilde_α::AbstractArray{T,1},
-                    α_offset::Int64,
-                    λ::Int64,
-
-                    β::AbstractArray{T,1},
-
-                    ::Type{LeftBE}=ZeroPaddingBE,
-                    ::Type{RightBE}=ZeroPaddingBE) where {T <: Number,
-                                                          LeftBE <: BoundaryExtension,
-                                                          RightBE <: BoundaryExtension}
-    
-#+END_SRC
-
-*** =BoundaryExtension= 
-    :PROPERTIES:
-    :ID:       04564489-bd48-4d43-b56e-7f93e200a86d
-    :END:
-
-Used to define boundary extensions.
-
-#+CALL: Julia_Extract_Snippet("../src/directConvolution.jl","BoundaryExtension")
-
-#+RESULTS:
-#+BEGIN_SRC julia :eval never :exports code
-abstract type BoundaryExtension end
-
-struct ZeroPaddingBE <: BoundaryExtension end
-struct ConstantBE <: BoundaryExtension end
-struct PeriodicBE <: BoundaryExtension end
-struct MirrorBE <: BoundaryExtension end
-
-#+END_SRC
-
 
 * UTest
 
-#+BEGIN_SRC julia :results output
+#+BEGIN_SRC julia :results output table :exports results
 include("../test/runtests.jl")
 #+END_SRC
 
 #+RESULTS:
 : Test Summary:     | Pass  Total
 : DirectConvolution |   35     35
-: Base.Test.DefaultTestSet("DirectConvolution", Any[Base.Test.DefaultTestSet("swap", Any[], 4, false), Base.Test.DefaultTestSet("LinearFilter_DefaultCentered", Any[], 3, false), Base.Test.DefaultTestSet("Example α_offset", Any[], 2, false), Base.Test.DefaultTestSet("Adjoint operator", Any[], 2, false), Base.Test.DefaultTestSet("Convolution commutativity", Any[], 1, false), Base.Test.DefaultTestSet("Interval split", Any[], 1, false), Base.Test.DefaultTestSet("Savitzky-Golay", Any[], 6, false), Base.Test.DefaultTestSet("Haar", Any[], 6, false), Base.Test.DefaultTestSet("Starck2", Any[], 2, false), Base.Test.DefaultTestSet("UDWT Transform", Any[], 8, false)], 0, false)
 
-# #+BEGIN_SRC sh :eval no-export :exports results :results output :wrap "EXAMPLE"
-# julia ../test/runtests.jl
-# #+END_SRC
-
-#+RESULTS:
-#+BEGIN_EXAMPLE
-#+END_EXAMPLE
 
 * TODO [0/1]
 - [ ] add example with derivative taking X into account
