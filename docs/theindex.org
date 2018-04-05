@@ -1,0 +1,9 @@
+#+SETUPFILE: Setup/setupFile.org
+
+* Sitemap
+
+#+INCLUDE: "sitemap.org"
+
+* Index
+
+#+INCLUDE: "theindex.inc"
