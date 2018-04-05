@@ -27,6 +27,7 @@ documented_items=create_documented_item_array_dir("~/GitHub/DirectConvolution.jl
 #+RESULTS:
 
 * Introduction
+#+INDEX: Test
 
 *Under construction do not use!*
 
