@@ -139,7 +139,7 @@
 	       :sitemap-function my-org-publish-sitemap
 	       :htmlize-source t
 	       :org-html-head-include-default-style nil
-	       :exclude "Setup*\\|index_preamble.org\\|index.org" 
+	       :exclude "Setup*\\|index_preamble.org" 
 	       :makeindex t
 	       :auto-sitemap t
 	       :sitemap-title ,my-project-name

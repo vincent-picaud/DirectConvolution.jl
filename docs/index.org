@@ -5,5 +5,6 @@
 * Sitemap
 
 - [[file:docs.org][Direct Convolution Package]]
+- [[file:theindex.org][Index]]
 - [[file:workInProgress.org][Work in Progress]]
 
