@@ -141,7 +141,7 @@
 	       :sitemap-function my-org-publish-sitemap
 	       :htmlize-source t
 	       :org-html-head-include-default-style nil
-	       :exclude "Setup*\\|theindex.org"
+	       :exclude "Setup*\\|theindex.org" 
 	       :makeindex t
 	       :auto-sitemap t
 	       :sitemap-title ,my-project-name
