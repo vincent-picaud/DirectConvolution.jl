@@ -9,8 +9,6 @@ docs/site/
 
 /notebooks/.juliahistory
 **/_minted-*/*
-/notebooks/docs.html
-/notebooks/docs.pdf
 /notebooks/docs.tex
 /docs/docs.bbl
 /docs/docs.html

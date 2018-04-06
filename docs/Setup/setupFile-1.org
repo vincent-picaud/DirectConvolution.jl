@@ -1,4 +1,4 @@
 #+SETUPFILE: options.org
-#+HTML_HEAD: <link rel="stylesheet" type="text/css" href="http://orgmode.org/worg/style/worg.css"/>
+#+HTML_HEAD: <link rel="stylesheet" type="text/css" href="Setup/worg.css"/>
 #+HTML_HEAD: <style type="text/css">body{ max-width:80%; }</style>
 #+INFOJS_OPT: view:showall mouse:underline path:http://orgmode.org/org-info.js home:../index.html
