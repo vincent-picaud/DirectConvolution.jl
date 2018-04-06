@@ -1,5 +1,5 @@
 #+SETUPFILE: ./Setup/setupFile.org
-#+TITLE: DirectConvolution
+#+TITLE: Direct Convolution Package
 
 * Sitemap
 

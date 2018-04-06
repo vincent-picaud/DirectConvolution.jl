@@ -145,8 +145,7 @@
 	       :makeindex t
 	       :auto-sitemap t
 	       :sitemap-title ,my-project-name
-	       :sitemap-filename "index.org" 
-	      )
+	       )
 
 	      ;; (,(concat my-project-name "_Tangle")
 	      ;;  :base-directory ,my-project-root
