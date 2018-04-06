@@ -41,7 +41,7 @@
       (setq org-agenda-files
 	    (mapcar 'abbreviate-file-name
 		    (split-string
-		     (shell-command-to-string (format "find %s -name \"*.org\" ! -name \"sitemap.org\"  ! -path \"./Setup/*\"" my-project-root))
+		     (shell-command-to-string (format "find %s -name \"*.org\" ! -name \"index.org\"  ! -path \"./Setup/*\"" my-project-root))
 		     "\n")))
       ;;
       ;; My my-workInProgress-filename and its associated captures
@@ -121,13 +121,12 @@
       (setq my-project-name "DirectConvolution")
 
       (defun my-org-publish-sitemap (title list)
-	"As org-publish-sitemap-default but add #+SETUPFILE ... before title"
-	(concat "#+INCLUDE: \"index_preamble.org\"\n\n"
+	"Create my own index.org instead of the default one"
+	(concat	"#+INCLUDE: \"index_preamble.org\"\n\n"
+		"#+OPTIONS: toc:nil\n\n"
 		"* Sitemap\n\n"
 		(org-list-to-org list)
-		"\n\n"
-		"* Index\n\n"
-		"#+INCLUDE: \"theindex.inc\"\n\n"))
+		"\n\n"))
       
       (setq org-publish-project-alist
 	    `(
@@ -140,10 +139,10 @@
 	       :sitemap-function my-org-publish-sitemap
 	       :htmlize-source t
 	       :org-html-head-include-default-style nil
-	       :exclude "Setup*\\|theindex.org\\|index_preamble.org" 
+	       :exclude "Setup*\\|index_preamble.org" 
 	       :makeindex t
 	       :auto-sitemap t
-	       ;;	       :sitemap-title ,my-project-name
+	       :sitemap-title ,my-project-name
 	       :sitemap-filename "index.org"
 	       )
 
