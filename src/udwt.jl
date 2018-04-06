@@ -1,5 +1,8 @@
+#+UDWT_Filter
 export UDWT_Filter_Haar, UDWT_Filter_Starck2
+#+UDWT_Filter
 export ϕ_filter,ψ_filter,tildeϕ_filter,tildeψ_filter,ϕ_offset,ψ_offset,tildeϕ_offset,tildeψ_offset
+#+UDWT
 export udwt, scale, inverse_udwt!, inverse_udwt
 
 import Base: length
@@ -59,6 +62,8 @@ struct UDWT_Filter_Haar{T<:AbstractFloat} <: UDWT_Filter{T}
     _ϕ_offset::Int
     _ψ_offset::Int
 
+    #+UDWT_Filter
+    # Inner constructor
     UDWT_Filter_Haar{T}() where {T<:Real} = new(SVector{2,T}([+1/2 +1/2]),
                                                 SVector{2,T}([-1/2 +1/2]),
                                                 0,

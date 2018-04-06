@@ -1,5 +1,6 @@
 #+LinearFilter
-export fcoef, length, offset, range
+export LinearFilter,LinearFilter_Default, LinearFilter_CenteredDefault,
+    fcoef, length, offset, range
 
 import Base: length,range,isapprox
 
@@ -8,7 +9,7 @@ import Base: length,range,isapprox
 # Abstract type defining a linear filter
 #
 abstract type LinearFilter{T<:Number} end
-
+ 
 #+LinearFilter
 # Returns filter coefficients as a Vector type 
 fcoef(c::LinearFilter) = c._fcoef
@@ -39,6 +40,13 @@ struct LinearFilter_Default{T<:AbstractFloat,N} <: LinearFilter{T}
     _offset::Int
 end
 
+#+LinearFilter
+# Creates a linear filter from a coefficient vector and its associated offset
+function LinearFilter_Default(c::AbstractArray{T,1},offset::Int)  where {T<:AbstractFloat}
+    v=SVector{length(c),T}(c)
+    return LinearFilter_Default{T,length(c)}(v,offset)
+end
+
 
 
 #+LinearFilter
@@ -51,7 +59,7 @@ end
 #+LinearFilter
 # Creates a centered linear filter from an array of size = 2n+1
 # 
-function LinearFilter_DefaultCentered(c::Array{T}) where {T<:AbstractFloat}  # [END_LinearFilter_DefaultCentered]
+function LinearFilter_DefaultCentered(c::Array{T}) where {T<:AbstractFloat} 
     const N = length(c)
     @assert isodd(length(c))
     return LinearFilter_DefaultCentered{T,N}(SVector{N,T}(c))
