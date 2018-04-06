@@ -174,29 +174,60 @@ savefig("figures/sg_d1.png")
 ** Linear Filter
 
 #+BEGIN_SRC julia :results output drawer :eval no-export :exports results
+documented_items=create_documented_item_array_dir("~/GitHub/DirectConvolution.jl/src/");
 print_org_doc(documented_items,tag="LinearFilter",header_level=0)
 #+END_SRC
 
 #+RESULTS:
 :RESULTS:
-<<mjpkhS2f>> *Index:* *[L]* [[2hnYs7Sa][LinearFilter_Default]], [[H4MbBa5H][LinearFilter_DefaultCentered]] *[O]* [[ey7vY1tt][offset]] 
-- @@latex:\phantomsection@@ *=LinearFilter_Default=*  <<2hnYs7Sa>>
+
+<<wsg3BG7h>> *Index:* *[E]* [[cdIroRfh][export]] *[F]* [[J7Wwt8Bp][fcoef]] *[L]* [[RkX5m9HI][length]], [[93fCaGs6][LinearFilter]], [[ezwNnq8o][LinearFilter_Default]], [[nWPBqq04][LinearFilter_DefaultCentered]] *[O]* [[xoTW1Toi][offset]] *[R]* [[D9CzW2Wx][range]] 
+- @@latex:\phantomsection@@ *=export=*  <<cdIroRfh>>
+#+BEGIN_SRC julia :eval never :exports code
+export fcoef, length, offset, range
+#+END_SRC
+[[file:/home/picaud/GitHub/DirectConvolution.jl/src/linearFilter.jl::1][linearFilter.jl]], [[wsg3BG7h][back to index]]
+- @@latex:\phantomsection@@ *=fcoef=*  <<J7Wwt8Bp>>
+#+BEGIN_SRC julia :eval never :exports code
+fcoef(c::LinearFilter)
+#+END_SRC
+#+BEGIN_QUOTE
+Returns filter coefficients as a Vector type 
+#+END_QUOTE
+[[file:/home/picaud/GitHub/DirectConvolution.jl/src/linearFilter.jl::12][linearFilter.jl]], [[wsg3BG7h][back to index]]
+- @@latex:\phantomsection@@ *=length=*  <<RkX5m9HI>>
+#+BEGIN_SRC julia :eval never :exports code
+length(c::LinearFilter)
+#+END_SRC
+#+BEGIN_QUOTE
+Returns filter length
+#+END_QUOTE
+[[file:/home/picaud/GitHub/DirectConvolution.jl/src/linearFilter.jl::15][linearFilter.jl]], [[wsg3BG7h][back to index]]
+- @@latex:\phantomsection@@ *=LinearFilter=*  <<93fCaGs6>>
+#+BEGIN_SRC julia :eval never :exports code
+abstract type LinearFilter{T<:Number} 
+#+END_SRC
+#+BEGIN_QUOTE
+Abstract type defining a linear filter
+#+END_QUOTE
+[[file:/home/picaud/GitHub/DirectConvolution.jl/src/linearFilter.jl::7][linearFilter.jl]], [[wsg3BG7h][back to index]]
+- @@latex:\phantomsection@@ *=LinearFilter_Default=*  <<ezwNnq8o>>
 #+BEGIN_SRC julia :eval never :exports code
 struct LinearFilter_Default{T<:AbstractFloat,N} <: LinearFilter{T}
 #+END_SRC
 #+BEGIN_QUOTE
 Default linear filter
 #+END_QUOTE
-[[file:/home/picaud/GitHub/DirectConvolution.jl/src/linearFilter.jl::28][linearFilter.jl]], [[mjpkhS2f][back to index]]
-- @@latex:\phantomsection@@ *=LinearFilter_DefaultCentered=*  <<H4MbBa5H>>
+[[file:/home/picaud/GitHub/DirectConvolution.jl/src/linearFilter.jl::35][linearFilter.jl]], [[wsg3BG7h][back to index]]
+- @@latex:\phantomsection@@ *=LinearFilter_DefaultCentered=*  <<nWPBqq04>>
 #+BEGIN_SRC julia :eval never :exports code
 struct LinearFilter_DefaultCentered{T<:AbstractFloat,N} <: LinearFilter{T}
 #+END_SRC
 #+BEGIN_QUOTE
-Default centered linear filter, size = 2n+1
+Provides a default implementation of size 2n+1, with offset = n
 
 #+END_QUOTE
-[[file:/home/picaud/GitHub/DirectConvolution.jl/src/linearFilter.jl::41][linearFilter.jl]], [[mjpkhS2f][back to index]]
+[[file:/home/picaud/GitHub/DirectConvolution.jl/src/linearFilter.jl::44][linearFilter.jl]], [[wsg3BG7h][back to index]]
 #+BEGIN_SRC julia :eval never :exports code
 function LinearFilter_DefaultCentered(c::Array{T}) where {T<:AbstractFloat}
 #+END_SRC
@@ -204,8 +235,15 @@ function LinearFilter_DefaultCentered(c::Array{T}) where {T<:AbstractFloat}
 Creates a centered linear filter from an array of size = 2n+1
 
 #+END_QUOTE
-[[file:/home/picaud/GitHub/DirectConvolution.jl/src/linearFilter.jl::48][linearFilter.jl]], [[mjpkhS2f][back to index]]
-- @@latex:\phantomsection@@ *=offset=*  <<ey7vY1tt>>
+[[file:/home/picaud/GitHub/DirectConvolution.jl/src/linearFilter.jl::51][linearFilter.jl]], [[wsg3BG7h][back to index]]
+- @@latex:\phantomsection@@ *=offset=*  <<xoTW1Toi>>
+#+BEGIN_SRC julia :eval never :exports code
+offset(c::LinearFilter)
+#+END_SRC
+#+BEGIN_QUOTE
+Returns filter offset
+#+END_QUOTE
+[[file:/home/picaud/GitHub/DirectConvolution.jl/src/linearFilter.jl::18][linearFilter.jl]], [[wsg3BG7h][back to index]]
 #+BEGIN_SRC julia :eval never :exports code
 offset(f::LinearFilter_DefaultCentered{T,N}) where {T<:AbstractFloat,N}
 #+END_SRC
@@ -213,7 +251,15 @@ offset(f::LinearFilter_DefaultCentered{T,N}) where {T<:AbstractFloat,N}
 Returns offset, if size = 2n+1 then offset = n
 
 #+END_QUOTE
-[[file:/home/picaud/GitHub/DirectConvolution.jl/src/linearFilter.jl::57][linearFilter.jl]], [[mjpkhS2f][back to index]]
+[[file:/home/picaud/GitHub/DirectConvolution.jl/src/linearFilter.jl::60][linearFilter.jl]], [[wsg3BG7h][back to index]]
+- @@latex:\phantomsection@@ *=range=*  <<D9CzW2Wx>>
+#+BEGIN_SRC julia :eval never :exports code
+range(c::LinearFilter)
+#+END_SRC
+#+BEGIN_QUOTE
+Returns filter range
+#+END_QUOTE
+[[file:/home/picaud/GitHub/DirectConvolution.jl/src/linearFilter.jl::21][linearFilter.jl]], [[wsg3BG7h][back to index]]
 :END:
 
 ** Undecimated Wavelet Transform

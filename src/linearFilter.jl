@@ -1,28 +1,35 @@
+#+LinearFilter
 export fcoef, length, offset, range
 
+import Base: length,range,isapprox
 
-# [BEGIN_AbstractLinearFilter]
 
+#+LinearFilter
+# Abstract type defining a linear filter
+#
 abstract type LinearFilter{T<:Number} end
 
-# [END_AbstractLinearFilter]
-
-# [BEGIN_AbstractLinearFilterMethods]
+#+LinearFilter
+# Returns filter coefficients as a Vector type 
 fcoef(c::LinearFilter) = c._fcoef
-Base.length(c::LinearFilter) = length(fcoef(c))
+#+LinearFilter
+# Returns filter length
+length(c::LinearFilter) = length(fcoef(c))
+#+LinearFilter
+# Returns filter offset
 offset(c::LinearFilter) = c._offset
-Base.range(c::LinearFilter) = UnitRange(-offset(c),length(c)-offset(c)-1)
-# [END_AbstractLinearFilterMethods]
+#+LinearFilter
+# Returns filter range
+range(c::LinearFilter) = UnitRange(-offset(c),length(c)-offset(c)-1)
 
-# for convenience only, used in utests
-function Base.isapprox(f::LinearFilter{T},v::AbstractArray{T,1}) where {T<:Number}
+
+#+Internal 
+# For convenience only, used in utests
+function isapprox(f::LinearFilter{T},v::AbstractArray{T,1}) where {T<:Number}
     return isapprox(fcoef(f),v)
 end
 
 
-
-#
-# Provide a default implementation
 #
 
 #+LinearFilter
@@ -34,12 +41,8 @@ end
 
 
 
-#
-# Provide a default implementation of size 2n+1, with offset = n
-#
-
 #+LinearFilter
-# Default centered linear filter, size = 2n+1
+# Provides a default implementation of size 2n+1, with offset = n
 # 
 struct LinearFilter_DefaultCentered{T<:AbstractFloat,N} <: LinearFilter{T}
     _fcoef::SVector{N,T}
