@@ -122,8 +122,7 @@
 
       (defun my-org-publish-sitemap (title list)
 	"As org-publish-sitemap-default but add #+SETUPFILE ... before title"
-	(concat "#+SETUPFILE: ./Setup/setupFile.org\n"
-		"#+TITLE: " title "\n\n"
+	(concat "#+INCLUDE: \"index_preamble.org\"\n\n"
 		"* Sitemap\n\n"
 		(org-list-to-org list)
 		"\n\n"
@@ -141,10 +140,11 @@
 	       :sitemap-function my-org-publish-sitemap
 	       :htmlize-source t
 	       :org-html-head-include-default-style nil
-	       :exclude "Setup*\\|theindex.org" 
+	       :exclude "Setup*\\|theindex.org\\|index_preamble.org" 
 	       :makeindex t
 	       :auto-sitemap t
-	       :sitemap-title ,my-project-name
+	       ;;	       :sitemap-title ,my-project-name
+	       :sitemap-filename "index.org"
 	       )
 
 	      ;; (,(concat my-project-name "_Tangle")

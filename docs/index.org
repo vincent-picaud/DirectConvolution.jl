@@ -1,10 +1,10 @@
-#+SETUPFILE: ./Setup/setupFile.org
-#+TITLE: Direct Convolution Package
+#+INCLUDE: "index_preamble.org"
 
 * Sitemap
 
 - [[file:docs.org][Direct Convolution Package]]
 - [[file:workInProgress.org][Work in Progress]]
+- [[file:sitemap.org][sitemap]]
 
 * Index
 

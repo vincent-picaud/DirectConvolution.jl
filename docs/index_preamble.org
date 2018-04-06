@@ -1,0 +1,5 @@
+#+SETUPFILE: ./Setup/setupFile.org
+#+TITLE: Direct Convolution Package
+
+#+ATTR_HTML: :align center :width 600px
+[[file:figures/sg.png]]
