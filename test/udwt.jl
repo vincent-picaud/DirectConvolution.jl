@@ -16,7 +16,7 @@ end
 
     const starck2_udwt = UDWT_Filter_Starck2{Float64}()
 
-    @test tildeϕ_filter(starck2_udwt) ≈ [1]
+    @test fcoef(tildeϕ_filter(starck2_udwt)) ≈ [1]
     @test tildeϕ_offset(starck2_udwt) == 0
 
 end

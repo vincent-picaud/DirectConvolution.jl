@@ -1,4 +1,6 @@
+#+API
 export directConv, directConv!
+#+API
 export BoundaryExtension, ZeroPaddingBE, ConstantBE, PeriodicBE, MirrorBE
 
 
@@ -8,14 +10,12 @@ const tilde_i0 = Int(1)
 
 
 
-# [BEGIN_BoundaryExtension]
 abstract type BoundaryExtension end
 
 struct ZeroPaddingBE <: BoundaryExtension end
 struct ConstantBE <: BoundaryExtension end
 struct PeriodicBE <: BoundaryExtension end
 struct MirrorBE <: BoundaryExtension end
-# [END_BoundaryExtension]
 
 
 
@@ -161,28 +161,11 @@ function directConv!(tilde_α::AbstractArray{T,1},
     end
 end
 
-doc"""
-             directConv!(tilde_α::AbstractArray{T,1},
-                         α_offset::Int,
-                         λ::Int,
-
-                         β::AbstractArray{T,1},
-
-                         γ::AbstractArray{T,1},
-                         Ωγ::UnitRange{Int},
-                         
-                         ::Type{LeftBE}=ZeroPaddingBE,
-                         ::Type{RightBE}=ZeroPaddingBE;
-                         
-                         accumulate::Bool=false) where {T <: Number,
-                                                        LeftBE <: BoundaryExtension,
-                                                        RightBE <: BoundaryExtension}
-
-    Computes a convolution.
-
-    Inplace modification of γ
-        """
-# [BEGIN_directConv!]
+#+Convolution
+# Computes a convolution.
+#
+# Inplace modification of γ
+#
 function directConv!(tilde_α::AbstractArray{T,1},
                      α_offset::Int,
                      λ::Int,
@@ -198,7 +181,6 @@ function directConv!(tilde_α::AbstractArray{T,1},
                      accumulate::Bool=false) where {T <: Number,
                                                     LeftBE <: BoundaryExtension,
                                                     RightBE <: BoundaryExtension}
-    # [END_directConv!]
     Ωα = UnitRange(-α_offset,
                    length(tilde_α)-α_offset-1)
     
@@ -217,25 +199,52 @@ function directConv!(tilde_α::AbstractArray{T,1},
                 accumulate=accumulate)
 end
 
-# Some UI functions, allocates γ 
+#+Convolution
+# Computes a convolution.
 #
-doc"""
-            directConv(tilde_α::AbstractArray{T,1},
-                        α_offset::Int64,
-                        λ::Int64,
+# Takes a filter as input 
+#
+# Inplace modification of γ
+#
+function directConv!(α::LinearFilter{T},
+                     λ::Int,
 
-                        β::AbstractArray{T,1},
+                     β::AbstractArray{T,1},
 
-                        ::Type{LeftBE}=ZeroPaddingBE,
-                        ::Type{RightBE}=ZeroPaddingBE) where {T <: Number,
-                                                              LeftBE <: BoundaryExtension,
-                                                              RightBE <: BoundaryExtension}
+                     γ::AbstractArray{T,1},
+                     Ωγ::UnitRange{Int},
+                     
+                     ::Type{LeftBE}=ZeroPaddingBE,
+                     ::Type{RightBE}=ZeroPaddingBE;
+                     
+                     accumulate::Bool=false) where {T <: Number,
+                                                    LeftBE <: BoundaryExtension,
+                                                    RightBE <: BoundaryExtension}
 
-    Computes a convolution.
+    directConv!(fcoef(α),
+                range(α),
+                λ,
+                
+                β,
 
-    Returns γ, a created vector of length identical to β one.
-    """
-# [BEGIN_directConv]
+                γ,
+                Ωγ,
+
+                LeftBE,
+                RightBE,
+                
+                accumulate=accumulate)
+end
+
+
+
+
+#+Convolution
+#
+# Computes a convolution.
+#
+# Returns γ, a created vector of length identical to β one.
+#
 function directConv(tilde_α::AbstractArray{T,1},
                     α_offset::Int64,
                     λ::Int64,
@@ -268,7 +277,12 @@ end
 
 
 
-
+#+API
+#
+# Computes a convolution.
+#
+# Returns γ, a created vector of length identical to β one.
+#
 function directConv(α::LinearFilter{T},
                     β::AbstractArray{T,1},
 

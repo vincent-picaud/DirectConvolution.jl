@@ -7,31 +7,35 @@ export udwt, scale, inverse_udwt!, inverse_udwt
 
 import Base: length
 
+
+
 #+UDWT_Filter,TODO
 #
 # Abstract type defining the $\phi$, $\psi$, $\tilde{\phi}$ and
 # $\tilde{\psi}$ filters associated to an undecimated biorthogonal
 # wavelet transform
 #
-# - [ ] TODO must use LinearFilter struct
+# - [X] TODO must use LinearFilter struct 
 abstract type UDWT_Filter_Biorthogonal{T<:Number} end
 
 #+UDWT_Filter
-ϕ_filter(c::UDWT_Filter_Biorthogonal) = c._ϕ_filter
+ϕ_filter(c::UDWT_Filter_Biorthogonal)::LinearFilter = c._ϕ_filter
 #+UDWT_Filter
-ψ_filter(c::UDWT_Filter_Biorthogonal) = c._ψ_filter
+ψ_filter(c::UDWT_Filter_Biorthogonal)::LinearFilter = c._ψ_filter
 #+UDWT_Filter
-tildeϕ_filter(c::UDWT_Filter_Biorthogonal) = c._tildeϕ_filter
+tildeϕ_filter(c::UDWT_Filter_Biorthogonal)::LinearFilter = c._tildeϕ_filter
 #+UDWT_Filter
-tildeψ_filter(c::UDWT_Filter_Biorthogonal) = c._tildeψ_filter
+tildeψ_filter(c::UDWT_Filter_Biorthogonal)::LinearFilter = c._tildeψ_filter
 #+UDWT_Filter
-ϕ_offset(c::UDWT_Filter_Biorthogonal) = c._ϕ_offset
+ϕ_offset(c::UDWT_Filter_Biorthogonal)::Int = offset(ϕ_filter(c))
 #+UDWT_Filter
-ψ_offset(c::UDWT_Filter_Biorthogonal) = c._ψ_offset
+ψ_offset(c::UDWT_Filter_Biorthogonal)::Int = offset(ψ_filter(c))
 #+UDWT_Filter
-tildeϕ_offset(c::UDWT_Filter_Biorthogonal) = c._tildeϕ_offset
+tildeϕ_offset(c::UDWT_Filter_Biorthogonal)::Int = offset(tildeϕ_filter(c))
 #+UDWT_Filter
-tildeψ_offset(c::UDWT_Filter_Biorthogonal) = c._tildeψ_offset
+tildeψ_offset(c::UDWT_Filter_Biorthogonal)::Int = offset(tildeψ_filter(c))
+
+
 
 #+UDWT_Filter
 #
@@ -44,30 +48,31 @@ abstract type UDWT_Filter{T<:Number} <: UDWT_Filter_Biorthogonal{T}
 end
 
 #+UDWT_Filter
-tildeϕ_filter(c::UDWT_Filter)=ϕ_filter(c)
-#+UDWT_Filter
-tildeψ_filter(c::UDWT_Filter)=ψ_filter(c)
-#+UDWT_Filter
-tildeϕ_offset(c::UDWT_Filter)=ϕ_offset(c)
-#+UDWT_Filter
-tildeψ_offset(c::UDWT_Filter)=ψ_offset(c)
+tildeϕ_filter(c::UDWT_Filter)::LinearFilter = ϕ_filter(c)
 
+#+UDWT_Filter
+tildeψ_filter(c::UDWT_Filter)::LinearFilter = ψ_filter(c)
+
+#+UDWT_Filter
+tildeϕ_offset(c::UDWT_Filter)::Int = ϕ_offset(c)
+
+#+UDWT_Filter
+tildeψ_offset(c::UDWT_Filter)::Int = ψ_offset(c)
+
+
+# Filter examples
 
 
 #+UDWT_Filter
 # Haar filter
 struct UDWT_Filter_Haar{T<:AbstractFloat} <: UDWT_Filter{T}
-    _ϕ_filter::SVector{2,T}
-    _ψ_filter::SVector{2,T}
-    _ϕ_offset::Int
-    _ψ_offset::Int
+    _ϕ_filter::LinearFilter_Default{T,2}
+    _ψ_filter::LinearFilter_Default{T,2}
 
     #+UDWT_Filter
-    # Inner constructor
-    UDWT_Filter_Haar{T}() where {T<:Real} = new(SVector{2,T}([+1/2 +1/2]),
-                                                SVector{2,T}([-1/2 +1/2]),
-                                                0,
-                                                0)
+    # Creates an instance
+    UDWT_Filter_Haar{T}() where {T<:Real} = new(LinearFilter_Default{T,2}(SVector{2,T}([+1/2 +1/2]),0),
+                                                LinearFilter_Default{T,2}(SVector{2,T}([-1/2 +1/2]),0))
 end
 
 
@@ -77,23 +82,17 @@ end
 #
 # Defined by Eq. 6 from http://ieeexplore.ieee.org/stamp/stamp.jsp?tp=&arnumber=4060954
 struct UDWT_Filter_Starck2{T<:AbstractFloat} <: UDWT_Filter_Biorthogonal{T}
-    _ϕ_filter::SVector{5,T}
-    _ψ_filter::SVector{5,T}
-    _ϕ_offset::Int
-    _ψ_offset::Int
-    _tildeϕ_filter::SVector{1,T}
-    _tildeψ_filter::SVector{1,T}
-    _tildeϕ_offset::Int
-    _tildeψ_offset::Int
+    _ϕ_filter::LinearFilter_DefaultCentered{T,5}
+    _ψ_filter::LinearFilter_DefaultCentered{T,5}
+    _tildeϕ_filter::LinearFilter_DefaultCentered{T,1}
+    _tildeψ_filter::LinearFilter_DefaultCentered{T,1}
 
-    UDWT_Filter_Starck2{T}() where {T<:Real} = new(SVector{5,T}([+1/16 +4/16 +6/16 +4/16 +1/16]),
-                                                   SVector{5,T}([-1/16 -4/16 +10/16 -4/16 -1/16]),
-                                                   2,
-                                                   2,
-                                                   SVector{1,T}([+1]),
-                                                   SVector{1,T}([+1]),
-                                                   0,
-                                                   0)
+    #+UDWT_Filter
+    # Creates an instance
+    UDWT_Filter_Starck2{T}() where {T<:Real} = new(LinearFilter_DefaultCentered{T,5}(SVector{5,T}([+1/16 +4/16 +6/16 +4/16 +1/16])),
+                                                   LinearFilter_DefaultCentered{T,5}(SVector{5,T}([-1/16 -4/16 +10/16 -4/16 -1/16])),
+                                                   LinearFilter_DefaultCentered{T,1}(SVector{1,T}([+1])),
+                                                   LinearFilter_DefaultCentered{T,1}(SVector{1,T}([+1])))
 end
 
 
@@ -108,6 +107,14 @@ struct UDWT{T<:Number}
     W::Array{T,2}
     V::Array{T,1}
 
+    #+UDWT
+    # Creates an instance
+    #
+    # *Parameters:*
+    # - *filter*: used filter
+    # - *scale* : max scale
+    # - *n*: signal length
+    #
     UDWT{T}(filter::UDWT_Filter_Biorthogonal{T};
             n::Int=0,
             scale::Int=0) where {T<:Number} =
@@ -120,7 +127,7 @@ end
 # Returns max scale
 scale(udwt::UDWT)::Int = size(udwt.W,2)
 #+UDWT
-# Returns initial signal length
+# Returns expected signal length
 length(udwt::UDWT)::Int = size(udwt.W,1)
 
 #+UDWT
@@ -150,7 +157,6 @@ function udwt(signal::AbstractArray{T,1},filter::UDWT_Filter_Biorthogonal{T};sca
         # Computes Vs+1 from Vs
         #
         directConv!(ϕ_filter(filter),
-                    ϕ_offset(filter),
                     twoPowScale,
 
                     Vs,
@@ -165,7 +171,6 @@ function udwt(signal::AbstractArray{T,1},filter::UDWT_Filter_Biorthogonal{T};sca
         # Computes Ws+1 from Ws
         #
         directConv!(ψ_filter(filter),
-                    ψ_offset(filter),
                     twoPowScale,
 
                     Vs,
@@ -210,7 +215,6 @@ function inverse_udwt!(udwt_domain::UDWT{T},reconstructed_signal::AbstractArray{
         # Computes Vs from Vs+1
         #
         directConv!(tildeϕ_filter(udwt_domain.filter),
-                    tildeϕ_offset(udwt_domain.filter),
                     -twoPowScale,
                     
                     reconstructed_signal,
@@ -226,7 +230,6 @@ function inverse_udwt!(udwt_domain::UDWT{T},reconstructed_signal::AbstractArray{
         const Ws = @view udwt_domain.W[:,s]
 
         directConv!(tildeψ_filter(udwt_domain.filter),
-                    tildeψ_offset(udwt_domain.filter),
                     -twoPowScale,
                     
                     Ws,

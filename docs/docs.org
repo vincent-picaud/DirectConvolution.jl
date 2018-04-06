@@ -468,17 +468,83 @@ print_org_doc(documented_items,tag="UDWT",header_level=0)
 
 These are the main functions of the package, allowing to compute Eq. \ref{eq:main}.
 
+ #+BEGIN_SRC julia :results output drawer :eval no-export :exports results
+documented_items=create_documented_item_array_dir("~/GitHub/DirectConvolution.jl/src/");
+print_org_doc(documented_items,tag="Convolution",header_level=0)
+ #+END_SRC
 
-* UTest
+ #+RESULTS:
+ :RESULTS:
 
-#+BEGIN_SRC julia :results output table :exports results
-include("../test/runtests.jl")
-#+END_SRC
+ <<2RHeFXyE>> *Index:* *[D]* [[n0vikZyY][directConv]], [[7S2h3kwp][directConv!]] 
+ - @@latex:\phantomsection@@ *=directConv=*  <<n0vikZyY>>
+ #+BEGIN_SRC julia :eval never :exports code
+ function directConv(tilde_α::AbstractArray{T,1},
+		     α_offset::Int64,
+		     λ::Int64,
 
-#+RESULTS:
-: Test Summary:     | Pass  Total
-: DirectConvolution |   39     39
+		     β::AbstractArray{T,1},
 
+		     ::Type{LeftBE}=ZeroPaddingBE,
+		     ::Type{RightBE}=ZeroPaddingBE) where {T <: Number,
+							   LeftBE <: BoundaryExtension,
+							   RightBE <: BoundaryExtension}
+ #+END_SRC
+ #+BEGIN_QUOTE
+ Computes a convolution.
+
+ Returns γ, a created vector of length identical to β one.
+ #+END_QUOTE
+ [[file:/home/picaud/GitHub/DirectConvolution.jl/src/directConvolution.jl::242][directConvolution.jl]], [[2RHeFXyE][back to index]]
+ - @@latex:\phantomsection@@ *=directConv!=*  <<7S2h3kwp>>
+ #+BEGIN_SRC julia :eval never :exports code
+ function directConv!(tilde_α::AbstractArray{T,1},
+		      α_offset::Int,
+		      λ::Int,
+
+		      β::AbstractArray{T,1},
+
+		      γ::AbstractArray{T,1},
+		      Ωγ::UnitRange{Int},
+
+		      ::Type{LeftBE}=ZeroPaddingBE,
+		      ::Type{RightBE}=ZeroPaddingBE;
+
+		      accumulate::Bool=false) where {T <: Number,
+						     LeftBE <: BoundaryExtension,
+						     RightBE <: BoundaryExtension}
+ #+END_SRC
+ #+BEGIN_QUOTE
+ Computes a convolution.
+
+ Inplace modification of γ
+ #+END_QUOTE
+ [[file:/home/picaud/GitHub/DirectConvolution.jl/src/directConvolution.jl::164][directConvolution.jl]], [[2RHeFXyE][back to index]]
+ #+BEGIN_SRC julia :eval never :exports code
+ function directConv!(α::LinearFilter{T},
+		      λ::Int,
+
+		      β::AbstractArray{T,1},
+
+		      γ::AbstractArray{T,1},
+		      Ωγ::UnitRange{Int},
+
+		      ::Type{LeftBE}=ZeroPaddingBE,
+		      ::Type{RightBE}=ZeroPaddingBE;
+
+		      accumulate::Bool=false) where {T <: Number,
+						     LeftBE <: BoundaryExtension,
+						     RightBE <: BoundaryExtension}
+ #+END_SRC
+ #+BEGIN_QUOTE
+ Computes a convolution.
+
+ Takes a filter as input 
+
+ Inplace modification of γ
+ #+END_QUOTE
+ [[file:/home/picaud/GitHub/DirectConvolution.jl/src/directConvolution.jl::202][directConvolution.jl]], [[2RHeFXyE][back to index]]
+ :END:
 
 * TODO [0/1]
 - [ ] add example with derivative taking X into account
