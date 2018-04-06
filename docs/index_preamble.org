@@ -12,4 +12,6 @@ clone this repo and to browse it locally as this will use a proper
 =css= file style (I did not manage to make it work directly under
 GitHub).
 
+*Caveat:* this packages is still experimental and under development, do not use it yet!
+
 
