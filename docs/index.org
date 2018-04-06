@@ -1,12 +1,10 @@
 #+INCLUDE: "index_preamble.org"
 
+#+OPTIONS: toc:nil
+
 * Sitemap
 
 - [[file:docs.org][Direct Convolution Package]]
+- [[file:theindex.org][Index]]
 - [[file:workInProgress.org][Work in Progress]]
-- [[file:sitemap.org][sitemap]]
-
-* Index
-
-#+INCLUDE: "theindex.inc"
 
