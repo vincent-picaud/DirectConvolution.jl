@@ -1,4 +1,4 @@
 #+SETUPFILE: options.org
-#+HTML_HEAD: <link rel="stylesheet" type="text/css" href="Setup/worg.css"/>
+#+HTML_HEAD: <link rel="stylesheet" type="text/css" href="https://vincent-picaud.github.io/DirectConvolution.jl/docs/Setup/worg.css"/>
 #+HTML_HEAD: <style type="text/css">body{ max-width:80%; }</style>
 #+INFOJS_OPT: view:showall mouse:underline path:http://orgmode.org/org-info.js home:../../../../index.html
