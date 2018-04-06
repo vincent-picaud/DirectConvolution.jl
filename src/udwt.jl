@@ -42,12 +42,19 @@ For these filters, we have:
 - tildeψ_offset(c::UDWT_Filter)=ψ_offset(c)
 
 """
+# +UDWT_Filter,TODO
+# Must use LinearFilter struct 
 abstract type UDWT_Filter{T<:Number} <: UDWT_Filter_Biorthogonal{T}
 end
 
+#+UDWT_Filter,TODO
+# - [ ] must use and return a LinearFilter struct
 tildeϕ_filter(c::UDWT_Filter)=ϕ_filter(c)
+#+UDWT_Filter
 tildeψ_filter(c::UDWT_Filter)=ψ_filter(c)
+#+UDWT_Filter
 tildeϕ_offset(c::UDWT_Filter)=ϕ_offset(c)
+#+UDWT_Filter
 tildeψ_offset(c::UDWT_Filter)=ψ_offset(c)
 
 

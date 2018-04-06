@@ -1,9 +1,7 @@
 #+SETUPFILE: ./Setup/setupFile.org
 #+TITLE: Direct Convolution Package
 #+PROPERTY: header-args:julia :session *directConvolution_session*  :exports code :eval no-export
-#+HTML_HEAD_EXTRA: <style type="text/css"> blockquote {background:#EEEEEE; padding: 3px 13px}    </style>
-#+HTML_HEAD_EXTRA: <style type="text/css"> pre {background:#EEEEEE; padding: 3px 13px}    </style>
-#+STYLE: :width=200
+
 
 #+BEGIN_EXPORT latex
 \definecolor{bg}{rgb}{0.95,0.95,0.95}

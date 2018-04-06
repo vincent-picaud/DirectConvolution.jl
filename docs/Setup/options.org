@@ -3,6 +3,7 @@
 #+PROPERTY: header-args :comments link :mkdirp yes
 #+HTML_HEAD_EXTRA: <style type="text/css"> blockquote {background:#EEEEEE; padding: 3px 13px}    </style>
 #+HTML_HEAD_EXTRA: <style type="text/css"> pre {background:#EEEEEE; padding: 3px 13px}    </style>
+#+STYLE: :width=200
 
 # Listing and bibliography config 
 #+LATEX_HEADER: \usepackage{minted}    

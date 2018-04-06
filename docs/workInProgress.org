@@ -1,6 +1,45 @@
 #+SETUPFILE: Setup/setupFile.org
 #+TITLE: Work in Progress
+#+PROPERTY: header-args:julia :session *directConvolution_session*  :exports code :eval no-export
+
 
 * Project Journal
+** 2018
+*** 2018-04 April
+**** 2018-04-06 Friday
+
+***** Doc is online 
+
+Pure Org solution... Experimental
+
 * Project TODO
+
+** TODO Code [0/1]
+
+#+BEGIN_SRC julia :results output drawer :exports results
+documented_items=create_documented_item_array_dir("~/GitHub/DirectConvolution.jl/src/");
+print_org_doc(documented_items,tag="TODO",header_level=0)
+#+END_SRC
+
+#+RESULTS:
+:RESULTS:
+
+<<JjoDXHCh>> *Index:* *[T]* [[PNDMadTa][tildeϕ_filter]] 
+- @@latex:\phantomsection@@ *=tildeϕ_filter=*  <<PNDMadTa>>
+#+BEGIN_SRC julia :eval never :exports code
+tildeϕ_filter(c::UDWT_Filter)
+#+END_SRC
+#+BEGIN_QUOTE
+- [ ] must use and return a LinearFilter struct
+#+END_QUOTE
+[[file:/home/picaud/GitHub/DirectConvolution.jl/src/udwt.jl::50][udwt.jl]], [[JjoDXHCh][back to index]]
+:END:
+
 * W3 Links
+
+** Readings
+
+This package is based on my posts:
+- [[https://pixorblog.wordpress.com/2016/07/17/direct-convolution/][direct-convolution]]
+- [[https://pixorblog.wordpress.com/2016/07/13/savitzky-golay-filters-julia/][savitzky-golay-filters-julia]]
+- [[https://pixorblog.wordpress.com/2017/01/06/some-remarks-on-the-usage-of-derivatives-in-spectrum-processing/][some-remarks-on-the-usage-of-derivatives-in-spectrum-processing]]
