@@ -1,0 +1,634 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
+<head>
+<!-- 2018-04-06 Fri 11:49 -->
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Direct Convolution Package</title>
+<meta name="generator" content="Org mode" />
+<meta name="author" content="picaud" />
+<style type="text/css">
+ <!--/*--><![CDATA[/*><!--*/
+  .title  { text-align: center;
+             margin-bottom: .2em; }
+  .subtitle { text-align: center;
+              font-size: medium;
+              font-weight: bold;
+              margin-top:0; }
+  .todo   { font-family: monospace; color: red; }
+  .done   { font-family: monospace; color: green; }
+  .priority { font-family: monospace; color: orange; }
+  .tag    { background-color: #eee; font-family: monospace;
+            padding: 2px; font-size: 80%; font-weight: normal; }
+  .timestamp { color: #bebebe; }
+  .timestamp-kwd { color: #5f9ea0; }
+  .org-right  { margin-left: auto; margin-right: 0px;  text-align: right; }
+  .org-left   { margin-left: 0px;  margin-right: auto; text-align: left; }
+  .org-center { margin-left: auto; margin-right: auto; text-align: center; }
+  .underline { text-decoration: underline; }
+  #postamble p, #preamble p { font-size: 90%; margin: .2em; }
+  p.verse { margin-left: 3%; }
+  pre {
+    border: 1px solid #ccc;
+    box-shadow: 3px 3px 3px #eee;
+    padding: 8pt;
+    font-family: monospace;
+    overflow: auto;
+    margin: 1.2em;
+  }
+  pre.src {
+    position: relative;
+    overflow: visible;
+    padding-top: 1.2em;
+  }
+  pre.src:before {
+    display: none;
+    position: absolute;
+    background-color: white;
+    top: -10px;
+    right: 10px;
+    padding: 3px;
+    border: 1px solid black;
+  }
+  pre.src:hover:before { display: inline;}
+  /* Languages per Org manual */
+  pre.src-asymptote:before { content: 'Asymptote'; }
+  pre.src-awk:before { content: 'Awk'; }
+  pre.src-C:before { content: 'C'; }
+  /* pre.src-C++ doesn't work in CSS */
+  pre.src-clojure:before { content: 'Clojure'; }
+  pre.src-css:before { content: 'CSS'; }
+  pre.src-D:before { content: 'D'; }
+  pre.src-ditaa:before { content: 'ditaa'; }
+  pre.src-dot:before { content: 'Graphviz'; }
+  pre.src-calc:before { content: 'Emacs Calc'; }
+  pre.src-emacs-lisp:before { content: 'Emacs Lisp'; }
+  pre.src-fortran:before { content: 'Fortran'; }
+  pre.src-gnuplot:before { content: 'gnuplot'; }
+  pre.src-haskell:before { content: 'Haskell'; }
+  pre.src-hledger:before { content: 'hledger'; }
+  pre.src-java:before { content: 'Java'; }
+  pre.src-js:before { content: 'Javascript'; }
+  pre.src-latex:before { content: 'LaTeX'; }
+  pre.src-ledger:before { content: 'Ledger'; }
+  pre.src-lisp:before { content: 'Lisp'; }
+  pre.src-lilypond:before { content: 'Lilypond'; }
+  pre.src-lua:before { content: 'Lua'; }
+  pre.src-matlab:before { content: 'MATLAB'; }
+  pre.src-mscgen:before { content: 'Mscgen'; }
+  pre.src-ocaml:before { content: 'Objective Caml'; }
+  pre.src-octave:before { content: 'Octave'; }
+  pre.src-org:before { content: 'Org mode'; }
+  pre.src-oz:before { content: 'OZ'; }
+  pre.src-plantuml:before { content: 'Plantuml'; }
+  pre.src-processing:before { content: 'Processing.js'; }
+  pre.src-python:before { content: 'Python'; }
+  pre.src-R:before { content: 'R'; }
+  pre.src-ruby:before { content: 'Ruby'; }
+  pre.src-sass:before { content: 'Sass'; }
+  pre.src-scheme:before { content: 'Scheme'; }
+  pre.src-screen:before { content: 'Gnu Screen'; }
+  pre.src-sed:before { content: 'Sed'; }
+  pre.src-sh:before { content: 'shell'; }
+  pre.src-sql:before { content: 'SQL'; }
+  pre.src-sqlite:before { content: 'SQLite'; }
+  /* additional languages in org.el's org-babel-load-languages alist */
+  pre.src-forth:before { content: 'Forth'; }
+  pre.src-io:before { content: 'IO'; }
+  pre.src-J:before { content: 'J'; }
+  pre.src-makefile:before { content: 'Makefile'; }
+  pre.src-maxima:before { content: 'Maxima'; }
+  pre.src-perl:before { content: 'Perl'; }
+  pre.src-picolisp:before { content: 'Pico Lisp'; }
+  pre.src-scala:before { content: 'Scala'; }
+  pre.src-shell:before { content: 'Shell Script'; }
+  pre.src-ebnf2ps:before { content: 'ebfn2ps'; }
+  /* additional language identifiers per "defun org-babel-execute"
+       in ob-*.el */
+  pre.src-cpp:before  { content: 'C++'; }
+  pre.src-abc:before  { content: 'ABC'; }
+  pre.src-coq:before  { content: 'Coq'; }
+  pre.src-groovy:before  { content: 'Groovy'; }
+  /* additional language identifiers from org-babel-shell-names in
+     ob-shell.el: ob-shell is the only babel language using a lambda to put
+     the execution function name together. */
+  pre.src-bash:before  { content: 'bash'; }
+  pre.src-csh:before  { content: 'csh'; }
+  pre.src-ash:before  { content: 'ash'; }
+  pre.src-dash:before  { content: 'dash'; }
+  pre.src-ksh:before  { content: 'ksh'; }
+  pre.src-mksh:before  { content: 'mksh'; }
+  pre.src-posh:before  { content: 'posh'; }
+  /* Additional Emacs modes also supported by the LaTeX listings package */
+  pre.src-ada:before { content: 'Ada'; }
+  pre.src-asm:before { content: 'Assembler'; }
+  pre.src-caml:before { content: 'Caml'; }
+  pre.src-delphi:before { content: 'Delphi'; }
+  pre.src-html:before { content: 'HTML'; }
+  pre.src-idl:before { content: 'IDL'; }
+  pre.src-mercury:before { content: 'Mercury'; }
+  pre.src-metapost:before { content: 'MetaPost'; }
+  pre.src-modula-2:before { content: 'Modula-2'; }
+  pre.src-pascal:before { content: 'Pascal'; }
+  pre.src-ps:before { content: 'PostScript'; }
+  pre.src-prolog:before { content: 'Prolog'; }
+  pre.src-simula:before { content: 'Simula'; }
+  pre.src-tcl:before { content: 'tcl'; }
+  pre.src-tex:before { content: 'TeX'; }
+  pre.src-plain-tex:before { content: 'Plain TeX'; }
+  pre.src-verilog:before { content: 'Verilog'; }
+  pre.src-vhdl:before { content: 'VHDL'; }
+  pre.src-xml:before { content: 'XML'; }
+  pre.src-nxml:before { content: 'XML'; }
+  /* add a generic configuration mode; LaTeX export needs an additional
+     (add-to-list 'org-latex-listings-langs '(conf " ")) in .emacs */
+  pre.src-conf:before { content: 'Configuration File'; }
+
+  table { border-collapse:collapse; }
+  caption.t-above { caption-side: top; }
+  caption.t-bottom { caption-side: bottom; }
+  td, th { vertical-align:top;  }
+  th.org-right  { text-align: center;  }
+  th.org-left   { text-align: center;   }
+  th.org-center { text-align: center; }
+  td.org-right  { text-align: right;  }
+  td.org-left   { text-align: left;   }
+  td.org-center { text-align: center; }
+  dt { font-weight: bold; }
+  .footpara { display: inline; }
+  .footdef  { margin-bottom: 1em; }
+  .figure { padding: 1em; }
+  .figure p { text-align: center; }
+  .inlinetask {
+    padding: 10px;
+    border: 2px solid gray;
+    margin: 10px;
+    background: #ffffcc;
+  }
+  #org-div-home-and-up
+   { text-align: right; font-size: 70%; white-space: nowrap; }
+  textarea { overflow-x: auto; }
+  .linenr { font-size: smaller }
+  .code-highlighted { background-color: #ffff00; }
+  .org-info-js_info-navigation { border-style: none; }
+  #org-info-js_console-label
+    { font-size: 10px; font-weight: bold; white-space: nowrap; }
+  .org-info-js_search-highlight
+    { background-color: #ffff00; color: #000000; font-weight: bold; }
+  .org-svg { width: 90%; }
+  /*]]>*/-->
+</style>
+<link rel="stylesheet" type="text/css" href="http://orgmode.org/worg/style/worg.css"/>
+<style type="text/css">body{ max-width:80%; }</style>
+<style type="text/css"> blockquote {background:#EEEEEE; padding: 3px 13px}    </style>
+<style type="text/css"> pre {background:#EEEEEE; padding: 3px 13px}    </style>
+<style type="text/css"> blockquote {background:#EEEEEE; padding: 3px 13px}    </style>
+<style type="text/css"> pre {background:#EEEEEE; padding: 3px 13px}    </style>
+<script type="text/javascript" src="http://orgmode.org/org-info.js">
+/**
+ *
+ * @source: http://orgmode.org/org-info.js
+ *
+ * @licstart  The following is the entire license notice for the
+ *  JavaScript code in http://orgmode.org/org-info.js.
+ *
+ * Copyright (C) 2012-2017 Free Software Foundation, Inc.
+ *
+ *
+ * The JavaScript code in this tag is free software: you can
+ * redistribute it and/or modify it under the terms of the GNU
+ * General Public License (GNU GPL) as published by the Free Software
+ * Foundation, either version 3 of the License, or (at your option)
+ * any later version.  The code is distributed WITHOUT ANY WARRANTY;
+ * without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE.  See the GNU GPL for more details.
+ *
+ * As additional permission under GNU GPL version 3 section 7, you
+ * may distribute non-source (e.g., minimized or compacted) forms of
+ * that code without the copy of the GNU GPL normally required by
+ * section 4, provided you include this license notice and a URL
+ * through which recipients can access the Corresponding Source.
+ *
+ * @licend  The above is the entire license notice
+ * for the JavaScript code in http://orgmode.org/org-info.js.
+ *
+ */
+</script>
+
+<script type="text/javascript">
+
+/*
+@licstart  The following is the entire license notice for the
+JavaScript code in this tag.
+
+Copyright (C) 2012-2017 Free Software Foundation, Inc.
+
+The JavaScript code in this tag is free software: you can
+redistribute it and/or modify it under the terms of the GNU
+General Public License (GNU GPL) as published by the Free Software
+Foundation, either version 3 of the License, or (at your option)
+any later version.  The code is distributed WITHOUT ANY WARRANTY;
+without even the implied warranty of MERCHANTABILITY or FITNESS
+FOR A PARTICULAR PURPOSE.  See the GNU GPL for more details.
+
+As additional permission under GNU GPL version 3 section 7, you
+may distribute non-source (e.g., minimized or compacted) forms of
+that code without the copy of the GNU GPL normally required by
+section 4, provided you include this license notice and a URL
+through which recipients can access the Corresponding Source.
+
+
+@licend  The above is the entire license notice
+for the JavaScript code in this tag.
+*/
+
+<!--/*--><![CDATA[/*><!--*/
+org_html_manager.set("TOC_DEPTH", "3");
+org_html_manager.set("LINK_HOME", "index.html");
+org_html_manager.set("LINK_UP", "");
+org_html_manager.set("LOCAL_TOC", "1");
+org_html_manager.set("VIEW_BUTTONS", "0");
+org_html_manager.set("MOUSE_HINT", "underline");
+org_html_manager.set("FIXED_TOC", "0");
+org_html_manager.set("TOC", "1");
+org_html_manager.set("VIEW", "showall");
+org_html_manager.setup();  // activate after the parameters are set
+/*]]>*///-->
+</script>
+<script type="text/javascript">
+/*
+@licstart  The following is the entire license notice for the
+JavaScript code in this tag.
+
+Copyright (C) 2012-2017 Free Software Foundation, Inc.
+
+The JavaScript code in this tag is free software: you can
+redistribute it and/or modify it under the terms of the GNU
+General Public License (GNU GPL) as published by the Free Software
+Foundation, either version 3 of the License, or (at your option)
+any later version.  The code is distributed WITHOUT ANY WARRANTY;
+without even the implied warranty of MERCHANTABILITY or FITNESS
+FOR A PARTICULAR PURPOSE.  See the GNU GPL for more details.
+
+As additional permission under GNU GPL version 3 section 7, you
+may distribute non-source (e.g., minimized or compacted) forms of
+that code without the copy of the GNU GPL normally required by
+section 4, provided you include this license notice and a URL
+through which recipients can access the Corresponding Source.
+
+
+@licend  The above is the entire license notice
+for the JavaScript code in this tag.
+*/
+<!--/*--><![CDATA[/*><!--*/
+ function CodeHighlightOn(elem, id)
+ {
+   var target = document.getElementById(id);
+   if(null != target) {
+     elem.cacheClassElem = elem.className;
+     elem.cacheClassTarget = target.className;
+     target.className = "code-highlighted";
+     elem.className   = "code-highlighted";
+   }
+ }
+ function CodeHighlightOff(elem, id)
+ {
+   var target = document.getElementById(id);
+   if(elem.cacheClassElem)
+     elem.className = elem.cacheClassElem;
+   if(elem.cacheClassTarget)
+     target.className = elem.cacheClassTarget;
+ }
+/*]]>*///-->
+</script>
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+        displayAlign: "center",
+        displayIndent: "0em",
+
+        "HTML-CSS": { scale: 100,
+                        linebreaks: { automatic: "false" },
+                        webFont: "TeX"
+                       },
+        SVG: {scale: 100,
+              linebreaks: { automatic: "false" },
+              font: "TeX"},
+        NativeMML: {scale: 100},
+        TeX: { equationNumbers: {autoNumber: "AMS"},
+               MultLineWidth: "85%",
+               TagSide: "right",
+               TagIndent: ".8em"
+             }
+});
+</script>
+<script type="text/javascript"
+        src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-AMS_HTML"></script>
+</head>
+<body>
+<div id="content">
+<h1 class="title">Direct Convolution Package</h1>
+<div id="table-of-contents">
+<h2>Table of Contents</h2>
+<div id="text-table-of-contents">
+<ul>
+<li><a href="#org6c7903c">1. Introduction</a></li>
+<li><a href="#org247c58a">2. Usage examples</a>
+<ul>
+<li><a href="#org23fa44e">2.1. Savitzky-Golay filters</a></li>
+<li><a href="#org0aa5385">2.2. Undecimated Wavelet Transform</a></li>
+</ul>
+</li>
+<li><a href="#orge2edbae">3. API documentation</a>
+<ul>
+<li><a href="#orgf08cf68">3.1. Linear Filter</a></li>
+<li><a href="#org6bf1a52">3.2. Convolution functions</a></li>
+</ul>
+</li>
+<li><a href="#orgfb86a01">4. UTest</a></li>
+<li><a href="#org42ab3fa">5. <span class="todo TODO">TODO</span> <code>[0/1]</code></a></li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-org6c7903c" class="outline-2">
+<h2 id="org6c7903c"><span class="section-number-2">1</span> Introduction</h2>
+<div class="outline-text-2" id="text-1">
+<p>
+<b>Under construction do not use!</b>
+</p>
+
+<p>
+This package goal is to compute convolution products 
+</p>
+
+\begin{equation}
+\label{eq:main}
+\gamma[k]=\sum\limits_{i\in\Omega^\alpha}\alpha[i]\beta[k+\lambda i],\text{ with }\lambda\in\mathbb{Z}^*
+\end{equation}
+
+<p>
+using direct (no FFT) methods. 
+</p>
+
+<p>
+Eq. \ref{eq:main} has several applications:
+</p>
+<ul class="org-ul">
+<li><a href="#org23fa44e">Savitzky-Golay filters</a></li>
+<li><a href="#org0aa5385">Undecimated Wavelet Transform</a></li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-org247c58a" class="outline-2">
+<h2 id="org247c58a"><span class="section-number-2">2</span> Usage examples</h2>
+<div class="outline-text-2" id="text-2">
+<p>
+Our dependencies are as follows:
+</p>
+
+<div class="org-src-container">
+<pre class="src src-julia"><span style="color: #a020f0;">using</span> DirectConvolution
+<span style="color: #a020f0;">using</span> Plots
+</pre>
+</div>
+
+<p>
+We also need to load a toy signal:
+</p>
+<div class="org-src-container">
+<pre class="src src-julia">signal=readcsv(<span style="color: #8b2252;">"./data/signal_1.csv"</span>);
+</pre>
+</div>
+
+<p>
+For the moment we ignore the first column (X-axis) and only consider Y-values
+</p>
+
+<div class="org-src-container">
+<pre class="src src-julia">signal=signal[:,2];
+</pre>
+</div>
+</div>
+
+<div id="outline-container-org23fa44e" class="outline-3">
+<h3 id="org23fa44e"><a id="ID-e51770f6-45da-4051-b6ab-d0835187f438"></a><span class="section-number-3">2.1</span> Savitzky-Golay filters</h3>
+<div class="outline-text-3" id="text-2-1">
+<p>
+Creates a set of Savitzky-Golay filters, window width is \(11=2*5+1\) and polynomial degree is \(3\).
+</p>
+
+<div class="org-src-container">
+<pre class="src src-julia">sg = SG_Filter(<span style="color: #228b22;">Float64</span>,halfWidth=5,degree=3);
+</pre>
+</div>
+
+<p>
+This can be checked with
+</p>
+
+<div class="org-src-container">
+<pre class="src src-julia">length(sg)
+polynomialOrder(sg)
+</pre>
+</div>
+
+<div class="org-src-container">
+<pre class="src src-julia">11
+3
+</pre>
+</div>
+
+<p>
+Savitzky-Golay filters can be used to smooth or to compute smoothed
+derivatives of a signal. The associated filter is obtained thanks to
+the <code>filter</code> function.
+</p>
+
+<div class="org-src-container">
+<pre class="src src-julia">filter(sg,derivativeOrder=2)
+</pre>
+</div>
+
+<div class="org-src-container">
+<pre class="src src-julia">DirectConvolution.LinearFilter_DefaultCentered{<span style="color: #228b22;">Float64</span>,11}([0.034965, 0.013986, -0.002331, -0.013986, -0.020979, -0.02331, -0.020979, -0.013986, -0.002331, 0.013986, 0.034965])
+</pre>
+</div>
+
+<p>
+Maximum derivative order is equal to the polynomial order, however there is a dedicated function:
+</p>
+
+<div class="org-src-container">
+<pre class="src src-julia">maxDerivativeOrder(sg)
+</pre>
+</div>
+
+<div class="org-src-container">
+<pre class="src src-julia">3
+</pre>
+</div>
+
+
+<p>
+Smoothing example:
+</p>
+
+<div class="org-src-container">
+<pre class="src src-julia">smoothed=directConv(filter(sg,derivativeOrder=0),signal,ConstantBE,ConstantBE)
+
+plot(signal,label=<span style="color: #8b2252;">"signal"</span>)
+plot!(smoothed, label=<span style="color: #8b2252;">"smoothed"</span>,linewidth=2)
+plot!(signal-smoothed, label=<span style="color: #8b2252;">"residue"</span>)
+</pre>
+</div>
+
+
+
+<div class="figure">
+<p><img src="figures/sg.png" alt="sg.png" align="center" width="600px" />
+</p>
+<p><span class="figure-number">Figure 1: </span>Savitzky-Golay smoothing</p>
+</div>
+
+
+<p>
+Smoothed first order derivative example:
+</p>
+
+<div class="org-src-container">
+<pre class="src src-julia">smoothed_d1 = directConv(filter(sg,derivativeOrder=1),signal)
+
+plot(signal,label=<span style="color: #8b2252;">"signal"</span>)
+plot!(smoothed_d1, label=<span style="color: #8b2252;">"smoothed derivative"</span>,linewidth=2)
+</pre>
+</div>
+
+
+<div class="figure">
+<p><img src="figures/sg_d1.png" alt="sg_d1.png" align="center" width="600px" />
+</p>
+<p><span class="figure-number">Figure 2: </span>Savitzky-Golay smoothed first order derivative</p>
+</div>
+</div>
+</div>
+
+
+<div id="outline-container-org0aa5385" class="outline-3">
+<h3 id="org0aa5385"><a id="ID-32475da6-a0b9-4103-a58f-04eebdb75785"></a><span class="section-number-3">2.2</span> Undecimated Wavelet Transform</h3>
+<div class="outline-text-3" id="text-2-2">
+</div>
+</div>
+</div>
+
+<div id="outline-container-orge2edbae" class="outline-2">
+<h2 id="orge2edbae"><span class="section-number-2">3</span> API documentation</h2>
+<div class="outline-text-2" id="text-3">
+</div>
+<div id="outline-container-orgf08cf68" class="outline-3">
+<h3 id="orgf08cf68"><span class="section-number-3">3.1</span> Linear Filter</h3>
+<div class="outline-text-3" id="text-3-1">
+<p>
+<a id="orgb094261"></a> <b>Index:</b> <b>[L]</b> <a href="#org7f4d444">LinearFilter_Default</a>, <a href="#org3cd928d">LinearFilter_DefaultCentered</a> <b>[O]</b> <a href="#org77b3b7f">offset</a> 
+</p>
+<ul class="org-ul">
+<li><b><code>LinearFilter_Default</code></b>  <a id="org7f4d444"></a></li>
+</ul>
+<div class="org-src-container">
+<pre class="src src-julia"><span style="color: #a020f0;">struct</span> <span style="color: #228b22;">LinearFilter_Default</span>{T&lt;:<span style="color: #228b22;">AbstractFloat</span>,N} &lt;: <span style="color: #228b22;">LinearFilter</span>{T}
+</pre>
+</div>
+<blockquote>
+<p>
+Default linear filter
+</p>
+</blockquote>
+<p>
+<a href="file:///home/picaud/GitHub/DirectConvolution.jl/src/linearFilter.jl#org9b5899d">linearFilter.jl</a>, <a href="#orgb094261">back to index</a>
+</p>
+<ul class="org-ul">
+<li><b><code>LinearFilter_DefaultCentered</code></b>  <a id="org3cd928d"></a></li>
+</ul>
+<div class="org-src-container">
+<pre class="src src-julia"><span style="color: #a020f0;">struct</span> <span style="color: #228b22;">LinearFilter_DefaultCentered</span>{T&lt;:<span style="color: #228b22;">AbstractFloat</span>,N} &lt;: <span style="color: #228b22;">LinearFilter</span>{T}
+</pre>
+</div>
+<blockquote>
+<p>
+Default centered linear filter, size = 2n+1
+</p>
+</blockquote>
+<p>
+<a href="file:///home/picaud/GitHub/DirectConvolution.jl/src/linearFilter.jl#org1cb5015">linearFilter.jl</a>, <a href="#orgb094261">back to index</a>
+</p>
+<div class="org-src-container">
+<pre class="src src-julia"><span style="color: #a020f0;">function</span> <span style="color: #0000ff;">LinearFilter_DefaultCentered</span>(c::<span style="color: #228b22;">Array</span>{T}) <span style="color: #a020f0;">where</span> {T&lt;:<span style="color: #228b22;">AbstractFloat</span>}
+</pre>
+</div>
+<blockquote>
+<p>
+Creates a centered linear filter from an array of size = 2n+1
+</p>
+</blockquote>
+<p>
+<a href="file:///home/picaud/GitHub/DirectConvolution.jl/src/linearFilter.jl#orgd0bf1d6">linearFilter.jl</a>, <a href="#orgb094261">back to index</a>
+</p>
+<ul class="org-ul">
+<li><b><code>offset</code></b>  <a id="org77b3b7f"></a></li>
+</ul>
+<div class="org-src-container">
+<pre class="src src-julia">offset(f::<span style="color: #228b22;">LinearFilter_DefaultCentered</span>{T,N}) <span style="color: #a020f0;">where</span> {T&lt;:<span style="color: #228b22;">AbstractFloat</span>,N}
+</pre>
+</div>
+<blockquote>
+<p>
+Returns offset, if size = 2n+1 then offset = n
+</p>
+</blockquote>
+<p>
+<a href="file:///home/picaud/GitHub/DirectConvolution.jl/src/linearFilter.jl#org1c61c34">linearFilter.jl</a>, <a href="#orgb094261">back to index</a>
+</p>
+</div>
+</div>
+
+<div id="outline-container-org6bf1a52" class="outline-3">
+<h3 id="org6bf1a52"><span class="section-number-3">3.2</span> Convolution functions</h3>
+<div class="outline-text-3" id="text-3-2">
+<p>
+These are the main functions of the package, allowing to compute Eq. \ref{eq:main}.
+</p>
+</div>
+</div>
+</div>
+
+
+<div id="outline-container-orgfb86a01" class="outline-2">
+<h2 id="orgfb86a01"><span class="section-number-2">4</span> UTest</h2>
+<div class="outline-text-2" id="text-4">
+<pre class="example">
+Test Summary:     | Pass  Total
+DirectConvolution |   35     35
+
+</pre>
+</div>
+</div>
+
+
+<div id="outline-container-org42ab3fa" class="outline-2">
+<h2 id="org42ab3fa"><span class="section-number-2">5</span> <span class="todo TODO">TODO</span> <code>[0/1]</code></h2>
+<div class="outline-text-2" id="text-5">
+<ul class="org-ul">
+<li class="off"><code>[&#xa0;]</code> add example with derivative taking X into account</li>
+</ul>
+</div>
+</div>
+</div>
+<div id="postamble" class="status">
+<p class="author">Author: picaud</p>
+<p class="date">Created: 2018-04-06 Fri 11:49</p>
+<p class="validation"><a href="http://validator.w3.org/check?uri=referer">Validate</a></p>
+</div>
+</body>
+</html>
