@@ -216,6 +216,182 @@ Returns offset, if size = 2n+1 then offset = n
 [[file:/home/picaud/GitHub/DirectConvolution.jl/src/linearFilter.jl::57][linearFilter.jl]], [[mjpkhS2f][back to index]]
 :END:
 
+** Undecimated Wavelet Transform
+
+*** UDWT Filters
+ #+BEGIN_SRC julia :results output drawer :eval no-export :exports results
+print_org_doc(documented_items,tag="UDWT_Filter",header_level=0)
+ #+END_SRC
+
+ #+RESULTS:
+ :RESULTS:
+ <<r0WslEDx>> *Index:* *[T]* [[rfo4PFbW][tildeϕ_filter]], [[engoIXXt][tildeϕ_offset]], [[ngvUhNuD][tildeψ_filter]], [[opKzNoTS][tildeψ_offset]] *[U]* [[B972MHzi][UDWT_Filter]], [[s3EohaL7][UDWT_Filter_Biorthogonal]], [[htng0l6T][UDWT_Filter_Haar]], [[jbTdCTF3][UDWT_Filter_Starck2]] *[Φ]* [[9az4CGp7][ϕ_filter]], [[FbXMEcAB][ϕ_offset]] *[Ψ]* [[W9a5Utay][ψ_filter]], [[UhcmJ1Vs][ψ_offset]] 
+ - @@latex:\phantomsection@@ *=tildeϕ_filter=*  <<rfo4PFbW>>
+ #+BEGIN_SRC julia :eval never :exports code
+ tildeϕ_filter(c::UDWT_Filter_Biorthogonal)
+ #+END_SRC
+ [[file:/home/picaud/GitHub/DirectConvolution.jl/src/udwt.jl::20][udwt.jl]], [[r0WslEDx][back to index]]
+ #+BEGIN_SRC julia :eval never :exports code
+ tildeϕ_filter(c::UDWT_Filter)
+ #+END_SRC
+ [[file:/home/picaud/GitHub/DirectConvolution.jl/src/udwt.jl::43][udwt.jl]], [[r0WslEDx][back to index]]
+ - @@latex:\phantomsection@@ *=tildeϕ_offset=*  <<engoIXXt>>
+ #+BEGIN_SRC julia :eval never :exports code
+ tildeϕ_offset(c::UDWT_Filter_Biorthogonal)
+ #+END_SRC
+ [[file:/home/picaud/GitHub/DirectConvolution.jl/src/udwt.jl::28][udwt.jl]], [[r0WslEDx][back to index]]
+ #+BEGIN_SRC julia :eval never :exports code
+ tildeϕ_offset(c::UDWT_Filter)
+ #+END_SRC
+ [[file:/home/picaud/GitHub/DirectConvolution.jl/src/udwt.jl::47][udwt.jl]], [[r0WslEDx][back to index]]
+ - @@latex:\phantomsection@@ *=tildeψ_filter=*  <<ngvUhNuD>>
+ #+BEGIN_SRC julia :eval never :exports code
+ tildeψ_filter(c::UDWT_Filter_Biorthogonal)
+ #+END_SRC
+ [[file:/home/picaud/GitHub/DirectConvolution.jl/src/udwt.jl::22][udwt.jl]], [[r0WslEDx][back to index]]
+ #+BEGIN_SRC julia :eval never :exports code
+ tildeψ_filter(c::UDWT_Filter)
+ #+END_SRC
+ [[file:/home/picaud/GitHub/DirectConvolution.jl/src/udwt.jl::45][udwt.jl]], [[r0WslEDx][back to index]]
+ - @@latex:\phantomsection@@ *=tildeψ_offset=*  <<opKzNoTS>>
+ #+BEGIN_SRC julia :eval never :exports code
+ tildeψ_offset(c::UDWT_Filter_Biorthogonal)
+ #+END_SRC
+ [[file:/home/picaud/GitHub/DirectConvolution.jl/src/udwt.jl::30][udwt.jl]], [[r0WslEDx][back to index]]
+ #+BEGIN_SRC julia :eval never :exports code
+ tildeψ_offset(c::UDWT_Filter)
+ #+END_SRC
+ [[file:/home/picaud/GitHub/DirectConvolution.jl/src/udwt.jl::49][udwt.jl]], [[r0WslEDx][back to index]]
+ - @@latex:\phantomsection@@ *=UDWT_Filter=*  <<B972MHzi>>
+ #+BEGIN_SRC julia :eval never :exports code
+ abstract type UDWT_Filter{T<:Number} <: UDWT_Filter_Biorthogonal{T}
+ #+END_SRC
+ #+BEGIN_QUOTE
+ A specialization of UDWT_Filter_Biorthogonal for *orthogonal* filters.
+
+
+ For orthogonal filters we have: $\phi=\tilde{\phi}$ and $\psi=\tilde{\psi}$
+
+ #+END_QUOTE
+ [[file:/home/picaud/GitHub/DirectConvolution.jl/src/udwt.jl::33][udwt.jl]], [[r0WslEDx][back to index]]
+ - @@latex:\phantomsection@@ *=UDWT_Filter_Biorthogonal=*  <<s3EohaL7>>
+ #+BEGIN_SRC julia :eval never :exports code
+ abstract type UDWT_Filter_Biorthogonal{T<:Number} 
+ #+END_SRC
+ #+BEGIN_QUOTE
+ Abstract type defining the $\phi$, $\psi$, $\tilde{\phi}$ and
+ $\tilde{\psi}$ filters associated to an undecimated biorthogonal
+ wavelet transform
+
+ - [ ] TODO must use LinearFilter struct
+ #+END_QUOTE
+ [[file:/home/picaud/GitHub/DirectConvolution.jl/src/udwt.jl::7][udwt.jl]], [[r0WslEDx][back to index]]
+ - @@latex:\phantomsection@@ *=UDWT_Filter_Haar=*  <<htng0l6T>>
+ #+BEGIN_SRC julia :eval never :exports code
+ struct UDWT_Filter_Haar{T<:AbstractFloat} <: UDWT_Filter{T}
+ #+END_SRC
+ #+BEGIN_QUOTE
+ Haar filter
+ #+END_QUOTE
+ [[file:/home/picaud/GitHub/DirectConvolution.jl/src/udwt.jl::54][udwt.jl]], [[r0WslEDx][back to index]]
+ - @@latex:\phantomsection@@ *=UDWT_Filter_Starck2=*  <<jbTdCTF3>>
+ #+BEGIN_SRC julia :eval never :exports code
+ struct UDWT_Filter_Starck2{T<:AbstractFloat} <: UDWT_Filter_Biorthogonal{T}
+ #+END_SRC
+ #+BEGIN_QUOTE
+ Starck2 filter
+
+ Defined by Eq. 6 from http://ieeexplore.ieee.org/stamp/stamp.jsp?tp=&arnumber=4060954
+ #+END_QUOTE
+ [[file:/home/picaud/GitHub/DirectConvolution.jl/src/udwt.jl::70][udwt.jl]], [[r0WslEDx][back to index]]
+ - @@latex:\phantomsection@@ *=ϕ_filter=*  <<9az4CGp7>>
+ #+BEGIN_SRC julia :eval never :exports code
+ ϕ_filter(c::UDWT_Filter_Biorthogonal)
+ #+END_SRC
+ [[file:/home/picaud/GitHub/DirectConvolution.jl/src/udwt.jl::16][udwt.jl]], [[r0WslEDx][back to index]]
+ - @@latex:\phantomsection@@ *=ϕ_offset=*  <<FbXMEcAB>>
+ #+BEGIN_SRC julia :eval never :exports code
+ ϕ_offset(c::UDWT_Filter_Biorthogonal)
+ #+END_SRC
+ [[file:/home/picaud/GitHub/DirectConvolution.jl/src/udwt.jl::24][udwt.jl]], [[r0WslEDx][back to index]]
+ - @@latex:\phantomsection@@ *=ψ_filter=*  <<W9a5Utay>>
+ #+BEGIN_SRC julia :eval never :exports code
+ ψ_filter(c::UDWT_Filter_Biorthogonal)
+ #+END_SRC
+ [[file:/home/picaud/GitHub/DirectConvolution.jl/src/udwt.jl::18][udwt.jl]], [[r0WslEDx][back to index]]
+ - @@latex:\phantomsection@@ *=ψ_offset=*  <<UhcmJ1Vs>>
+ #+BEGIN_SRC julia :eval never :exports code
+ ψ_offset(c::UDWT_Filter_Biorthogonal)
+ #+END_SRC
+ [[file:/home/picaud/GitHub/DirectConvolution.jl/src/udwt.jl::26][udwt.jl]], [[r0WslEDx][back to index]]
+ :END:
+
+*** UDWT Computational subroutines
+ #+BEGIN_SRC julia :results output drawer :eval no-export :exports results
+print_org_doc(documented_items,tag="UDWT",header_level=0)
+ #+END_SRC
+
+ #+RESULTS:
+ :RESULTS:
+ <<Oou521Tf>> *Index:* *[I]* [[vFVTfVsf][inverse_udwt]], [[CjsihxFm][inverse_udwt!]] *[L]* [[ud5ZKljn][length]] *[S]* [[ZjybEwvU][scale]] *[U]* [[IB0jWrJV][UDWT]], [[h0Ziwuvo][udwt]] 
+ - @@latex:\phantomsection@@ *=inverse_udwt=*  <<vFVTfVsf>>
+ #+BEGIN_SRC julia :eval never :exports code
+ function inverse_udwt(udwt_domain::UDWT{T})::Array{T,1} where {T<:Number}
+ #+END_SRC
+ #+BEGIN_QUOTE
+ Performs an 1D *inverse* undecimated wavelet transform
+
+ *Returns:* a vector containing the reconstructed signal.
+ #+END_QUOTE
+ [[file:/home/picaud/GitHub/DirectConvolution.jl/src/udwt.jl::242][udwt.jl]], [[Oou521Tf][back to index]]
+ - @@latex:\phantomsection@@ *=inverse_udwt!=*  <<CjsihxFm>>
+ #+BEGIN_SRC julia :eval never :exports code
+ function inverse_udwt!(udwt_domain::UDWT{T},reconstructed_signal::AbstractArray{T,1}) where {T<:Number}
+ #+END_SRC
+ #+BEGIN_QUOTE
+ Performs an 1D *inverse* undecimated wavelet transform
+
+ *Caveat:* uses a pre-allocated vector =reconstructed_signal=
+ #+END_QUOTE
+ [[file:/home/picaud/GitHub/DirectConvolution.jl/src/udwt.jl::183][udwt.jl]], [[Oou521Tf][back to index]]
+ - @@latex:\phantomsection@@ *=length=*  <<ud5ZKljn>>
+ #+BEGIN_SRC julia :eval never :exports code
+ length(udwt::UDWT)::Int
+ #+END_SRC
+ #+BEGIN_QUOTE
+ Returns initial signal length
+ #+END_QUOTE
+ [[file:/home/picaud/GitHub/DirectConvolution.jl/src/udwt.jl::117][udwt.jl]], [[Oou521Tf][back to index]]
+ - @@latex:\phantomsection@@ *=scale=*  <<ZjybEwvU>>
+ #+BEGIN_SRC julia :eval never :exports code
+ scale(udwt::UDWT)::Int
+ #+END_SRC
+ #+BEGIN_QUOTE
+ Returns max scale
+ #+END_QUOTE
+ [[file:/home/picaud/GitHub/DirectConvolution.jl/src/udwt.jl::114][udwt.jl]], [[Oou521Tf][back to index]]
+ - @@latex:\phantomsection@@ *=UDWT=*  <<IB0jWrJV>>
+ #+BEGIN_SRC julia :eval never :exports code
+ struct UDWT{T<:Number}
+ #+END_SRC
+ #+BEGIN_QUOTE
+ A structure to store 1D UDWT
+ #+END_QUOTE
+ [[file:/home/picaud/GitHub/DirectConvolution.jl/src/udwt.jl::95][udwt.jl]], [[Oou521Tf][back to index]]
+ - @@latex:\phantomsection@@ *=udwt=*  <<h0Ziwuvo>>
+ #+BEGIN_SRC julia :eval never :exports code
+ function udwt(signal::AbstractArray{T,1},filter::UDWT_Filter_Biorthogonal{T};scale::Int=3) where {T<:Number}
+ #+END_SRC
+ #+BEGIN_QUOTE
+ Performs an 1D undecimated wavelet transform
+
+ $$(\mathcal{W}_{j+1}f)[u]=(\bar{g}_j*\mathcal{V}_{j}f)[u]$$
+ $$(\mathcal{V}_{j+1}f)[u]=(\bar{h}_j*\mathcal{V}_{j}f)[u]$$
+
+ #+END_QUOTE
+ [[file:/home/picaud/GitHub/DirectConvolution.jl/src/udwt.jl::121][udwt.jl]], [[Oou521Tf][back to index]]
+ :END:
+
 ** Convolution functions
 
 These are the main functions of the package, allowing to compute Eq. \ref{eq:main}.

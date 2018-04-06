@@ -2,6 +2,14 @@
 #+TITLE: Work in Progress
 #+PROPERTY: header-args:julia :session *directConvolution_session*  :exports code :eval no-export
 
+#+BEGIN_SRC julia :exports none
+using Revise
+using DirectConvolution
+using J4Org
+#+END_SRC
+
+#+RESULTS:
+
 
 * Project Journal
 ** 2018
@@ -14,6 +22,10 @@ Pure Org solution... Experimental
 
 * Project TODO
 
+** TODO [0/1]
+
+- [ ] provide function to compute UDWT adjoint
+
 ** TODO Code [0/1]
 
 #+BEGIN_SRC julia :results output drawer :exports results
@@ -24,15 +36,19 @@ print_org_doc(documented_items,tag="TODO",header_level=0)
 #+RESULTS:
 :RESULTS:
 
-<<JjoDXHCh>> *Index:* *[T]* [[PNDMadTa][tildeϕ_filter]] 
-- @@latex:\phantomsection@@ *=tildeϕ_filter=*  <<PNDMadTa>>
+<<FoQa25pZ>> *Index:* *[U]* [[Sf2bzpcb][UDWT_Filter_Biorthogonal]] 
+- @@latex:\phantomsection@@ *=UDWT_Filter_Biorthogonal=*  <<Sf2bzpcb>>
 #+BEGIN_SRC julia :eval never :exports code
-tildeϕ_filter(c::UDWT_Filter)
+abstract type UDWT_Filter_Biorthogonal{T<:Number} 
 #+END_SRC
 #+BEGIN_QUOTE
-- [ ] must use and return a LinearFilter struct
+Abstract type defining the $\phi$, $\psi$, $\tilde{\phi}$ and
+$\tilde{\psi}$ filters associated to an undecimated biorthogonal
+wavelet transform
+
+- [ ] TODO must use LinearFilter struct
 #+END_QUOTE
-[[file:/home/picaud/GitHub/DirectConvolution.jl/src/udwt.jl::50][udwt.jl]], [[JjoDXHCh][back to index]]
+[[file:/home/picaud/GitHub/DirectConvolution.jl/src/udwt.jl::7][udwt.jl]], [[FoQa25pZ][back to index]]
 :END:
 
 * W3 Links

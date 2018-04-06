@@ -2,53 +2,45 @@ export UDWT_Filter_Haar, UDWT_Filter_Starck2
 export ϕ_filter,ψ_filter,tildeϕ_filter,tildeψ_filter,ϕ_offset,ψ_offset,tildeϕ_offset,tildeψ_offset
 export udwt, scale, inverse_udwt!, inverse_udwt
 
-
+import Base: length
 
-doc"""
-     abstract type UDWT_Filter_Biorthogonal{T<:Number}
-
-Abstract type defining the $\phi$, $\psi$, $\tilde{\phi}$ and
-$\tilde{\psi}$ filters associated to an undecimated biorthogonal
-wavelet transform
-
-Generic methods are:
-- ``\phi``: `ϕ_filter(c::UDWT_Filter_Biorthogonal)`
-- ``\phi`` support: `ϕ_offset(c::UDWT_Filter_Biorthogonal)`
-- ``\psi``: `ψ_filter(c::UDWT_Filter_Biorthogonal)`
-- ``\psi`` support: `ψ_offset(c::UDWT_Filter_Biorthogonal)`
-
-"""
+#+UDWT_Filter,TODO
+#
+# Abstract type defining the $\phi$, $\psi$, $\tilde{\phi}$ and
+# $\tilde{\psi}$ filters associated to an undecimated biorthogonal
+# wavelet transform
+#
+# - [ ] TODO must use LinearFilter struct
 abstract type UDWT_Filter_Biorthogonal{T<:Number} end
 
-""" See [`UDWT_Filter_Biorthogonal`](@ref) """
+#+UDWT_Filter
 ϕ_filter(c::UDWT_Filter_Biorthogonal) = c._ϕ_filter
+#+UDWT_Filter
 ψ_filter(c::UDWT_Filter_Biorthogonal) = c._ψ_filter
+#+UDWT_Filter
 tildeϕ_filter(c::UDWT_Filter_Biorthogonal) = c._tildeϕ_filter
+#+UDWT_Filter
 tildeψ_filter(c::UDWT_Filter_Biorthogonal) = c._tildeψ_filter
+#+UDWT_Filter
 ϕ_offset(c::UDWT_Filter_Biorthogonal) = c._ϕ_offset
+#+UDWT_Filter
 ψ_offset(c::UDWT_Filter_Biorthogonal) = c._ψ_offset
+#+UDWT_Filter
 tildeϕ_offset(c::UDWT_Filter_Biorthogonal) = c._tildeϕ_offset
+#+UDWT_Filter
 tildeψ_offset(c::UDWT_Filter_Biorthogonal) = c._tildeψ_offset
 
-doc"""
-     abstract type UDWT_Filter{T<:Number} <: UDWT_Filter_Biorthogonal{T}
-
-Specialization of [`UDWT_Filter_Biorthogonal`](@ref) to orthogonal filters
-
-For these filters, we have:
-- tildeϕ_filter(c::UDWT_Filter)=ϕ_filter(c)
-- tildeψ_filter(c::UDWT_Filter)=ψ_filter(c)
-- tildeϕ_offset(c::UDWT_Filter)=ϕ_offset(c)
-- tildeψ_offset(c::UDWT_Filter)=ψ_offset(c)
-
-"""
-# +UDWT_Filter,TODO
-# Must use LinearFilter struct 
+#+UDWT_Filter
+#
+# A specialization of UDWT_Filter_Biorthogonal for *orthogonal* filters.
+#
+#
+# For orthogonal filters we have: $\phi=\tilde{\phi}$ and $\psi=\tilde{\psi}$
+# 
 abstract type UDWT_Filter{T<:Number} <: UDWT_Filter_Biorthogonal{T}
 end
 
-#+UDWT_Filter,TODO
-# - [ ] must use and return a LinearFilter struct
+#+UDWT_Filter
 tildeϕ_filter(c::UDWT_Filter)=ϕ_filter(c)
 #+UDWT_Filter
 tildeψ_filter(c::UDWT_Filter)=ψ_filter(c)
@@ -59,6 +51,8 @@ tildeψ_offset(c::UDWT_Filter)=ψ_offset(c)
 
 
 
+#+UDWT_Filter
+# Haar filter
 struct UDWT_Filter_Haar{T<:AbstractFloat} <: UDWT_Filter{T}
     _ϕ_filter::SVector{2,T}
     _ψ_filter::SVector{2,T}
@@ -72,9 +66,11 @@ struct UDWT_Filter_Haar{T<:AbstractFloat} <: UDWT_Filter{T}
 end
 
 
-# Eq. 6 from http://ieeexplore.ieee.org/stamp/stamp.jsp?tp=&arnumber=4060954
 
-
+#+UDWT_Filter
+# Starck2 filter
+#
+# Defined by Eq. 6 from http://ieeexplore.ieee.org/stamp/stamp.jsp?tp=&arnumber=4060954
 struct UDWT_Filter_Starck2{T<:AbstractFloat} <: UDWT_Filter_Biorthogonal{T}
     _ϕ_filter::SVector{5,T}
     _ψ_filter::SVector{5,T}
@@ -96,7 +92,9 @@ struct UDWT_Filter_Starck2{T<:AbstractFloat} <: UDWT_Filter_Biorthogonal{T}
 end
 
 
-
+#+UDWT
+# A structure to store 1D UDWT
+#
 struct UDWT{T<:Number}
 
     filter::UDWT_Filter_Biorthogonal{T}
@@ -113,17 +111,20 @@ struct UDWT{T<:Number}
                     Array{T,1}(n))
 end
 
+#+UDWT
+# Returns max scale
 scale(udwt::UDWT)::Int = size(udwt.W,2)
-Base.length(udwt::UDWT)::Int = size(udwt.W,1)
+#+UDWT
+# Returns initial signal length
+length(udwt::UDWT)::Int = size(udwt.W,1)
 
-doc"""
-    udwt(signal::AbstractArray{T,1},filter::UDWT_Filter_Biorthogonal{T};scale::Int=3) where {T<:Number}
-
-Performs a 1D undecimated wavelet transform
-
-$$(\mathcal{W}_{j+1}f)[u]=(\bar{g}_j*\mathcal{V}_{j}f)[u]$$
-$$(\mathcal{V}_{j+1}f)[u]=(\bar{h}_j*\mathcal{V}_{j}f)[u]$$
-"""
+#+UDWT
+#
+# Performs an 1D undecimated wavelet transform
+#
+# $$(\mathcal{W}_{j+1}f)[u]=(\bar{g}_j*\mathcal{V}_{j}f)[u]$$
+# $$(\mathcal{V}_{j+1}f)[u]=(\bar{h}_j*\mathcal{V}_{j}f)[u]$$
+# 
 function udwt(signal::AbstractArray{T,1},filter::UDWT_Filter_Biorthogonal{T};scale::Int=3) where {T<:Number}
 
     @assert scale>=0
@@ -179,14 +180,12 @@ function udwt(signal::AbstractArray{T,1},filter::UDWT_Filter_Biorthogonal{T};sca
     return udwt_domain
 end
 
-doc"""
-
-    inverse_udwt(udwt_domain::UDWT{T})::Array{T,1} where {T<:Number}
-
-Performs an inverse 1D undecimated wavelet transform using a
-pre-allocated vector `reconstructed_signal`.
-
-"""
+#+UDWT
+#
+# Performs an 1D *inverse* undecimated wavelet transform
+#
+# *Caveat:* uses a pre-allocated vector =reconstructed_signal=
+#
 function inverse_udwt!(udwt_domain::UDWT{T},reconstructed_signal::AbstractArray{T,1}) where {T<:Number}
 
     @assert length(udwt_domain) == length(reconstructed_signal)
@@ -240,13 +239,12 @@ function inverse_udwt!(udwt_domain::UDWT{T},reconstructed_signal::AbstractArray{
     end
 end
 
-doc"""
-    inverse_udwt(udwt_domain::UDWT{T})::Array{T,1} where {T<:Number}
-
-Performs an inverse 1D undecimated wavelet transform and returns a
-new vector containing the reconstructed signal.
-
-"""
+#+UDWT
+#
+# Performs an 1D *inverse* undecimated wavelet transform
+#
+# *Returns:* a vector containing the reconstructed signal.
+#
 function inverse_udwt(udwt_domain::UDWT{T})::Array{T,1} where {T<:Number}
     reconstructed_signal=Array{T,1}(length(udwt_domain))
     inverse_udwt!(udwt_domain,reconstructed_signal)
@@ -254,7 +252,3 @@ function inverse_udwt(udwt_domain::UDWT{T})::Array{T,1} where {T<:Number}
 end
 
 
-doc"""
-
-TODO: adjoint computation
-"""
