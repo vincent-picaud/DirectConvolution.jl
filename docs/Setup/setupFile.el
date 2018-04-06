@@ -121,10 +121,8 @@
       (setq my-project-name "DirectConvolution")
 
       (defun my-org-publish-sitemap (title list)
-	"As org-publish-sitemap-default but add #+SETUPFILE ... before title"
-	(concat "#+SETUPFILE: ./Setup/setupFile.org\n"
-		"#+TITLE: " title "\n\n"
-		(org-list-to-org list)))
+	"only generates file list (to be #+included later)"
+	(concat (org-list-to-org list)))
       
       (setq org-publish-project-alist
 	    `(
@@ -137,12 +135,11 @@
 	       :sitemap-function my-org-publish-sitemap
 	       :htmlize-source t
 	       :org-html-head-include-default-style nil
-	       :exclude "Setup*\\|sitemap.org"
+	       :exclude "Setup*\\|sitemap.org\\|theindex.org\\|index.org"
 	       :makeindex t
 	       :auto-sitemap t
 	       :sitemap-title ,my-project-name
-	       :sitemap-filename "index.org" 
-	      )
+	       )
 
 	      ;; (,(concat my-project-name "_Tangle")
 	      ;;  :base-directory ,my-project-root
