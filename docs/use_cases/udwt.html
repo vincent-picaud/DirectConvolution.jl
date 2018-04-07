@@ -3,10 +3,10 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
-<!-- 2018-04-07 Sat 12:54 -->
+<!-- 2018-04-07 Sat 22:39 -->
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>Work in Progress</title>
+<title>udwt</title>
 <meta name="generator" content="Org mode" />
 <meta name="author" content="picaud" />
 <style type="text/css">
@@ -244,7 +244,7 @@ for the JavaScript code in this tag.
 
 <!--/*--><![CDATA[/*><!--*/
 org_html_manager.set("TOC_DEPTH", "3");
-org_html_manager.set("LINK_HOME", "index.html");
+org_html_manager.set("LINK_HOME", "../index.html");
 org_html_manager.set("LINK_UP", "");
 org_html_manager.set("LOCAL_TOC", "1");
 org_html_manager.set("VIEW_BUTTONS", "0");
@@ -301,159 +301,141 @@ for the JavaScript code in this tag.
  }
 /*]]>*///-->
 </script>
-<script type="text/x-mathjax-config">
-    MathJax.Hub.Config({
-        displayAlign: "center",
-        displayIndent: "0em",
-
-        "HTML-CSS": { scale: 100,
-                        linebreaks: { automatic: "false" },
-                        webFont: "TeX"
-                       },
-        SVG: {scale: 100,
-              linebreaks: { automatic: "false" },
-              font: "TeX"},
-        NativeMML: {scale: 100},
-        TeX: { equationNumbers: {autoNumber: "AMS"},
-               MultLineWidth: "85%",
-               TagSide: "right",
-               TagIndent: ".8em"
-             }
-});
-</script>
-<script type="text/javascript"
-        src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-AMS_HTML"></script>
 </head>
 <body>
 <div id="content">
-<h1 class="title">Work in Progress</h1>
+<h1 class="title">udwt</h1>
 <div id="table-of-contents">
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents">
 <ul>
-<li><a href="#org6732709">1. Project Journal</a>
+<li><a href="#orgf933061">1. Undecimated Wavelet Transform</a>
 <ul>
-<li><a href="#org5887a16">1.1. 2018</a>
-<ul>
-<li><a href="#orgfaba881">1.1.1. 2018-04 April</a></li>
-</ul>
-</li>
-</ul>
-</li>
-<li><a href="#org43f7af5">2. Project TODO</a>
-<ul>
-<li><a href="#org5a0e3a1">2.1. <span class="todo TODO">TODO</span> <code>[0/1]</code></a></li>
-<li><a href="#org34b70d2">2.2. <span class="todo TODO">TODO</span> Code <code>[1/1]</code></a></li>
-</ul>
-</li>
-<li><a href="#orgd7561e6">3. W3 Links</a>
-<ul>
-<li><a href="#orga2e2a99">3.1. Readings</a></li>
+<li><a href="#org64a4745">1.1. Signal</a></li>
+<li><a href="#org258036d">1.2. Direct transform</a></li>
+<li><a href="#orga7a7069">1.3. Inverse transform</a></li>
+<li><a href="#org049b5d0">1.4. Smoothing</a></li>
 </ul>
 </li>
 </ul>
 </div>
 </div>
 
-<div id="outline-container-org6732709" class="outline-2">
-<h2 id="org6732709"><span class="section-number-2">1</span> Project Journal</h2>
+<div id="outline-container-orgf933061" class="outline-2">
+<h2 id="orgf933061"><span class="section-number-2">1</span> Undecimated Wavelet Transform</h2>
 <div class="outline-text-2" id="text-1">
 </div>
-<div id="outline-container-org5887a16" class="outline-3">
-<h3 id="org5887a16"><span class="section-number-3">1.1</span> 2018</h3>
+<div id="outline-container-org64a4745" class="outline-3">
+<h3 id="org64a4745"><span class="section-number-3">1.1</span> Signal</h3>
 <div class="outline-text-3" id="text-1-1">
-</div>
-<div id="outline-container-orgfaba881" class="outline-4">
-<h4 id="orgfaba881"><span class="section-number-4">1.1.1</span> 2018-04 April</h4>
-<div class="outline-text-4" id="text-1-1-1">
-</div>
-<ol class="org-ol">
-<li><a id="orgadfaf69"></a>2018-04-06 Friday<br />
-<ol class="org-ol">
-<li><a id="org05aa3ee"></a>Doc is online<br />
-<div class="outline-text-6" id="text-1-1-1-1-1">
-<p>
-Pure Org solution&#x2026; Experimental
-</p>
-</div>
-</li>
-</ol>
-</li>
-</ol>
-</div>
-</div>
-</div>
-
-<div id="outline-container-org43f7af5" class="outline-2">
-<h2 id="org43f7af5"><span class="section-number-2">2</span> Project TODO</h2>
-<div class="outline-text-2" id="text-2">
-</div>
-<div id="outline-container-org5a0e3a1" class="outline-3">
-<h3 id="org5a0e3a1"><span class="section-number-3">2.1</span> <span class="todo TODO">TODO</span> <code>[0/1]</code></h3>
-<div class="outline-text-3" id="text-2-1">
-<ul class="org-ul">
-<li class="off"><code>[&#xa0;]</code> provide function to compute UDWT adjoint</li>
-</ul>
-</div>
-</div>
-
-<div id="outline-container-org34b70d2" class="outline-3">
-<h3 id="org34b70d2"><span class="section-number-3">2.2</span> <span class="todo TODO">TODO</span> Code <code>[1/1]</code></h3>
-<div class="outline-text-3" id="text-2-2">
-<p>
-
-</p>
-
-<p>
-<a id="org3a97da6"></a> <b>Index:</b> <b>[U]</b> <a href="#orgec8d44a">UDWT_Filter_Biorthogonal</a> 
-</p>
-<ul class="org-ul">
-<li><b><code>UDWT_Filter_Biorthogonal</code></b>  <a id="orgec8d44a"></a></li>
-</ul>
 <div class="org-src-container">
-<pre class="src src-julia"><span style="color: #a020f0;">abstract type</span> <span style="color: #228b22;">UDWT_Filter_Biorthogonal</span>{T<span style="color: #000000; background-color: #ffffff;">&lt;:</span><span style="color: #228b22;">Number</span>} 
+<pre class="src src-julia">signal=readcsv(<span style="color: #8b2252;">"../data/signal_1.csv"</span>);
+signal=signal[:,2];
+p_signal = plot(signal);
 </pre>
 </div>
-<blockquote>
-<p>
-Abstract type defining the \(\phi\), \(\psi\), \(\tilde{\phi}\) and
-\(\tilde{\psi}\) filters associated to an undecimated biorthogonal
-wavelet transform
-</p>
 
-<ul class="org-ul">
-<li class="on"><code>[X]</code> TODO must use LinearFilter struct</li>
-</ul>
-</blockquote>
-<p>
-<a href="file:///home/picaud/GitHub/DirectConvolution.jl/src/udwt.jl#orgeb64efd">udwt.jl</a>, <a href="#org3a97da6">back to index</a>
+
+<div class="figure">
+<p><img src="figures/udwt_signal.png" alt="udwt_signal.png" />
 </p>
 </div>
 </div>
 </div>
 
-<div id="outline-container-orgd7561e6" class="outline-2">
-<h2 id="orgd7561e6"><span class="section-number-2">3</span> W3 Links</h2>
-<div class="outline-text-2" id="text-3">
-</div>
-<div id="outline-container-orga2e2a99" class="outline-3">
-<h3 id="orga2e2a99"><span class="section-number-3">3.1</span> Readings</h3>
-<div class="outline-text-3" id="text-3-1">
+<div id="outline-container-org258036d" class="outline-3">
+<h3 id="org258036d"><span class="section-number-3">1.2</span> Direct transform</h3>
+<div class="outline-text-3" id="text-1-2">
 <p>
-This package is based on my posts:
+Use some wavelet filter 
 </p>
-<ul class="org-ul">
-<li><a href="https://pixorblog.wordpress.com/2016/07/17/direct-convolution/">direct-convolution</a></li>
-<li><a href="https://pixorblog.wordpress.com/2016/07/13/savitzky-golay-filters-julia/">savitzky-golay-filters-julia</a></li>
-<li><a href="https://pixorblog.wordpress.com/2017/01/06/some-remarks-on-the-usage-of-derivatives-in-spectrum-processing/">some-remarks-on-the-usage-of-derivatives-in-spectrum-processing</a></li>
-</ul>
+
+<div class="org-src-container">
+<pre class="src src-julia">udwt_filter = UDWT_Filter_Starck2{<span style="color: #228b22;">Float64</span>}()
+</pre>
+</div>
+
+<p>
+Direct udwt transform
+</p>
+
+<div class="org-src-container">
+<pre class="src src-julia">m = udwt(signal,udwt_filter,scale=8)
+</pre>
+</div>
+
+<p>
+Plot results 
+</p>
+
+<div class="org-src-container">
+<pre class="src src-julia">label=[<span style="color: #8b2252;">"W$i"</span> <span style="color: #a020f0;">for</span> i <span style="color: #a020f0;">in</span> 1:scale(m)];
+p_W=plot(m.W,label=reshape(label,1,scale(m)))
+p_V=plot!(m.V,label=<span style="color: #8b2252;">"V$(scale(m))"</span>);
+p_W=plot!(signal,label=<span style="color: #8b2252;">"signal"</span>);
+</pre>
+</div>
+
+
+<div class="figure">
+<p><img src="figures/udwt_W.png" alt="udwt_W.png" />
+</p>
+</div>
+</div>
+</div>
+
+
+<div id="outline-container-orga7a7069" class="outline-3">
+<h3 id="orga7a7069"><span class="section-number-3">1.3</span> Inverse transform</h3>
+<div class="outline-text-3" id="text-1-3">
+<p>
+Check perfect reconstruction
+</p>
+
+<div class="org-src-container">
+<pre class="src src-julia">reconst = inverse_udwt(m);
+norm(signal-reconst)
+</pre>
+</div>
+
+<pre class="example">
+0
+
+</pre>
+</div>
+</div>
+
+
+
+<div id="outline-container-org049b5d0" class="outline-3">
+<h3 id="org049b5d0"><span class="section-number-3">1.4</span> Smoothing</h3>
+<div class="outline-text-3" id="text-1-4">
+<p>
+Rough solution&#x2026;
+</p>
+
+<div class="org-src-container">
+<pre class="src src-julia">m.W[:,1] .= 0
+m.W[:,2] .= 0
+reconst=inverse_udwt(m)
+p=plot(reconst,linewidth=3, label=<span style="color: #8b2252;">"smoothed"</span>);
+p=plot!(signal,label=<span style="color: #8b2252;">"signal"</span>);
+</pre>
+</div>
+
+
+
+<div class="figure">
+<p><img src="figures/udwt_W12_eq_0.png" alt="udwt_W12_eq_0.png" />
+</p>
+</div>
 </div>
 </div>
 </div>
 </div>
 <div id="postamble" class="status">
 <p class="author">Author: picaud</p>
-<p class="date">Created: 2018-04-07 Sat 12:54</p>
+<p class="date">Created: 2018-04-07 Sat 22:39</p>
 <p class="validation"><a href="http://validator.w3.org/check?uri=referer">Validate</a></p>
 </div>
 </body>

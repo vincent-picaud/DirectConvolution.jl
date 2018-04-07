@@ -1,0 +1,116 @@
+#+SETUPFILE: ../Setup/setupFile-1.org
+#+TITLE: udwt 
+#+PROPERTY: header-args:julia :session *directConvolution_session*  :exports code :eval no-export
+
+#+BEGIN_EXPORT latex
+\definecolor{bg}{rgb}{0.95,0.95,0.95}
+\setminted[]{
+  bgcolor=bg,
+  breaklines=true,
+  breakanywhere=true,
+  mathescape,
+  fontsize=\footnotesize}
+#+END_EXPORT
+
+#+BEGIN_SRC julia :exports none
+using Plots
+using Revise
+using DirectConvolution
+using J4Org
+
+documented_items=create_documented_item_array_dir("~/GitHub/DirectConvolution.jl/src/");
+#+END_SRC
+
+#+RESULTS:
+
+* Undecimated Wavelet Transform
+
+** Signal 
+ #+BEGIN_SRC julia :results output
+signal=readcsv("../data/signal_1.csv");
+signal=signal[:,2];
+p_signal = plot(signal);
+ #+END_SRC
+
+ #+RESULTS:
+ : 
+ : 
+
+ #+BEGIN_SRC julia :results graphics :file figures/udwt_signal.png :exports results
+savefig(p_signal,"figures/udwt_signal.png")
+ #+END_SRC
+
+ #+RESULTS:
+ [[file:figures/udwt_signal.png]]
+
+** Direct transform 
+
+Use some wavelet filter 
+
+ #+BEGIN_SRC julia :exports code
+udwt_filter = UDWT_Filter_Starck2{Float64}()
+ #+END_SRC
+
+Direct udwt transform
+
+ #+BEGIN_SRC julia :exports code
+m = udwt(signal,udwt_filter,scale=8)
+ #+END_SRC
+
+ #+RESULTS:
+
+Plot results 
+
+ #+BEGIN_SRC julia :exports code
+label=["W$i" for i in 1:scale(m)];
+p_W=plot(m.W,label=reshape(label,1,scale(m)))
+p_V=plot!(m.V,label="V$(scale(m))");
+p_W=plot!(signal,label="signal");
+ #+END_SRC
+
+ #+BEGIN_SRC julia :results graphics :file figures/udwt_W.png :exports results
+savefig(p_W,"figures/udwt_W.png")
+ #+END_SRC
+
+ #+RESULTS:
+ [[file:figures/udwt_W.png]]
+
+
+** Inverse transform
+
+Check perfect reconstruction
+
+ #+BEGIN_SRC julia :exports both
+reconst = inverse_udwt(m);
+norm(signal-reconst)
+ #+END_SRC
+
+ #+RESULTS:
+ : 0
+
+
+
+** Smoothing
+
+Rough solution...
+
+ #+BEGIN_SRC julia :exports code
+m.W[:,1] .= 0
+m.W[:,2] .= 0
+reconst=inverse_udwt(m)
+p=plot(reconst,linewidth=3, label="smoothed");
+p=plot!(signal,label="signal");
+ #+END_SRC
+
+ #+RESULTS:
+
+
+ #+BEGIN_SRC julia :results graphics :file figures/udwt_W12_eq_0.png :exports results 
+savefig(p,"figures/udwt_W12_eq_0.png")
+ #+END_SRC
+
+ #+RESULTS:
+ [[file:figures/udwt_W12_eq_0.png]]
+
+
+
