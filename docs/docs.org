@@ -25,9 +25,6 @@ documented_items=create_documented_item_array_dir("~/GitHub/DirectConvolution.jl
 #+RESULTS:
 
 * Introduction
-#+INDEX: Test
-
-*Under construction do not use!*
 
 This package goal is to compute convolution products 
 
@@ -38,163 +35,7 @@ This package goal is to compute convolution products
 
 using direct (no FFT) methods. 
 
-Eq. \ref{eq:main} has several applications:
-- [[id:e51770f6-45da-4051-b6ab-d0835187f438][Savitzky-Golay filters]] 
-- [[id:32475da6-a0b9-4103-a58f-04eebdb75785][Undecimated Wavelet Transform]]
-
-* Usage examples
-
-Our dependencies are as follows:
-
-#+BEGIN_SRC julia
-using DirectConvolution
-using Plots
-#+END_SRC
-
-#+RESULTS:
-
-We also need to load a toy signal:
-#+BEGIN_SRC julia :results output 
-signal=readcsv("./data/signal_1.csv");
-#+END_SRC
-
-#+RESULTS:
-#+begin_example
-
-Stacktrace:
- [1] writedlm_row(::Base.AbstractIOBuffer{Array{UInt8,1}}, ::J4Org.Documented_Item, ::Char, ::Bool) at ./datafmt.jl:651
- [2] #writedlm#18(::Array{Any,1}, ::Function, ::IOStream, ::Array{J4Org.Documented_Item,1}, ::Char) at ./datafmt.jl:674
- [3] #20 at ./datafmt.jl:683 [inlined]
- [4] open(::Base.DataFmt.##20#21{Array{Any,1},Array{J4Org.Documented_Item,1},Char}, ::String, ::String) at ./iostream.jl:152
- [5] #writecsv#23(::Array{Any,1}, ::Function, ::String, ::Array{J4Org.Documented_Item,1}) at ./datafmt.jl:705
- [6] writecsv(::String, ::Array{J4Org.Documented_Item,1}) at ./datafmt.jl:705
-
-
-ERROR: MethodError: no method matching start(::Void)
-Closest candidates are:
-  start(!Matched::SimpleVector) at essentials.jl:258
-  start(!Matched::Base.MethodList) at reflection.jl:560
-  start(!Matched::ExponentialBackOff) at error.jl:107
-  ...
-Stacktrace:
- [1] #writedlm#18(::Array{Any,1}, ::Function, ::IOStream, ::Void, ::Char) at ./datafmt.jl:673
- [2] #20 at ./datafmt.jl:683 [inlined]
- [3] open(::Base.DataFmt.##20#21{Array{Any,1},Void,Char}, ::String, ::String) at ./iostream.jl:152
- [4] #writecsv#23(::Array{Any,1}, ::Function, ::String, ::Void) at ./datafmt.jl:705
- [5] writecsv(::String, ::Void) at ./datafmt.jl:705
-#+end_example
-
-For the moment we ignore the first column (X-axis) and only consider Y-values
-
-#+BEGIN_SRC julia :results output 
-signal=signal[:,2];
-#+END_SRC
-
-#+RESULTS:
-
-** Savitzky-Golay filters
-   :PROPERTIES:
-   :ID:       e51770f6-45da-4051-b6ab-d0835187f438
-   :END:
-
-Creates a set of Savitzky-Golay filters, window width is $11=2*5+1$ and polynomial degree is $3$.
-
-#+BEGIN_SRC julia 
-sg = SG_Filter(Float64,halfWidth=5,degree=3);
-#+END_SRC
-
-#+RESULTS:
-
-This can be checked with
-
-#+BEGIN_SRC julia :exports both :wrap "SRC julia :exports code :eval never" :results output
-length(sg)
-polynomialOrder(sg)
-#+END_SRC
-
-#+RESULTS:
-#+BEGIN_SRC julia :exports code :eval never
-11
-3
-#+END_SRC
-
-Savitzky-Golay filters can be used to smooth or to compute smoothed
-derivatives of a signal. The associated filter is obtained thanks to
-the =filter= function.
-
-#+BEGIN_SRC julia :exports both :wrap "SRC julia :exports code :eval never" :results output
-filter(sg,derivativeOrder=2)
-#+END_SRC
-
-#+RESULTS:
-#+BEGIN_SRC julia :exports code :eval never
-DirectConvolution.LinearFilter_DefaultCentered{Float64,11}([0.034965, 0.013986, -0.002331, -0.013986, -0.020979, -0.02331, -0.020979, -0.013986, -0.002331, 0.013986, 0.034965])
-#+END_SRC
-
-Maximum derivative order is equal to the polynomial order, however there is a dedicated function:
-
-#+BEGIN_SRC julia :exports both :wrap "SRC julia :exports code :eval never" :results output
-maxDerivativeOrder(sg)
-#+END_SRC
-
-#+RESULTS:
-#+BEGIN_SRC julia :exports code :eval never
-3
-#+END_SRC
-
-
-Smoothing example:
-
-#+BEGIN_SRC julia
-smoothed=directConv(filter(sg,derivativeOrder=0),signal,ConstantBE,ConstantBE)
-
-plot(signal,label="signal")
-plot!(smoothed, label="smoothed",linewidth=2)
-plot!(signal-smoothed, label="residue")
-#+END_SRC
-
-#+RESULTS:
-
-
-#+BEGIN_SRC julia :results graphics :file figures/sg.png :exports results
-savefig("figures/sg.png")
-#+END_SRC
-
-#+ATTR_HTML: :align center :width 600px
-#+CAPTION: Savitzky-Golay smoothing
-#+RESULTS:
-[[file:figures/sg.png]]
-
-
-Smoothed first order derivative example:
-
-#+BEGIN_SRC julia
-smoothed_d1 = directConv(filter(sg,derivativeOrder=1),signal)
-
-plot(signal,label="signal")
-plot!(smoothed_d1, label="smoothed derivative",linewidth=2)
-#+END_SRC
-
-#+RESULTS:
-
-#+BEGIN_SRC julia :results graphics :file figures/sg_d1.png :exports results
-savefig("figures/sg_d1.png")
-#+END_SRC
-
-
-#+ATTR_HTML: :align center :width 600px
-#+CAPTION: Savitzky-Golay smoothed first order derivative
-#+RESULTS:
-[[file:figures/sg_d1.png]]
-
-
-** Undecimated Wavelet Transform
-   :PROPERTIES:
-   :ID:       32475da6-a0b9-4103-a58f-04eebdb75785
-   :END:
-   
 * API documentation
-
 ** Linear Filter
 
 #+BEGIN_SRC julia :results output drawer :eval no-export :exports results
@@ -295,7 +136,6 @@ Returns filter range
 :END:
 
 ** Undecimated Wavelet Transform
-
 *** UDWT Filters
  #+BEGIN_SRC julia :results output drawer :eval no-export :exports results
 documented_items=create_documented_item_array_dir("~/GitHub/DirectConvolution.jl/src/");

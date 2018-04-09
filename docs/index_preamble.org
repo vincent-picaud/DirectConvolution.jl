@@ -1,16 +1,23 @@
 #+SETUPFILE: ./Setup/setupFile.org
 #+TITLE: Direct Convolution Package
 
-This package provides some functions to compute convolutions without
-FFT. This can be helpful for short filters.
+
+This package goal is to compute convolution products 
+
+\begin{equation}
+\gamma[k]=\sum\limits_{i\in\Omega^\alpha}\alpha[i]\beta[k+\lambda i],\text{ with }\lambda\in\mathbb{Z}^*
+\end{equation}
+
+using direct (no FFT) methods. This can be helpful for short filters.
 
 #+ATTR_HTML: :align center :width 600px
 [[file:figures/sg.png]]
 
 *Note:* if you directly read this doc from GitHub, it is better to
-clone this repo and to browse it locally as this will use a proper
-=css= file style (I did not manage to make it work directly under
-GitHub).
+clone this repo and to browse it locally 
+#+BEGIN_SRC bash
+firefox docs/index.html
+#+END_SRC
 
 *Caveat:* this packages is still experimental and under development, *do not use it yet*!
 

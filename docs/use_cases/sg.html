@@ -6,7 +6,7 @@
 <!-- 2018-04-10 Tue 00:04 -->
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>Direct Convolution Package</title>
+<title>Savitzky-Golay filters</title>
 <meta name="generator" content="Org mode" />
 <meta name="author" content="picaud" />
 <style type="text/css">
@@ -244,13 +244,13 @@ for the JavaScript code in this tag.
 
 <!--/*--><![CDATA[/*><!--*/
 org_html_manager.set("TOC_DEPTH", "3");
-org_html_manager.set("LINK_HOME", "index.html");
+org_html_manager.set("LINK_HOME", "../index.html");
 org_html_manager.set("LINK_UP", "");
 org_html_manager.set("LOCAL_TOC", "1");
 org_html_manager.set("VIEW_BUTTONS", "0");
 org_html_manager.set("MOUSE_HINT", "underline");
 org_html_manager.set("FIXED_TOC", "0");
-org_html_manager.set("TOC", "0");
+org_html_manager.set("TOC", "1");
 org_html_manager.set("VIEW", "showall");
 org_html_manager.setup();  // activate after the parameters are set
 /*]]>*///-->
@@ -326,60 +326,146 @@ for the JavaScript code in this tag.
 </head>
 <body>
 <div id="content">
-<h1 class="title">Direct Convolution Package</h1>
+<h1 class="title">Savitzky-Golay filters</h1>
 <div id="table-of-contents">
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents">
 <ul>
-<li><a href="#orga1b2942">1. Sitemap</a></li>
+<li><a href="#org3f323da">1. Savitzky-Golay filters</a>
+<ul>
+<li><a href="#org9e8d3af">1.1. Smoothing example</a></li>
+<li><a href="#org943dee7">1.2. First order smoothed derivative</a></li>
+</ul>
+</li>
 </ul>
 </div>
 </div>
+
+<div id="outline-container-org3f323da" class="outline-2">
+<h2 id="org3f323da"><span class="section-number-2">1</span> Savitzky-Golay filters</h2>
+<div class="outline-text-2" id="text-1">
 <p>
-This package goal is to compute convolution products 
+Creates a set of Savitzky-Golay filters, window width is \(11=2*5+1\) and polynomial degree is \(3\).
 </p>
 
-\begin{equation}
-\gamma[k]=\sum\limits_{i\in\Omega^\alpha}\alpha[i]\beta[k+\lambda i],\text{ with }\lambda\in\mathbb{Z}^*
-\end{equation}
-
-<p>
-using direct (no FFT) methods. This can be helpful for short filters.
-</p>
-
-
-<div class="figure">
-<p><img src="figures/sg.png" alt="sg.png" align="center" width="600px" />
-</p>
-</div>
-
-<p>
-<b>Note:</b> if you directly read this doc from GitHub, it is better to
-clone this repo and to browse it locally 
-</p>
 <div class="org-src-container">
-<pre class="src src-bash">firefox docs/index.html
+<pre class="src src-julia">sg = SG_Filter(<span style="color: #228b22;">Float64</span>,halfWidth=5,degree=3);
 </pre>
 </div>
 
 <p>
-<b>Caveat:</b> this packages is still experimental and under development, <b>do not use it yet</b>!
+This can be checked with
 </p>
 
-<div id="outline-container-orga1b2942" class="outline-2">
-<h2 id="orga1b2942"><span class="section-number-2">1</span> Sitemap</h2>
-<div class="outline-text-2" id="text-1">
-<ul class="org-ul">
-<li><a href="docs.html">Direct Convolution Package</a></li>
-<li><a href="theindex.html">Index</a></li>
-<li><a href="workInProgress.html">Work in Progress</a></li>
-<li><a href="sitemap.html">sitemap</a></li>
-<li>use_cases
-<ul class="org-ul">
-<li><a href="use_cases/sg.html">Savitzky-Golay filters</a></li>
-<li><a href="use_cases/udwt.html">udwt</a></li>
-</ul></li>
-</ul>
+<div class="org-src-container">
+<pre class="src src-julia">length(sg)
+polynomialOrder(sg)
+</pre>
+</div>
+
+<div class="org-src-container">
+<pre class="src src-julia">11
+3
+</pre>
+</div>
+
+<p>
+Savitzky-Golay filters can be used to smooth or to compute smoothed
+derivatives of a signal. The associated filter is obtained thanks to
+the <code>filter</code> function.
+</p>
+
+<div class="org-src-container">
+<pre class="src src-julia">d0filter=filter(sg,derivativeOrder=0);
+d1filter=filter(sg,derivativeOrder=1);
+d2filter=filter(sg,derivativeOrder=2);
+p=plot(range(d0filter),fcoef(d0filter), markershape = <span style="color: #483d8b;">:hexagon</span>,label=<span style="color: #8b2252;">"smoothing filter"</span>)
+p=plot!(range(d1filter),fcoef(d1filter),markershape = <span style="color: #483d8b;">:hexagon</span>,label=<span style="color: #8b2252;">"d_1 filter"</span>)
+p=plot!(range(d2filter),fcoef(d2filter),markershape = <span style="color: #483d8b;">:hexagon</span>,label=<span style="color: #8b2252;">"d_2 filter"</span>)
+</pre>
+</div>
+
+
+<div class="figure">
+<p><img src="sg_figures/filter_coef.png" alt="filter_coef.png" align="center" width="600px" />
+</p>
+<p><span class="figure-number">Figure 1: </span>Savitzky-Golay filters</p>
+</div>
+
+
+<p>
+Maximum derivative order is equal to the polynomial order, however there is a dedicated function:
+</p>
+
+<div class="org-src-container">
+<pre class="src src-julia">maxDerivativeOrder(sg)
+</pre>
+</div>
+
+<div class="org-src-container">
+<pre class="src src-julia">3
+</pre>
+</div>
+</div>
+
+<div id="outline-container-org9e8d3af" class="outline-3">
+<h3 id="org9e8d3af"><span class="section-number-3">1.1</span> Smoothing example</h3>
+<div class="outline-text-3" id="text-1-1">
+<p>
+First load a signal 
+</p>
+
+<div class="org-src-container">
+<pre class="src src-julia">signal=readcsv(<span style="color: #8b2252;">"../data/signal_1.csv"</span>);
+signal=signal[:,2];
+</pre>
+</div>
+
+<p>
+then compute a smoothed version
+</p>
+
+<div class="org-src-container">
+<pre class="src src-julia">smoothed=directConv(d0filter,signal,ConstantBE,ConstantBE)
+
+p=plot(signal,label=<span style="color: #8b2252;">"signal"</span>)
+p=plot!(smoothed, label=<span style="color: #8b2252;">"smoothed"</span>,linewidth=2)
+p=plot!(signal-smoothed, label=<span style="color: #8b2252;">"residue"</span>)
+</pre>
+</div>
+
+
+<div class="figure">
+<p><img src="sg_figures/sg.png" alt="sg.png" align="center" width="600px" />
+</p>
+<p><span class="figure-number">Figure 2: </span>Savitzky-Golay smoothing</p>
+</div>
+</div>
+</div>
+
+
+<div id="outline-container-org943dee7" class="outline-3">
+<h3 id="org943dee7"><span class="section-number-3">1.2</span> First order smoothed derivative</h3>
+<div class="outline-text-3" id="text-1-2">
+<p>
+Smoothed first order derivative example:
+</p>
+
+<div class="org-src-container">
+<pre class="src src-julia">smoothed_d1 = directConv(d1filter,signal,ConstantBE,ConstantBE)
+
+p=plot(signal,label=<span style="color: #8b2252;">"signal"</span>)
+p=plot!(smoothed_d1, label=<span style="color: #8b2252;">"smoothed derivative"</span>,linewidth=2)
+</pre>
+</div>
+
+
+<div class="figure">
+<p><img src="sg_figures/sg_d1.png" alt="sg_d1.png" align="center" width="600px" />
+</p>
+<p><span class="figure-number">Figure 3: </span>Savitzky-Golay smoothed first order derivative</p>
+</div>
+</div>
 </div>
 </div>
 </div>

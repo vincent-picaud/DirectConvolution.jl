@@ -1,0 +1,131 @@
+#+SETUPFILE: ../Setup/setupFile-1.org
+#+TITLE: Savitzky-Golay filters
+#+PROPERTY: header-args:julia :session *directConvolution_session*  :exports code :eval no-export
+
+#+BEGIN_EXPORT latex
+\definecolor{bg}{rgb}{0.95,0.95,0.95}
+\setminted[]{
+  bgcolor=bg,
+  breaklines=true,
+  breakanywhere=true,
+  mathescape,
+  fontsize=\footnotesize}
+#+END_EXPORT
+
+#+BEGIN_SRC julia :exports none
+using Plots
+using DirectConvolution
+#+END_SRC
+
+#+RESULTS:
+
+* Savitzky-Golay filters
+
+Creates a set of Savitzky-Golay filters, window width is $11=2*5+1$ and polynomial degree is $3$.
+
+#+BEGIN_SRC julia 
+sg = SG_Filter(Float64,halfWidth=5,degree=3);
+#+END_SRC
+
+#+RESULTS:
+
+This can be checked with
+
+#+BEGIN_SRC julia :exports both :wrap "SRC julia :exports code :eval never" :results output
+length(sg)
+polynomialOrder(sg)
+#+END_SRC
+
+#+RESULTS:
+#+BEGIN_SRC julia :exports code :eval never
+11
+3
+#+END_SRC
+
+Savitzky-Golay filters can be used to smooth or to compute smoothed
+derivatives of a signal. The associated filter is obtained thanks to
+the =filter= function.
+
+#+BEGIN_SRC julia :exports both :wrap "SRC julia :exports code :eval never" :results none
+d0filter=filter(sg,derivativeOrder=0);
+d1filter=filter(sg,derivativeOrder=1);
+d2filter=filter(sg,derivativeOrder=2);
+p=plot(range(d0filter),fcoef(d0filter), markershape = :hexagon,label="smoothing filter")
+p=plot!(range(d1filter),fcoef(d1filter),markershape = :hexagon,label="d_1 filter")
+p=plot!(range(d2filter),fcoef(d2filter),markershape = :hexagon,label="d_2 filter")
+#+END_SRC
+
+#+BEGIN_SRC julia :results graphics :file sg_figures/filter_coef.png :exports results
+savefig(p,"sg_figures/filter_coef.png")
+#+END_SRC
+
+#+ATTR_HTML: :align center :width 600px
+#+CAPTION: Savitzky-Golay filters
+#+RESULTS:
+[[file:sg_figures/filter_coef.png]]
+
+
+Maximum derivative order is equal to the polynomial order, however there is a dedicated function:
+
+#+BEGIN_SRC julia :exports both :wrap "SRC julia :exports code :eval never" :results output
+maxDerivativeOrder(sg)
+#+END_SRC
+
+#+RESULTS:
+#+BEGIN_SRC julia :exports code :eval never
+3
+#+END_SRC
+
+** Smoothing example
+
+First load a signal 
+ 
+#+BEGIN_SRC julia :exports code :results none 
+signal=readcsv("../data/signal_1.csv");
+signal=signal[:,2];
+ #+END_SRC
+
+then compute a smoothed version
+
+#+BEGIN_SRC julia :exports code :results none
+smoothed=directConv(d0filter,signal,ConstantBE,ConstantBE)
+
+p=plot(signal,label="signal")
+p=plot!(smoothed, label="smoothed",linewidth=2)
+p=plot!(signal-smoothed, label="residue")
+#+END_SRC
+
+#+RESULTS:
+
+#+BEGIN_SRC julia :results graphics :file sg_figures/sg.png :exports results
+savefig(p,"sg_figures/sg.png")
+#+END_SRC
+
+#+ATTR_HTML: :align center :width 600px
+#+CAPTION: Savitzky-Golay smoothing
+#+RESULTS:
+[[file:sg_figures/sg.png]]
+
+
+** First order smoothed derivative 
+
+Smoothed first order derivative example:
+
+#+BEGIN_SRC julia
+smoothed_d1 = directConv(d1filter,signal,ConstantBE,ConstantBE)
+
+p=plot(signal,label="signal")
+p=plot!(smoothed_d1, label="smoothed derivative",linewidth=2)
+#+END_SRC
+
+#+RESULTS:
+
+#+BEGIN_SRC julia :results graphics :file sg_figures/sg_d1.png :exports results
+savefig(p,"sg_figures/sg_d1.png")
+#+END_SRC
+
+
+#+ATTR_HTML: :align center :width 600px
+#+CAPTION: Savitzky-Golay smoothed first order derivative
+#+RESULTS:
+[[file:sg_figures/sg_d1.png]]

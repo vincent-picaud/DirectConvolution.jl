@@ -9,5 +9,6 @@
 - [[file:workInProgress.org][Work in Progress]]
 - [[file:sitemap.org][sitemap]]
 - use_cases
+  - [[file:use_cases/sg.org][Savitzky-Golay filters]]
   - [[file:use_cases/udwt.org][udwt]]
 
