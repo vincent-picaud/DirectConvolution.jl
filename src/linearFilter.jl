@@ -5,15 +5,22 @@ export LinearFilter,LinearFilter_Default, LinearFilter_CenteredDefault,
 import Base: length,range,isapprox
 
 
-#+LinearFilter
+#+LinearFilter L:LinearFilter
 # Abstract type defining a linear filter
+#
+# *Methods:*
+# - [[LinearFilter_fcoef][]]
+# - [[LinearFilter_length][]]
+#
+# *Implementation:*
+# - [[LinearFilter_LinearFilter_Default][]]
 #
 abstract type LinearFilter{T<:Number} end
  
-#+LinearFilter
+#+LinearFilter  L:LinearFilter_fcoef
 # Returns filter coefficients as a Vector type 
 fcoef(c::LinearFilter) = c._fcoef
-#+LinearFilter
+#+LinearFilter L:LinearFilter_length
 # Returns filter length
 length(c::LinearFilter) = length(fcoef(c))
 #+LinearFilter
@@ -33,8 +40,10 @@ end
 
 #
 
-#+LinearFilter
+#+LinearFilter L:LinearFilter_LinearFilter_Default
 # Default linear filter
+#
+# See: [[LinearFilter][]]
 struct LinearFilter_Default{T<:AbstractFloat,N} <: LinearFilter{T}
     _fcoef::SVector{N,T}
     _offset::Int
