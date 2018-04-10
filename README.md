@@ -7,7 +7,7 @@ This package goal is to compute convolution products using direct (no
 FFT) methods. This can be useful for short filters, like those used in
 wavelet transform:
 
-![udwt](https://github.com/vincent-picaud/DirectConvolution.jl/blob/master/docs/use_cases/figures/udwt_W.png)
+![udwt](https://github.com/vincent-picaud/DirectConvolution.jl/blob/master/docs/use_cases/udwt_figures/W.png)
 
 You can read documentation directly
 [here](https://vincent-picaud.github.io/DirectConvolution.jl/index.html),
