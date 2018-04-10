@@ -14,11 +14,7 @@
 
 #+BEGIN_SRC julia :exports none
 using Plots
-using Revise
 using DirectConvolution
-using J4Org
-
-documented_items=create_documented_item_array_dir("~/GitHub/DirectConvolution.jl/src/");
 #+END_SRC
 
 #+RESULTS:
@@ -26,91 +22,92 @@ documented_items=create_documented_item_array_dir("~/GitHub/DirectConvolution.jl
 * Undecimated Wavelet Transform
 
 ** Signal 
- #+BEGIN_SRC julia :results output
+   #+BEGIN_SRC julia :results none
 signal=readcsv("../data/signal_1.csv");
 signal=signal[:,2];
-p_signal = plot(signal);
- #+END_SRC
+plot(signal,label="signal")
+   #+END_SRC
 
- #+RESULTS:
- : 
- : 
 
- #+BEGIN_SRC julia :results graphics :file figures/udwt_signal.png :exports results
-savefig(p_signal,"figures/udwt_signal.png")
- #+END_SRC
+   #+BEGIN_SRC julia :results graphics :file udwt_figures/signal.png :exports results
+savefig("udwt_figures/signal.png")
+   #+END_SRC
 
- #+RESULTS:
- [[file:figures/udwt_signal.png]]
+   #+ATTR_HTML: :align center :width 600px
+   #+CAPTION: Signal
+   #+RESULTS:
+   [[file:udwt_figures/signal.png]]
 
 ** Direct transform 
 
-Use some wavelet filter 
+   Use some wavelet filter 
 
- #+BEGIN_SRC julia :exports code
+   #+BEGIN_SRC julia :exports code :results none
 udwt_filter = UDWT_Filter_Starck2{Float64}()
- #+END_SRC
+   #+END_SRC
 
-Direct udwt transform
+   Direct udwt transform
 
- #+BEGIN_SRC julia :exports code
+   #+BEGIN_SRC julia :exports code :results none
 m = udwt(signal,udwt_filter,scale=8)
- #+END_SRC
+   #+END_SRC
 
- #+RESULTS:
+   #+RESULTS:
 
-Plot results 
+   Plot results 
 
- #+BEGIN_SRC julia :exports code
+   #+BEGIN_SRC julia :exports code :results none
 label=["W$i" for i in 1:scale(m)];
-p_W=plot(m.W,label=reshape(label,1,scale(m)))
-p_V=plot!(m.V,label="V$(scale(m))");
-p_W=plot!(signal,label="signal");
- #+END_SRC
+plot(m.W,label=reshape(label,1,scale(m)))
+plot!(m.V,label="V$(scale(m))");
+plot!(signal,label="signal")
+   #+END_SRC
 
- #+BEGIN_SRC julia :results graphics :file figures/udwt_W.png :exports results
-savefig(p_W,"figures/udwt_W.png")
- #+END_SRC
+   #+BEGIN_SRC julia :results graphics :file udwt_figures/W.png :exports results
+savefig("udwt_figures/W.png")
+   #+END_SRC
 
- #+RESULTS:
- [[file:figures/udwt_W.png]]
+   #+ATTR_HTML: :align center :width 600px
+   #+CAPTION: Undecimated Wavelet Transform
+   #+RESULTS:
+   [[file:udwt_figures/W.png]]
 
 
 ** Inverse transform
 
-Check perfect reconstruction
+   Check perfect reconstruction
 
- #+BEGIN_SRC julia :exports both
+   #+BEGIN_SRC julia :exports both
 reconst = inverse_udwt(m);
 norm(signal-reconst)
- #+END_SRC
+   #+END_SRC
 
- #+RESULTS:
- : 0
-
-
+   #+RESULTS:
+   : 0
 
 ** Smoothing
 
-Rough solution...
+   Rough solution... cancels the two finest resolution levels.
 
- #+BEGIN_SRC julia :exports code
+   #+BEGIN_SRC julia :exports code :results none
 m.W[:,1] .= 0
 m.W[:,2] .= 0
 reconst=inverse_udwt(m)
-p=plot(reconst,linewidth=3, label="smoothed");
-p=plot!(signal,label="signal");
- #+END_SRC
+plot(reconst,linewidth=3, label="smoothed");
+plot!(signal,label="signal")
+   #+END_SRC
 
- #+RESULTS:
+   #+RESULTS:
 
 
- #+BEGIN_SRC julia :results graphics :file figures/udwt_W12_eq_0.png :exports results 
-savefig(p,"figures/udwt_W12_eq_0.png")
- #+END_SRC
+   #+BEGIN_SRC julia :results graphics :file udwt_figures/W12_eq_0.png :exports results 
+savefig("udwt_figures/W12_eq_0.png")
+   #+END_SRC
 
- #+RESULTS:
- [[file:figures/udwt_W12_eq_0.png]]
+   #+ATTR_HTML: :align center :width 600px
+   #+CAPTION: (over) smoothed signal
+   #+RESULTS:
+   [[file:udwt_figures/W12_eq_0.png]]
 
 
 
