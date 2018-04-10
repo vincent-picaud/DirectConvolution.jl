@@ -1,5 +1,4 @@
 #+INCLUDE: "index_preamble.org"
-
 #+OPTIONS: toc:nil
 
 * Sitemap
@@ -9,5 +8,5 @@
 - [[file:workInProgress.org][Work in Progress]]
 - use_cases
   - [[file:use_cases/sg.org][Savitzky-Golay filters]]
-  - [[file:use_cases/udwt.org][udwt]]
+  - [[file:use_cases/udwt.org][Undecimated Wavelet Transform]]
 

@@ -1,15 +1,14 @@
-
 #+OPTIONS: H:3 toc:t num:t \n:nil ::t |:t ^:{} -:t f:t *:t tex:t d:t tags:not-in-toc
 #+PROPERTY: header-args :comments link :mkdirp yes
 #+HTML_HEAD_EXTRA: <style type="text/css"> blockquote {background:#EEEEEE; padding: 3px 13px}    </style>
 #+HTML_HEAD_EXTRA: <style type="text/css"> pre {background:#EEEEEE; padding: 3px 13px}    </style>
-#+STYLE: :width=200
 
 # Listing and bibliography config 
 #+LATEX_HEADER: \usepackage{minted}    
 #+LATEX_HEADER: \usepackage{fontspec}
 #+LATEX_HEADER: \setmonofont{DejaVu Sans Mono}[Scale=MatchLowercase]
+# verbatim provides "comment" env. (use with bibliography to skip some Org exported code)
 #+LATEX_HEADER: \usepackage{verbatim} 
 #+LATEX_HEADER: \usepackage[backend=biber, bibencoding=utf8 ]{biblatex}
 #+LATEX_HEADER: \hypersetup{colorlinks=true}
-
+#+LATEX_HEADER: \addbibresource{Bibliography/bibliography.bib}

@@ -17,6 +17,10 @@
       "lualatex -shell-escape -interaction nonstopmode -output-directory %o %f"
       "lualatex -shell-escape -interaction nonstopmode -output-directory %o %f"))
       ;;
+      ;; Working Bibliography with HTML export requires ox-bibtex
+      ;;
+      (require 'ox-bibtex)
+      ;;
       ;; Local bibliography
       ;;
       (setq my-bibtex-filename 
@@ -119,15 +123,15 @@
       (setq my-publish-dir my-project-root)
 
       (setq my-project-name "DirectConvolution")
-
+   
       (defun my-org-publish-sitemap (title list)
 	"Create my own index.org instead of the default one"
-	(concat	"#+INCLUDE: \"index_preamble.org\"\n\n"
+	(concat	"#+INCLUDE: \"index_preamble.org\"\n"
 		"#+OPTIONS: toc:nil\n\n"
 		"* Sitemap\n\n"
 		(org-list-to-org list)
 		"\n\n"))
-      
+  
       (setq org-publish-project-alist
 	    `(
 	      (,(concat my-project-name "_Org")
@@ -140,11 +144,12 @@
 	       :htmlize-source t
 	       :org-html-head-include-default-style nil
 	       :exclude "Setup*\\|index_preamble.org" 
+	       ;; Generates theindex.org + inc files
 	       :makeindex t
+	       ;; Creates index.org, calls my-org-publish-sitemap to fill it
 	       :auto-sitemap t
-	       :sitemap-title ,my-project-name
 	       :sitemap-filename "index.org"
-	       )
+	      )
 
 	      ;; (,(concat my-project-name "_Tangle")
 	      ;;  :base-directory ,my-project-root
