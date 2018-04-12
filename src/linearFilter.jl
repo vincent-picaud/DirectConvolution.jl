@@ -51,6 +51,11 @@ end
 
 #+LinearFilter
 # Creates a linear filter from a coefficient vector and its associated offset
+#
+# *Example:*
+#! lf=LinearFilter_Default(rand(3),0)
+#! range(lf)
+#
 function LinearFilter_Default(c::AbstractArray{T,1},offset::Int)  where {T<:AbstractFloat}
     v=SVector{length(c),T}(c)
     return LinearFilter_Default{T,length(c)}(v,offset)
