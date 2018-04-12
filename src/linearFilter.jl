@@ -1,4 +1,3 @@
-#+LinearFilter
 export LinearFilter,LinearFilter_Default, LinearFilter_CenteredDefault,
     fcoef, length, offset, range
 
@@ -6,29 +5,28 @@ import Base: length,range,isapprox
 
 
 #+LinearFilter L:LinearFilter
+#
 # Abstract type defining a linear filter
-#
-# *Methods:*
-# - [[LinearFilter_fcoef][]]
-# - [[LinearFilter_length][]]
-#
-# *Implementation:*
-# - [[LinearFilter_LinearFilter_Default][]]
 #
 abstract type LinearFilter{T<:Number} end
  
-#+LinearFilter  L:LinearFilter_fcoef
+#+LinearFilter
 # Returns filter coefficients as a Vector type 
+#!linear_filter=LinearFilter_Default(rand(3),0);
+#!fcoef(linear_filter)
 fcoef(c::LinearFilter) = c._fcoef
-#+LinearFilter L:LinearFilter_length
+
+#+LinearFilter 
 # Returns filter length
 length(c::LinearFilter) = length(fcoef(c))
-#+LinearFilter
+#+LinearFilter 
 # Returns filter offset
-offset(c::LinearFilter) = c._offset
-#+LinearFilter
+offset(c::LinearFilter)::Int = c._offset
+#+LinearFilter 
 # Returns filter range
-range(c::LinearFilter) = UnitRange(-offset(c),length(c)-offset(c)-1)
+#!linear_filter=LinearFilter_Default(rand(3),5);
+#!range(linear_filter)
+range(c::LinearFilter)::UnitRange = UnitRange(-offset(c),length(c)-offset(c)-1)
 
 
 #+Internal 
@@ -40,10 +38,9 @@ end
 
 #
 
-#+LinearFilter L:LinearFilter_LinearFilter_Default
+#+LinearFilter
 # Default linear filter
 #
-# See: [[LinearFilter][]]
 struct LinearFilter_Default{T<:AbstractFloat,N} <: LinearFilter{T}
     _fcoef::SVector{N,T}
     _offset::Int
@@ -53,8 +50,9 @@ end
 # Creates a linear filter from a coefficient vector and its associated offset
 #
 # *Example:*
-#! lf=LinearFilter_Default(rand(3),0)
-#! range(lf)
+#!linear_filter=LinearFilter_Default(rand(3),5)
+#!offset(linear_filter)
+#!range(linear_filter)
 #
 function LinearFilter_Default(c::AbstractArray{T,1},offset::Int)  where {T<:AbstractFloat}
     v=SVector{length(c),T}(c)
@@ -63,24 +61,29 @@ end
 
 
 
-#+LinearFilter
-# Provides a default implementation of size 2n+1, with offset = n
-# 
+#+LinearFilter L:LinearFilter_DefaultCentered
+# Default *centered* linear filter
 struct LinearFilter_DefaultCentered{T<:AbstractFloat,N} <: LinearFilter{T}
     _fcoef::SVector{N,T}
 end
 
-#+LinearFilter
-# Creates a centered linear filter from an array of size = 2n+1
-# 
-function LinearFilter_DefaultCentered(c::Array{T}) where {T<:AbstractFloat} 
+#+LinearFilter 
+# Creates a centered linear filter
+#
+# Array length has to be odd, 2n+1. Filter offset is n by construction.
+#
+#!linear_filter=LinearFilter_DefaultCentered(rand(3));
+#!fcoef(linear_filter)
+#!range(linear_filter)
+#
+function LinearFilter_DefaultCentered(c::AbstractArray{T,1}) where {T<:AbstractFloat} 
     const N = length(c)
     @assert isodd(length(c))
     return LinearFilter_DefaultCentered{T,N}(SVector{N,T}(c))
 end
 
-#+LinearFilter
-# Returns offset, if size = 2n+1 then offset = n
+#+LinearFilter 
+# Returns offset, [LinearFilter_DefaultCentered][]] specialization
 # 
 offset(f::LinearFilter_DefaultCentered{T,N}) where {T<:AbstractFloat,N} = (N-1)>>1
 

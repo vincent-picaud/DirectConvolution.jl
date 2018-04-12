@@ -26,20 +26,6 @@ function _Vandermonde(T::DataType=Float64;halfWidth::Int=5,degree::Int=2)::Array
     return V
 end
 
-# const SavitzkyGolay_Filter{T,N} = LinearFilter_DefaultCentered{T,N}
-#
-# struct SavitzkyGolay_Filter{T<:AbstractFloat,N} <: LinearFilter{T}
-#     _fcoef::SVector{N,T}
-# end
-
-# function SavitzkyGolay_Filter(c::Array{T}) where {T<:AbstractFloat}
-#     const N = length(c)
-#     @assert isodd(length(c))
-#     return SavitzkyGolay_Filter{T,N}(SVector{N,T}(c))
-# end
-
-
-# offset(f::SavitzkyGolay_Filter{T,N}) where {T<:AbstractFloat,N} = (N-1)>>1
 
 # todo
 struct SavitzkyGolay_Filter_Set{T<:AbstractFloat,N}
