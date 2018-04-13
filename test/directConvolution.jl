@@ -1,9 +1,10 @@
 @testset "Example α_offset" begin
 
-    α=Float64[0,1,0]
+    α0=LinearFilter(Float64[0,1,0],0)
+    α1=LinearFilter(Float64[0,1,0],1)
     β=collect(Float64,1:6)
-    γ1=directConv(α,0,1,β,ZeroPaddingBE,ZeroPaddingBE)
-    γ2=directConv(α,1,1,β,ZeroPaddingBE,ZeroPaddingBE) 
+    γ1=directConv(α0,1,β,ZeroPaddingBE,ZeroPaddingBE)
+    γ2=directConv(α1,1,β,ZeroPaddingBE,ZeroPaddingBE) 
 
     @test γ1 ≈ [2.0, 3.0, 4.0, 5.0, 6.0, 0.0]
     @test γ2 ≈ [1.0, 2.0, 3.0, 4.0, 5.0, 6.0]
@@ -13,18 +14,18 @@ end;
 
 @testset "Adjoint operator" begin
 
-    α=rand(4);
+    α=LinearFilter(rand(4),2);
     β=rand(10);
 
     vβ=rand(length(β))
-    d1=dot(directConv(α,2,-3,vβ,ZeroPaddingBE,ZeroPaddingBE),β)
-    d2=dot(directConv(α,2,+3,β,ZeroPaddingBE,ZeroPaddingBE),vβ)
+    d1=dot(directConv(α,-3,vβ,ZeroPaddingBE,ZeroPaddingBE),β)
+    d2=dot(directConv(α,+3,β,ZeroPaddingBE,ZeroPaddingBE),vβ)
 
     
     @test isapprox(d1,d2)
 
-    d1=dot(directConv(α,-1,-3,vβ,PeriodicBE,PeriodicBE),β)
-    d2=dot(directConv(α,-1,+3,β,PeriodicBE,PeriodicBE),vβ)
+    d1=dot(directConv(α,-3,vβ,PeriodicBE,PeriodicBE),β)
+    d2=dot(directConv(α,+3,β,PeriodicBE,PeriodicBE),vβ)
 
     @test isapprox(d1,d2)
 
@@ -49,15 +50,15 @@ end;
 
 @testset "Interval split" begin
 
-    α=rand(4);
+    α=LinearFilter(rand(4),3)
     β=rand(10);
 
-    γ=directConv(α,3,2,β,MirrorBE,PeriodicBE) # global computation
+    γ=directConv(α,2,β,MirrorBE,PeriodicBE) # global computation
     Γ=zeros(length(γ))
     Ω1=UnitRange(1:3)
     Ω2=UnitRange(4:length(γ))
-    directConv!(α,3,2,β,Γ,Ω1,MirrorBE,PeriodicBE) # compute on Ω1
-    directConv!(α,3,2,β,Γ,Ω2,MirrorBE,PeriodicBE) # compute on Ω2
+    directConv!(α,2,β,Γ,Ω1,MirrorBE,PeriodicBE) # compute on Ω1
+    directConv!(α,2,β,Γ,Ω2,MirrorBE,PeriodicBE) # compute on Ω2
 
     @test isapprox(γ,Γ)
 
