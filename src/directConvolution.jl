@@ -106,6 +106,11 @@ end
 
 
 
+#+BoundaryExtension,Internal
+#
+#!r=-5:10
+#!hcat(r,map(x->DirectConvolution.boundaryExtension([1:3;],x,ZeroPaddingBE),r))'
+#
 function boundaryExtension(β::AbstractArray{T,1},
                            k::Int,
                            ::Type{ZeroPaddingBE}) where {T <: Number}
@@ -119,6 +124,11 @@ function boundaryExtension(β::AbstractArray{T,1},
     end
 end
 
+#+BoundaryExtension,Internal
+#
+#!r=-5:10
+#!hcat(r,map(x->DirectConvolution.boundaryExtension([1:3;],x,ConstantBE),r))'
+#
 function boundaryExtension(β::AbstractArray{T,1},
                            k::Int,
                            ::Type{ConstantBE}) where {T <: Number}
@@ -134,6 +144,11 @@ function boundaryExtension(β::AbstractArray{T,1},
     end
 end
 
+#+BoundaryExtension,Internal
+#
+#!r=-5:10
+#!hcat(r,map(x->DirectConvolution.boundaryExtension([1:3;],x,PeriodicBE),r))'
+#
 function boundaryExtension(β::AbstractArray{T,1},
                            k::Int,
                            ::Type{PeriodicBE}) where {T <: Number}
@@ -143,6 +158,11 @@ function boundaryExtension(β::AbstractArray{T,1},
     β[kmin+mod(k-kmin,1+kmax-kmin)]
 end
 
+#+BoundaryExtension,Internal
+#
+#!r=-5:10
+#!hcat(r,map(x->DirectConvolution.boundaryExtension([1:3;],x,MirrorBE),r))'
+#
 function boundaryExtension(β::AbstractArray{T,1},
                            k::Int,
                            ::Type{MirrorBE}) where {T <: Number}
@@ -211,52 +231,31 @@ function directConv!(tilde_α::AbstractArray{T,1},
             γ[k]+=tilde_α[i]*boundaryExtension(β,k+λ*i+β_offset,RightBE)
         end
     end
+
+    nothing
 end
 
-#+Convolution
+#+Convolution L:directConv_details
 # Computes a convolution.
 #
-# Inplace modification of γ
+# Inplace modification of $\gamma[k], k\in\Omega_\gamma$.
+# $$
+# \gamma[k]=\sum\limits_{i\in\Omega^\alpha}\alpha[i]\beta[k+\lambda i],\text{ with }\lambda\in\mathbb{Z}^*
+# $$
+# If $k\notin \Omega_\gamma$, $\gamma[k]$ is unmodified.
 #
-function directConv!(tilde_α::AbstractArray{T,1},
-                     α_offset::Int,
-                     λ::Int,
-
-                     β::AbstractArray{T,1},
-
-                     γ::AbstractArray{T,1},
-                     Ωγ::UnitRange{Int},
-                     
-                     ::Type{LeftBE}=ZeroPaddingBE,
-                     ::Type{RightBE}=ZeroPaddingBE;
-                     
-                     accumulate::Bool=false) where {T <: Number,
-                                                    LeftBE <: BoundaryExtension,
-                                                    RightBE <: BoundaryExtension}
-    Ωα = UnitRange(-α_offset,
-                   length(tilde_α)-α_offset-1)
-    
-    directConv!(tilde_α,
-                Ωα,
-                λ,
-                
-                β,
-
-                γ,
-                Ωγ,
-
-                LeftBE,
-                RightBE,
-                
-                accumulate=accumulate)
-end
-
-#+Convolution
-# Computes a convolution.
+# If *accumulate=false* then an erasing step $\gamma[k]=0,
+# k\in\Omega_\gamma$ is performed before computation.
 #
-# Takes a filter as input 
+# If $\lambda=-1$ you compute a convolution, if $\lambda=+1$ you
+# compute a cross-correlation.
 #
-# Inplace modification of γ
+# *Example:*
+#!β=[1:15;];
+#!γ=ones(Int,15);
+#!α=LinearFilter([0,0,1],0);
+#!directConv!(α,1,β,γ,5:10);
+#!hcat([1:length(γ);],γ)'
 #
 function directConv!(α::LinearFilter{T},
                      λ::Int,
@@ -269,12 +268,11 @@ function directConv!(α::LinearFilter{T},
                      ::Type{LeftBE}=ZeroPaddingBE,
                      ::Type{RightBE}=ZeroPaddingBE;
                      
-                     accumulate::Bool=false) where {T <: Number,
-                                                    LeftBE <: BoundaryExtension,
-                                                    RightBE <: BoundaryExtension}
-
+                     accumulate::Bool=false)::Void where {T <: Number,
+                                                          LeftBE <: BoundaryExtension,
+                                                          RightBE <: BoundaryExtension}
     directConv!(fcoef(α),
-                range(α),
+                offset(α),
                 λ,
                 
                 β,
@@ -286,6 +284,8 @@ function directConv!(α::LinearFilter{T},
                 RightBE,
                 
                 accumulate=accumulate)
+
+    nothing
 end
 
 
@@ -295,10 +295,20 @@ end
 #
 # Computes a convolution.
 #
-# Returns γ, a created vector of length identical to β one.
+# Convenience function that allocate $\gamma$ and compute all its
+# component using [[directConv_details][]]
 #
-function directConv(tilde_α::AbstractArray{T,1},
-                    α_offset::Int64,
+# *Returns:* $\gamma$ a created vector of length identical to the $\beta$ one.
+#
+# *Example:*
+#!β=[1:15;];
+#!γ=ones(Int,15);
+#!α=LinearFilter([0,0,1],0);
+#!γ=directConv(α,1,β);
+#!hcat([1:length(γ);],γ)'
+#
+function directConv(α::LinearFilter{T},
+
                     λ::Int64,
 
                     β::AbstractArray{T,1},
@@ -307,11 +317,9 @@ function directConv(tilde_α::AbstractArray{T,1},
                     ::Type{RightBE}=ZeroPaddingBE) where {T <: Number,
                                                           LeftBE <: BoundaryExtension,
                                                           RightBE <: BoundaryExtension}
-    # [END_directConv]
     γ = Array{T,1}(length(β))
     
-    directConv!(tilde_α,
-                α_offset,
+    directConv!(α,
                 λ,
 
                 β,
@@ -324,16 +332,18 @@ function directConv(tilde_α::AbstractArray{T,1},
                 
                 accumulate=false)
 
-    γ
+    return γ
 end
 
 
 
-#+API
+#+Convolution
 #
 # Computes a convolution.
 #
-# Returns γ, a created vector of length identical to β one.
+# This is a convenience function where $\lambda=-1$
+#
+# *Returns:* $\gamma$ a created vector of length identical to the $\beta$ one.
 #
 function directConv(α::LinearFilter{T},
                     β::AbstractArray{T,1},

@@ -24,6 +24,14 @@ length(c::LinearFilter)::Int = length(fcoef(c))
 #
 # See: [[range_filter][]]
 offset(c::LinearFilter)::Int = c._offset
+
+#+LinearFilter,Convolution,Internal
+#
+# Computes [[range_filter][]] using primitive types.
+# This allows reuse by =directConv!= for instance.
+#
+range(size::Int,offset::Int)::UnitRange = UnitRange(-offset,size-offset-1)
+
 #+LinearFilter L:range_filter
 # Returns filter range $\Omega$
 #
@@ -31,7 +39,7 @@ offset(c::LinearFilter)::Int = c._offset
 # $$
 # \Omega_\alpha = [ -\text{offset}(\alpha) , \text{size}(\alpha) -\text{offset}(\alpha)  - 1 ]
 # $$
-range(c::LinearFilter)::UnitRange = UnitRange(-offset(c),length(c)-offset(c)-1)
+range(c::LinearFilter)::UnitRange = range(length(c),offset(c))
 
 #+LinearFilter,Internal 
 # For convenience only, used in utests
