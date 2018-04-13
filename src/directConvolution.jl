@@ -353,10 +353,24 @@ function directConv(α::LinearFilter{T},
                                                           LeftBE <: BoundaryExtension,
                                                           RightBE <: BoundaryExtension}
 
-    return directConv(fcoef(α),
-                      offset(α),
-                      -1,
-                      β,
-                      LeftBE,
-                      RightBE)
+    return directConv(α,-1,β,LeftBE,RightBE)
+end
+
+#+Convolution
+#
+# Computes a cross-correlation 
+#
+# This is a convenience function where $\lambda=+1$
+#
+# *Returns:* $\gamma$ a created vector of length identical to the $\beta$ one.
+#
+function directCrossCorrelation(α::LinearFilter{T},
+                                β::AbstractArray{T,1},
+
+                                ::Type{LeftBE}=ZeroPaddingBE,
+                                ::Type{RightBE}=ZeroPaddingBE) where {T <: Number,
+                                                                      LeftBE <: BoundaryExtension,
+                                                                      RightBE <: BoundaryExtension}
+
+    return directConv(α,+1,β,LeftBE,RightBE)
 end
