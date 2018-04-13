@@ -741,12 +741,107 @@ include("/home/picaud/GitHub/DirectConvolution.jl/test/runtests.jl")
 
 #+RESULTS:
 #+begin_example
-WARNING: Method definition directConv!(AbstractArray{T<:Number, 1}, Int64, Int64, AbstractArray{T<:Number, 1}, AbstractArray{T<:Number, 1}, Base.UnitRange{Int64}) in module DirectConvolution at /home/picaud/GitHub/DirectConvolution.jl/src/directConvolution.jl:191 overwritten at /home/picaud/GitHub/DirectConvolution.jl/src/directConvolution.jl:191.
-WARNING: Method definition directConv!(AbstractArray{T<:Number, 1}, Int64, Int64, AbstractArray{T<:Number, 1}, AbstractArray{T<:Number, 1}, Base.UnitRange{Int64}, Type{LeftBE<:DirectConvolution.BoundaryExtension}) in module DirectConvolution at /home/picaud/GitHub/DirectConvolution.jl/src/directConvolution.jl:191 overwritten at /home/picaud/GitHub/DirectConvolution.jl/src/directConvolution.jl:191.
-WARNING: Method definition directConv!(AbstractArray{T<:Number, 1}, Int64, Int64, AbstractArray{T<:Number, 1}, AbstractArray{T<:Number, 1}, Base.UnitRange{Int64}, Type{LeftBE<:DirectConvolution.BoundaryExtension}, Type{RightBE<:DirectConvolution.BoundaryExtension}) in module DirectConvolution at /home/picaud/GitHub/DirectConvolution.jl/src/directConvolution.jl:191 overwritten at /home/picaud/GitHub/DirectConvolution.jl/src/directConvolution.jl:191.
-WARNING: Method definition #directConv!(Array{Any, 1}, typeof(DirectConvolution.directConv!), AbstractArray{T<:Number, 1}, Int64, Int64, AbstractArray{T<:Number, 1}, AbstractArray{T<:Number, 1}, Base.UnitRange{Int64}) in module DirectConvolution overwritten.
-WARNING: Method definition #directConv!(Array{Any, 1}, typeof(DirectConvolution.directConv!), AbstractArray{T<:Number, 1}, Int64, Int64, AbstractArray{T<:Number, 1}, AbstractArray{T<:Number, 1}, Base.UnitRange{Int64}, Type{LeftBE<:DirectConvolution.BoundaryExtension}) in module DirectConvolution overwritten.
-WARNING: Method definition #directConv!(Array{Any, 1}, typeof(DirectConvolution.directConv!), AbstractArray{T<:Number, 1}, Int64, Int64, AbstractArray{T<:Number, 1}, AbstractArray{T<:Number, 1}, Base.UnitRange{Int64}, Type{LeftBE<:DirectConvolution.BoundaryExtension}, Type{RightBE<:DirectConvolution.BoundaryExtension}) in module DirectConvolution overwritten.
+Example α_offset: Error During Test
+  Got an exception of type MethodError outside of a @test
+  MethodError: no method matching directConv!(::StaticArrays.SArray{Tuple{3},Float64,1,3}, ::Int64, ::Int64, ::Array{Float64,1}, ::Array{Float64,1}, ::UnitRange{Int64}, ::Type{DirectConvolution.ZeroPaddingBE}, ::Type{DirectConvolution.ZeroPaddingBE}; accumulate=false)
+  Closest candidates are:
+    directConv!(::AbstractArray{T<:Number,1}, !Matched::UnitRange{Int64}, ::Int64, ::AbstractArray{T<:Number,1}, ::AbstractArray{T<:Number,1}, ::UnitRange{Int64}, ::Type{LeftBE<:DirectConvolution.BoundaryExtension}, ::Type{RightBE<:DirectConvolution.BoundaryExtension}; accumulate) where {T<:Number, LeftBE<:DirectConvolution.BoundaryExtension, RightBE<:DirectConvolution.BoundaryExtension} at /home/picaud/GitHub/DirectConvolution.jl/src/directConvolution.jl:190
+    directConv!(::AbstractArray{T<:Number,1}, !Matched::UnitRange{Int64}, ::Int64, ::AbstractArray{T<:Number,1}, ::AbstractArray{T<:Number,1}, ::UnitRange{Int64}, ::Type{LeftBE<:DirectConvolution.BoundaryExtension}) where {T<:Number, LeftBE<:DirectConvolution.BoundaryExtension} at /home/picaud/GitHub/DirectConvolution.jl/src/directConvolution.jl:190 got unsupported keyword argument "accumulate"
+    directConv!(::AbstractArray{T<:Number,1}, !Matched::UnitRange{Int64}, ::Int64, ::AbstractArray{T<:Number,1}, ::AbstractArray{T<:Number,1}, ::UnitRange{Int64}) where T<:Number at /home/picaud/GitHub/DirectConvolution.jl/src/directConvolution.jl:190 got unsupported keyword argument "accumulate"
+    ...
+  Stacktrace:
+   [1] #directConv!#2 at /home/picaud/GitHub/DirectConvolution.jl/src/directConvolution.jl:274 [inlined]
+   [2] (::DirectConvolution.#kw##directConv!)(::Array{Any,1}, ::DirectConvolution.#directConv!, ::DirectConvolution.LinearFilter_Default{Float64,3}, ::Int64, ::Array{Float64,1}, ::Array{Float64,1}, ::UnitRange{Int64}, ::Type{DirectConvolution.ZeroPaddingBE}, ::Type{DirectConvolution.ZeroPaddingBE}) at ./<missing>:0
+   [3] directConv(::DirectConvolution.LinearFilter_Default{Float64,3}, ::Int64, ::Array{Float64,1}, ::Type{DirectConvolution.ZeroPaddingBE}, ::Type{DirectConvolution.ZeroPaddingBE}) at /home/picaud/GitHub/DirectConvolution.jl/src/directConvolution.jl:322
+   [4] macro expansion at /home/picaud/GitHub/DirectConvolution.jl/test/directConvolution.jl:6 [inlined]
+   [5] macro expansion at ./test.jl:860 [inlined]
+   [6] anonymous at ./<missing>:?
+   [7] include_from_node1(::String) at ./loading.jl:576
+   [8] include(::String) at ./sysimg.jl:14
+   [9] macro expansion at /home/picaud/GitHub/DirectConvolution.jl/test/runtests.jl:10 [inlined]
+   [10] macro expansion at ./test.jl:860 [inlined]
+   [11] anonymous at ./<missing>:?
+   [12] include_from_node1(::String) at ./loading.jl:576
+   [13] include(::String) at ./sysimg.jl:14
+   [14] eval(::Module, ::Any) at ./boot.jl:235
+   [15] eval_user_input(::Any, ::Base.REPL.REPLBackend) at ./REPL.jl:66
+   [16] macro expansion at ./REPL.jl:97 [inlined]
+   [17] (::Base.REPL.##1#2{Base.REPL.REPLBackend})() at ./event.jl:73
+Adjoint operator: Error During Test
+  Got an exception of type MethodError outside of a @test
+  MethodError: no method matching directConv!(::StaticArrays.SArray{Tuple{4},Float64,1,4}, ::Int64, ::Int64, ::Array{Float64,1}, ::Array{Float64,1}, ::UnitRange{Int64}, ::Type{DirectConvolution.ZeroPaddingBE}, ::Type{DirectConvolution.ZeroPaddingBE}; accumulate=false)
+  Closest candidates are:
+    directConv!(::AbstractArray{T<:Number,1}, !Matched::UnitRange{Int64}, ::Int64, ::AbstractArray{T<:Number,1}, ::AbstractArray{T<:Number,1}, ::UnitRange{Int64}, ::Type{LeftBE<:DirectConvolution.BoundaryExtension}, ::Type{RightBE<:DirectConvolution.BoundaryExtension}; accumulate) where {T<:Number, LeftBE<:DirectConvolution.BoundaryExtension, RightBE<:DirectConvolution.BoundaryExtension} at /home/picaud/GitHub/DirectConvolution.jl/src/directConvolution.jl:190
+    directConv!(::AbstractArray{T<:Number,1}, !Matched::UnitRange{Int64}, ::Int64, ::AbstractArray{T<:Number,1}, ::AbstractArray{T<:Number,1}, ::UnitRange{Int64}, ::Type{LeftBE<:DirectConvolution.BoundaryExtension}) where {T<:Number, LeftBE<:DirectConvolution.BoundaryExtension} at /home/picaud/GitHub/DirectConvolution.jl/src/directConvolution.jl:190 got unsupported keyword argument "accumulate"
+    directConv!(::AbstractArray{T<:Number,1}, !Matched::UnitRange{Int64}, ::Int64, ::AbstractArray{T<:Number,1}, ::AbstractArray{T<:Number,1}, ::UnitRange{Int64}) where T<:Number at /home/picaud/GitHub/DirectConvolution.jl/src/directConvolution.jl:190 got unsupported keyword argument "accumulate"
+    ...
+  Stacktrace:
+   [1] #directConv!#2 at /home/picaud/GitHub/DirectConvolution.jl/src/directConvolution.jl:274 [inlined]
+   [2] (::DirectConvolution.#kw##directConv!)(::Array{Any,1}, ::DirectConvolution.#directConv!, ::DirectConvolution.LinearFilter_Default{Float64,4}, ::Int64, ::Array{Float64,1}, ::Array{Float64,1}, ::UnitRange{Int64}, ::Type{DirectConvolution.ZeroPaddingBE}, ::Type{DirectConvolution.ZeroPaddingBE}) at ./<missing>:0
+   [3] directConv(::DirectConvolution.LinearFilter_Default{Float64,4}, ::Int64, ::Array{Float64,1}, ::Type{DirectConvolution.ZeroPaddingBE}, ::Type{DirectConvolution.ZeroPaddingBE}) at /home/picaud/GitHub/DirectConvolution.jl/src/directConvolution.jl:322
+   [4] macro expansion at /home/picaud/GitHub/DirectConvolution.jl/test/directConvolution.jl:21 [inlined]
+   [5] macro expansion at ./test.jl:860 [inlined]
+   [6] anonymous at ./<missing>:?
+   [7] include_from_node1(::String) at ./loading.jl:576
+   [8] include(::String) at ./sysimg.jl:14
+   [9] macro expansion at /home/picaud/GitHub/DirectConvolution.jl/test/runtests.jl:10 [inlined]
+   [10] macro expansion at ./test.jl:860 [inlined]
+   [11] anonymous at ./<missing>:?
+   [12] include_from_node1(::String) at ./loading.jl:576
+   [13] include(::String) at ./sysimg.jl:14
+   [14] eval(::Module, ::Any) at ./boot.jl:235
+   [15] eval_user_input(::Any, ::Base.REPL.REPLBackend) at ./REPL.jl:66
+   [16] macro expansion at ./REPL.jl:97 [inlined]
+   [17] (::Base.REPL.##1#2{Base.REPL.REPLBackend})() at ./event.jl:73
+Convolution commutativity: Error During Test
+  Got an exception of type MethodError outside of a @test
+  MethodError: no method matching directConv!(::Array{Float64,1}, ::Int64, ::Int64, ::Array{Float64,1}, ::Array{Float64,1}, ::UnitRange{Int64}, ::Type{DirectConvolution.ZeroPaddingBE}, ::Type{DirectConvolution.ZeroPaddingBE})
+  Closest candidates are:
+    directConv!(::AbstractArray{T<:Number,1}, !Matched::UnitRange{Int64}, ::Int64, ::AbstractArray{T<:Number,1}, ::AbstractArray{T<:Number,1}, ::UnitRange{Int64}, ::Type{LeftBE<:DirectConvolution.BoundaryExtension}, ::Type{RightBE<:DirectConvolution.BoundaryExtension}; accumulate) where {T<:Number, LeftBE<:DirectConvolution.BoundaryExtension, RightBE<:DirectConvolution.BoundaryExtension} at /home/picaud/GitHub/DirectConvolution.jl/src/directConvolution.jl:190
+    directConv!(::AbstractArray{T<:Number,1}, !Matched::UnitRange{Int64}, ::Int64, ::AbstractArray{T<:Number,1}, ::AbstractArray{T<:Number,1}, ::UnitRange{Int64}, ::Type{LeftBE<:DirectConvolution.BoundaryExtension}) where {T<:Number, LeftBE<:DirectConvolution.BoundaryExtension} at /home/picaud/GitHub/DirectConvolution.jl/src/directConvolution.jl:190
+    directConv!(::AbstractArray{T<:Number,1}, !Matched::UnitRange{Int64}, ::Int64, ::AbstractArray{T<:Number,1}, ::AbstractArray{T<:Number,1}, ::UnitRange{Int64}) where T<:Number at /home/picaud/GitHub/DirectConvolution.jl/src/directConvolution.jl:190
+    ...
+  Stacktrace:
+   [1] macro expansion at /home/picaud/GitHub/DirectConvolution.jl/test/directConvolution.jl:42 [inlined]
+   [2] macro expansion at ./test.jl:860 [inlined]
+   [3] anonymous at ./<missing>:?
+   [4] include_from_node1(::String) at ./loading.jl:576
+   [5] include(::String) at ./sysimg.jl:14
+   [6] macro expansion at /home/picaud/GitHub/DirectConvolution.jl/test/runtests.jl:10 [inlined]
+   [7] macro expansion at ./test.jl:860 [inlined]
+   [8] anonymous at ./<missing>:?
+   [9] include_from_node1(::String) at ./loading.jl:576
+   [10] include(::String) at ./sysimg.jl:14
+   [11] eval(::Module, ::Any) at ./boot.jl:235
+   [12] eval_user_input(::Any, ::Base.REPL.REPLBackend) at ./REPL.jl:66
+   [13] macro expansion at ./REPL.jl:97 [inlined]
+   [14] (::Base.REPL.##1#2{Base.REPL.REPLBackend})() at ./event.jl:73
+Interval split: Error During Test
+  Got an exception of type MethodError outside of a @test
+  MethodError: no method matching directConv!(::StaticArrays.SArray{Tuple{4},Float64,1,4}, ::Int64, ::Int64, ::Array{Float64,1}, ::Array{Float64,1}, ::UnitRange{Int64}, ::Type{DirectConvolution.MirrorBE}, ::Type{DirectConvolution.PeriodicBE}; accumulate=false)
+  Closest candidates are:
+    directConv!(::AbstractArray{T<:Number,1}, !Matched::UnitRange{Int64}, ::Int64, ::AbstractArray{T<:Number,1}, ::AbstractArray{T<:Number,1}, ::UnitRange{Int64}, ::Type{LeftBE<:DirectConvolution.BoundaryExtension}, ::Type{RightBE<:DirectConvolution.BoundaryExtension}; accumulate) where {T<:Number, LeftBE<:DirectConvolution.BoundaryExtension, RightBE<:DirectConvolution.BoundaryExtension} at /home/picaud/GitHub/DirectConvolution.jl/src/directConvolution.jl:190
+    directConv!(::AbstractArray{T<:Number,1}, !Matched::UnitRange{Int64}, ::Int64, ::AbstractArray{T<:Number,1}, ::AbstractArray{T<:Number,1}, ::UnitRange{Int64}, ::Type{LeftBE<:DirectConvolution.BoundaryExtension}) where {T<:Number, LeftBE<:DirectConvolution.BoundaryExtension} at /home/picaud/GitHub/DirectConvolution.jl/src/directConvolution.jl:190 got unsupported keyword argument "accumulate"
+    directConv!(::AbstractArray{T<:Number,1}, !Matched::UnitRange{Int64}, ::Int64, ::AbstractArray{T<:Number,1}, ::AbstractArray{T<:Number,1}, ::UnitRange{Int64}) where T<:Number at /home/picaud/GitHub/DirectConvolution.jl/src/directConvolution.jl:190 got unsupported keyword argument "accumulate"
+    ...
+  Stacktrace:
+   [1] #directConv!#2 at /home/picaud/GitHub/DirectConvolution.jl/src/directConvolution.jl:274 [inlined]
+   [2] (::DirectConvolution.#kw##directConv!)(::Array{Any,1}, ::DirectConvolution.#directConv!, ::DirectConvolution.LinearFilter_Default{Float64,4}, ::Int64, ::Array{Float64,1}, ::Array{Float64,1}, ::UnitRange{Int64}, ::Type{DirectConvolution.MirrorBE}, ::Type{DirectConvolution.PeriodicBE}) at ./<missing>:0
+   [3] directConv(::DirectConvolution.LinearFilter_Default{Float64,4}, ::Int64, ::Array{Float64,1}, ::Type{DirectConvolution.MirrorBE}, ::Type{DirectConvolution.PeriodicBE}) at /home/picaud/GitHub/DirectConvolution.jl/src/directConvolution.jl:322
+   [4] macro expansion at /home/picaud/GitHub/DirectConvolution.jl/test/directConvolution.jl:56 [inlined]
+   [5] macro expansion at ./test.jl:860 [inlined]
+   [6] anonymous at ./<missing>:?
+   [7] include_from_node1(::String) at ./loading.jl:576
+   [8] include(::String) at ./sysimg.jl:14
+   [9] macro expansion at /home/picaud/GitHub/DirectConvolution.jl/test/runtests.jl:10 [inlined]
+   [10] macro expansion at ./test.jl:860 [inlined]
+   [11] anonymous at ./<missing>:?
+   [12] include_from_node1(::String) at ./loading.jl:576
+   [13] include(::String) at ./sysimg.jl:14
+   [14] eval(::Module, ::Any) at ./boot.jl:235
+   [15] eval_user_input(::Any, ::Base.REPL.REPLBackend) at ./REPL.jl:66
+   [16] macro expansion at ./REPL.jl:97 [inlined]
+   [17] (::Base.REPL.##1#2{Base.REPL.REPLBackend})() at ./event.jl:73
 UDWT Transform: Error During Test
   Got an exception of type BoundsError outside of a @test
   BoundsError: attempt to access 2-element Array{DirectConvolution.UDWT_Filter_Biorthogonal{Float64},1} at index [-1]
@@ -766,22 +861,22 @@ UDWT Transform: Error During Test
    [13] include(::String) at ./sysimg.jl:14
    [14] eval(::Module, ::Any) at ./boot.jl:235
    [15] eval_user_input(::Any, ::Base.REPL.REPLBackend) at ./REPL.jl:66
-   [16] macro expansion at /home/picaud/.julia/v0.6/Revise/src/Revise.jl:775 [inlined]
-   [17] (::Revise.##17#18{Base.REPL.REPLBackend})() at ./event.jl:73
+   [16] macro expansion at ./REPL.jl:97 [inlined]
+   [17] (::Base.REPL.##1#2{Base.REPL.REPLBackend})() at ./event.jl:73
 Test Summary:                  | Pass  Error  Total
-DirectConvolution              |   31      1     32
+DirectConvolution              |   25      5     30
   swap                         |    4             4
   LinearFilter_DefaultCentered |    3             3
   LinearFilter_Default         |    4             4
-  Example α_offset             |    2             2
-  Adjoint operator             |    2             2
-  Convolution commutativity    |    1             1
-  Interval split               |    1             1
+  Example α_offset             |           1      1
+  Adjoint operator             |           1      1
+  Convolution commutativity    |           1      1
+  Interval split               |           1      1
   Savitzky-Golay               |    6             6
   Haar                         |    6             6
   Starck2                      |    2             2
   UDWT Transform               |           1      1
-ERROR: LoadError: Some tests did not pass: 31 passed, 0 failed, 1 errored, 0 broken.
+ERROR: LoadError: Some tests did not pass: 25 passed, 0 failed, 5 errored, 0 broken.
 while loading /home/picaud/GitHub/DirectConvolution.jl/test/runtests.jl, in expression starting on line 4
 #+end_example
 

@@ -175,25 +175,26 @@ end
 
 
 
+#+Convolution,Internal
 function directConv!(tilde_α::AbstractArray{T,1},
-                     Ωα::UnitRange{Int},
+                     α_offset::Int,
                      λ::Int,
                      β::AbstractArray{T,1},
                      γ::AbstractArray{T,1},
                      Ωγ::UnitRange{Int},
                      ::Type{LeftBE}=ZeroPaddingBE,
                      ::Type{RightBE}=ZeroPaddingBE;
-                     accumulate::Bool=false) where {T <: Number,
-                                                    LeftBE <: BoundaryExtension,
-                                                    RightBE <: BoundaryExtension}
+                     accumulate::Bool=false)::Void where {T <: Number,
+                                                          LeftBE <: BoundaryExtension,
+                                                          RightBE <: BoundaryExtension}
     # Sanity check
     @assert λ!=0
-    @assert length(tilde_α)==length(Ωα)
     @assert (start(Ωγ)>=1)&&(last(Ωγ)<=length(γ))
 
     # Initialization
-    Ωβ = UnitRange(1,length(β))
-    tilde_Ωα = 1:length(Ωα)
+    const Ωα=range(length(tilde_α),α_offset)
+    const Ωβ = UnitRange(1,length(β))
+    const tilde_Ωα = 1:length(Ωα)
 
     if !accumulate
         for k in Ωγ
@@ -271,6 +272,7 @@ function directConv!(α::LinearFilter{T},
                      accumulate::Bool=false)::Void where {T <: Number,
                                                           LeftBE <: BoundaryExtension,
                                                           RightBE <: BoundaryExtension}
+
     directConv!(fcoef(α),
                 offset(α),
                 λ,

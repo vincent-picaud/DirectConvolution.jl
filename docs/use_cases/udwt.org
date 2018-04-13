@@ -83,7 +83,6 @@ norm(signal-reconst)
    #+END_SRC
 
    #+RESULTS:
-   : 0
 
 ** Smoothing
 
