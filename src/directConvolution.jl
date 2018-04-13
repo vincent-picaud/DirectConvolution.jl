@@ -1,6 +1,4 @@
-#+API
 export directConv, directConv!
-#+API
 export BoundaryExtension, ZeroPaddingBE, ConstantBE, PeriodicBE, MirrorBE
 
 
@@ -10,17 +8,35 @@ const tilde_i0 = Int(1)
 
 
 
+#+BoundaryExtension
+#
+# Used for tag dispatching, parent of available boundary extensions
+#
+#!subtypes(BoundaryExtension)
+#
 abstract type BoundaryExtension end
 
+#+BoundaryExtension
 struct ZeroPaddingBE <: BoundaryExtension end
+#+BoundaryExtension
 struct ConstantBE <: BoundaryExtension end
+#+BoundaryExtension
 struct PeriodicBE <: BoundaryExtension end
+#+BoundaryExtension
 struct MirrorBE <: BoundaryExtension end
 
 
 
-# CAVEAT: do not use builtin 2*UnitRange as it returns a StepRange.
-# We want -2*(6:8) -> -16:-12 and not -12:-2:-16
+#+BoundaryExtension,Internal
+#
+# Range scaling
+#
+# *Caveat:*
+# We do not use Julia =scale= function as it returns a step range:
+#!r=6:8
+#!-2*r
+# What we need is:
+#!scale(-2,r)
 #
 function scale(λ::Int,Ω::UnitRange{Int})
     ifelse(λ>0,
@@ -28,6 +44,18 @@ function scale(λ::Int,Ω::UnitRange{Int})
            UnitRange(λ*last(Ω),λ*start(Ω)))
 end
 
+#+BoundaryExtension,Internal
+#
+# In
+# $$
+# \gamma[k]=\sum\limits_{i\in\Omega^\alpha}\alpha[i]\beta[k+\lambda i],\text{ with }\lambda\in\mathbb{Z}^*
+# $$
+# the computation of $\gamma[k],\ k\in\Omega^\gamma$ is splitted into two parts:  
+#  - one part $\Omega^\gamma \cap \Omega^\gamma_1$ *free of boundary effect*,  
+#  - one part $\Omega^\gamma \setminus \Omega^\gamma_1$ *that requires boundary extension* $\tilde{\beta}=\Phi(\beta,k)$
+#
+# *Example:*
+#!DirectConvolution.compute_Ωγ1(-1:2,-2,1:20)
 function compute_Ωγ1(Ωα::UnitRange{Int},
                      λ::Int,
                      Ωβ::UnitRange{Int})
@@ -38,14 +66,38 @@ function compute_Ωγ1(Ωα::UnitRange{Int},
               last(Ωβ)-last(λΩα))
 end
 
-# Left & Right relative complements A\B
+#+BoundaryExtension,Internal
 #
+# Left relative complement
+#
+# $$
+# (A\setminus B)_{\text{Left}}=[  l(A), \min{(u(A),l(B)-1)} ]
+# $$
+#
+# *Example:*
+#!DirectConvolution.relativeComplement_left(1:10,-5:5)
+#
+# $(A\setminus B)=\{6,7,8,9,10\}$ and the left part (elements that are
+# $\in A$ but on the left side of $B$) is *empty*.
 function relativeComplement_left(A::UnitRange{Int},
                                  B::UnitRange{Int})
     UnitRange(start(A),
               min(last(A),start(B)-1))
 end
 
+#+BoundaryExtension,Internal
+#
+# Left relative complement
+#
+# $$
+# (A\setminus B)_{\text{Right}}=[ \max{(l(A),u(B)+1)}, u(A) ]
+# $$
+#
+# *Example:*
+#!DirectConvolution.relativeComplement_right(1:10,-5:5)
+#
+# $(A\setminus B)=\{6,7,8,9,10\}$ and the right part (elements that are
+# $\in A$ but on the right side of $B$) are $\{6,7,8,9,10\}$
 function relativeComplement_right(A::UnitRange{Int},
                                   B::UnitRange{Int})
     UnitRange(max(start(A),last(B)+1),
