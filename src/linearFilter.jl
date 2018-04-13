@@ -1,4 +1,6 @@
-export LinearFilter,LinearFilter_Default, LinearFilter_CenteredDefault,
+export LinearFilter,
+    LinearFilter_Default,
+    LinearFilter_DefaultCentered,
     fcoef, length, offset, range
 
 import Base: length,range,isapprox
