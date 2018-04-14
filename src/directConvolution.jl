@@ -192,7 +192,7 @@ function directConv!(tilde_α::AbstractArray{T,1},
     @assert (start(Ωγ)>=1)&&(last(Ωγ)<=length(γ))
 
     # Initialization
-    const Ωα=range(length(tilde_α),α_offset)
+    const Ωα = filter_range(length(tilde_α),α_offset)
     const Ωβ = UnitRange(1,length(β))
     const tilde_Ωα = 1:length(Ωα)
 
