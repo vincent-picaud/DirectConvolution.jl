@@ -35,13 +35,14 @@ end;
 @testset "Convolution commutativity" begin
 
     α=rand(4);
+    αf=LinearFilter(α,0)
     β=rand(10);
-
+    βf=LinearFilter(β,0)
     v1=zeros(20)
     v2=zeros(20)
-    directConv!(α,0,-1,
+    directConv!(αf,-1,
                 β,v1,UnitRange(1,20),ZeroPaddingBE,ZeroPaddingBE)
-    directConv!(β,0,-1,
+    directConv!(βf,-1,
                 α,v2,UnitRange(1,20),ZeroPaddingBE,ZeroPaddingBE)
 
     @test isapprox(v1,v2)
