@@ -9,13 +9,11 @@ import Base: length
 
 
 
-#+UDWT_Filter,TODO
+#+UDWT_Filter
 #
 # Abstract type defining the $\phi$, $\psi$, $\tilde{\phi}$ and
 # $\tilde{\psi}$ filters associated to an undecimated biorthogonal
 # wavelet transform
-#
-# - [X] TODO must use LinearFilter struct 
 abstract type UDWT_Filter_Biorthogonal{T<:Number} end
 
 #+UDWT_Filter
