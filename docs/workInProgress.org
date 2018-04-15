@@ -12,13 +12,7 @@ using J4Org
 
 
 * Project Journal
-** 2018
-*** 2018-04 April
-**** 2018-04-06 Friday
-
-***** Doc is online 
-
-Pure Org solution... Experimental
+** [2018-04-04 Wed] doc with J4org online
 
 * Project TODO
 
@@ -36,8 +30,8 @@ print_org_doc(documented_items,tag="TODO",header_level=0)
 #+RESULTS:
 :RESULTS:
 
-<<AUfuZtTM>> *Index:* *[U]* [[xKfyfmwX][UDWT_Filter_Biorthogonal]] 
-- @@latex:\phantomsection@@ *=UDWT_Filter_Biorthogonal=*  <<xKfyfmwX>>
+<<docQd3N6>> *Index:* *[U]* [[qEg80oo6][UDWT_Filter_Biorthogonal]] 
+- @@latex:\phantomsection@@ *=UDWT_Filter_Biorthogonal=*  <<qEg80oo6>>
 #+BEGIN_SRC julia :eval never :exports code
 abstract type UDWT_Filter_Biorthogonal{T<:Number} 
 #+END_SRC
@@ -48,14 +42,9 @@ wavelet transform
 
 - [X] TODO must use LinearFilter struct 
 #+END_QUOTE
-[[file:/home/picaud/GitHub/DirectConvolution.jl/src/udwt.jl::12][udwt.jl]], [[AUfuZtTM][back to index]]
+[[file:/home/picaud/GitHub/DirectConvolution.jl/src/udwt.jl::12][udwt.jl:12]], [[docQd3N6][back to index]]
 :END:
 
 * W3 Links
 
 ** Readings
-
-This package is based on my posts:
-- [[https://pixorblog.wordpress.com/2016/07/17/direct-convolution/][direct-convolution]]
-- [[https://pixorblog.wordpress.com/2016/07/13/savitzky-golay-filters-julia/][savitzky-golay-filters-julia]]
-- [[https://pixorblog.wordpress.com/2017/01/06/some-remarks-on-the-usage-of-derivatives-in-spectrum-processing/][some-remarks-on-the-usage-of-derivatives-in-spectrum-processing]]

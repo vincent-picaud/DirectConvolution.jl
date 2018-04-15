@@ -32,7 +32,7 @@ struct MirrorBE <: BoundaryExtension end
 # Range scaling
 #
 # *Caveat:*
-# We do not use Julia =scale= function as it returns a step range:
+# We do not use Julia =*= operator as it returns a step range:
 #!r=6:8
 #!-2*r
 # What we need is:
@@ -97,7 +97,7 @@ end
 #!DirectConvolution.relativeComplement_right(1:10,-5:5)
 #
 # $(A\setminus B)=\{6,7,8,9,10\}$ and the right part (elements that are
-# $\in A$ but on the right side of $B$) are $\{6,7,8,9,10\}$
+# $\in A$ but on the right side of $B$) is $\{6,7,8,9,10\}$
 function relativeComplement_right(A::UnitRange{Int},
                                   B::UnitRange{Int})
     UnitRange(max(start(A),last(B)+1),

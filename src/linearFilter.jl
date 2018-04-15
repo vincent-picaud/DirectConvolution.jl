@@ -63,7 +63,7 @@ end
 # Creates a linear filter from a coefficient vector and its associated offset
 #
 # *Example:*
-#!linear_filter=LinearFilter_Default(rand(3),5)
+#!linear_filter=LinearFilter(rand(3),5)
 #!offset(linear_filter)
 #!range(linear_filter)
 #
@@ -117,8 +117,8 @@ end
 
 #+LinearFilter
 #
-# Create a centered linear filter, it must have an odd number, $2n+1$
-# of coefficients and is centered (offset=n)
+# Creates a centered linear filter, it must have an odd number of
+# coefficients, $2n+1$ and is centered by construction (offset=n)
 #
 # *Example:*
 #!f=LinearFilter([0:4;]);
