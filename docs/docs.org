@@ -45,11 +45,127 @@ print_org_doc(documented_items,tag="LinearFilter",tag_to_ignore="Internal",heade
 #+RESULTS:
 :RESULTS:
 
-ERROR: MethodError: no method matching print_org_doc(::Array{J4Org.Documented_Item,1}; tag="LinearFilter", tag_to_ignore="Internal", header_level=0)
-Closest candidates are:
-  print_org_doc(::Array{J4Org.Documented_Item,1}; tag, identifier, header_level, link_prefix, complete_link, case_sensitive, boxingModule) at /home/picaud/GitLab/PVBibliography/Julia/MyLocalPackages/J4Org/src/main.jl:371 got unsupported keyword argument "tag_to_ignore"
-Stacktrace:
- [1] (::J4Org.#kw##print_org_doc)(::Array{Any,1}, ::J4Org.#print_org_doc, ::Array{J4Org.Documented_Item,1}) at ./<missing>:0
+<<BOAQRR1P>> *Index:* *[L]* [[EBnfTIpr][LinearFilter]] *[f]* [[OgevVrJ8][fcoef]] *[l]* [[iIW7eUiZ][length]] *[o]* [[Ofay6Q5U][offset]] *[r]* [[edPbcrLB][range]] 
+- @@latex:\phantomsection@@ *=LinearFilter=*  <<EBnfTIpr>> <<rS2j2YFZLinearFilter>>
+#+BEGIN_SRC julia :eval never :exports code
+abstract type LinearFilter{T<:Number} 
+#+END_SRC
+#+BEGIN_QUOTE
+Abstract type defining a linear filter. A linear filter is defined by its coefficients and by its domain
+#+END_QUOTE
+[[file:/home/picaud/GitHub/DirectConvolution.jl/src/linearFilter.jl::7][linearFilter.jl:7]], [[BOAQRR1P][back to index]]
+
+#+BEGIN_SRC julia :eval never :exports code
+function LinearFilter(c::AbstractArray{T,1},offset::Int)::LinearFilter  where {T}
+#+END_SRC
+#+BEGIN_QUOTE
+Creates a linear filter from its coefficients and an offset
+
+The *offset* is the position of the filter coefficient to be aligned with zero, see [[rS2j2YFZrange_filter][range(...)]].
+
+*Example:*
+#+BEGIN_SRC julia
+f=LinearFilter([0:5;],4);
+hcat([range(f);],fcoef(f))
+#+END_SRC
+
+#+RESULTS:
+| -4 | 0 |
+| -3 | 1 |
+| -2 | 2 |
+| -1 | 3 |
+|  0 | 4 |
+|  1 | 5 |
+
+#+BEGIN_SRC julia
+6×2 Array{Int64,2}:
+ -4  0
+ -3  1
+ -2  2
+ -1  3
+  0  4
+  1  5
+#+END_SRC
+
+#+RESULTS:
+
+#+END_QUOTE
+[[file:/home/picaud/GitHub/DirectConvolution.jl/src/linearFilter.jl::104][linearFilter.jl:104]], [[BOAQRR1P][back to index]]
+
+#+BEGIN_SRC julia :eval never :exports code
+function LinearFilter(c::AbstractArray{T,1})::LinearFilter  where {T}
+#+END_SRC
+#+BEGIN_QUOTE
+Create a centered linear filter, it must have an odd number, $2n+1$
+of coefficients and is centered (offset=n)
+
+*Example:*
+#+BEGIN_SRC julia
+f=LinearFilter([0:4;]);
+hcat([range(f);],fcoef(f))
+#+END_SRC
+
+#+RESULTS:
+| -2 | 0 |
+| -1 | 1 |
+|  0 | 2 |
+|  1 | 3 |
+|  2 | 4 |
+
+#+BEGIN_SRC julia
+5×2 Array{Int64,2}:
+ -2  0
+ -1  1
+  0  2
+  1  3
+  2  4
+#+END_SRC
+
+#+RESULTS:
+
+#+END_QUOTE
+[[file:/home/picaud/GitHub/DirectConvolution.jl/src/linearFilter.jl::118][linearFilter.jl:118]], [[BOAQRR1P][back to index]]
+- @@latex:\phantomsection@@ *=fcoef=*  <<OgevVrJ8>>
+#+BEGIN_SRC julia :eval never :exports code
+fcoef(c::LinearFilter)
+#+END_SRC
+#+BEGIN_QUOTE
+Returns filter coefficients
+#+END_QUOTE
+[[file:/home/picaud/GitHub/DirectConvolution.jl/src/linearFilter.jl::13][linearFilter.jl:13]], [[BOAQRR1P][back to index]]
+- @@latex:\phantomsection@@ *=length=*  <<iIW7eUiZ>>
+#+BEGIN_SRC julia :eval never :exports code
+length(c::LinearFilter)::Int
+#+END_SRC
+#+BEGIN_QUOTE
+Returns filter length
+#+END_QUOTE
+[[file:/home/picaud/GitHub/DirectConvolution.jl/src/linearFilter.jl::17][linearFilter.jl:17]], [[BOAQRR1P][back to index]]
+- @@latex:\phantomsection@@ *=offset=*  <<Ofay6Q5U>>
+#+BEGIN_SRC julia :eval never :exports code
+offset(c::LinearFilter)::Int
+#+END_SRC
+#+BEGIN_QUOTE
+Returns filter offset
+
+*Caveat:* the first position is *0* (and not *1*)
+
+See: [[rS2j2YFZrange_filter][range(...)]]
+#+END_QUOTE
+[[file:/home/picaud/GitHub/DirectConvolution.jl/src/linearFilter.jl::20][linearFilter.jl:20]], [[BOAQRR1P][back to index]]
+- @@latex:\phantomsection@@ *=range=*  <<edPbcrLB>> <<rS2j2YFZrange_filter>>
+#+BEGIN_SRC julia :eval never :exports code
+range(c::LinearFilter)::UnitRange
+#+END_SRC
+#+BEGIN_QUOTE
+Returns filter range $\Omega$
+
+Filter support is defined by
+$$
+\Omega_\alpha = [ -\text{offset}(\alpha) , \text{size}(\alpha) -\text{offset}(\alpha)  - 1 ]
+$$
+#+END_QUOTE
+[[file:/home/picaud/GitHub/DirectConvolution.jl/src/linearFilter.jl::36][linearFilter.jl:36]], [[BOAQRR1P][back to index]]
 :END:
 
 
@@ -67,8 +183,8 @@ print_org_doc(documented_items,tag="BoundaryExtension",header_level=0)
  #+RESULTS:
  :RESULTS:
 
- <<DBvcbdNU>> *Index:* *[B]* [[HPuv7Y6L][BoundaryExtension]] *[C]* [[P9hSEyJ5][ConstantBE]] *[M]* [[NlHjKfzk][MirrorBE]] *[P]* [[59X8dWEW][PeriodicBE]] *[Z]* [[9ALJON6Z][ZeroPaddingBE]] *[b]* [[iS10tLrK][boundaryExtension]] *[c]* [[hFYnSayM][compute_Ωγ1]] *[r]* [[b0z5Axer][relativeComplement_left]], [[q3DObmcL][relativeComplement_right]] *[s]* [[aOpeXe2L][scale]] 
- - @@latex:\phantomsection@@ *=BoundaryExtension=*  <<HPuv7Y6L>>
+ <<o48QmWNy>> *Index:* *[B]* [[eNGQrNso][BoundaryExtension]] *[C]* [[7O2LYAtD][ConstantBE]] *[M]* [[8SqYsCPL][MirrorBE]] *[P]* [[tEN7PiTF][PeriodicBE]] *[Z]* [[YFAuWbiF][ZeroPaddingBE]] *[b]* [[B9fmWgD0][boundaryExtension]] *[c]* [[oPfd54Oq][compute_Ωγ1]] *[r]* [[UfGFpaZ7][relativeComplement_left]], [[M0ywna74][relativeComplement_right]] *[s]* [[s7T9PtwU][scale]] 
+ - @@latex:\phantomsection@@ *=BoundaryExtension=*  <<eNGQrNso>>
  #+BEGIN_SRC julia :eval never :exports code
  abstract type BoundaryExtension 
  #+END_SRC
@@ -92,28 +208,28 @@ print_org_doc(documented_items,tag="BoundaryExtension",header_level=0)
  #+RESULTS:
 
  #+END_QUOTE
- [[file:/home/picaud/GitHub/DirectConvolution.jl/src/directConvolution.jl::11][directConvolution.jl]], [[DBvcbdNU][back to index]]
- - @@latex:\phantomsection@@ *=ConstantBE=*  <<P9hSEyJ5>>
+ [[file:/home/picaud/GitHub/DirectConvolution.jl/src/directConvolution.jl::11][directConvolution.jl:11]], [[o48QmWNy][back to index]]
+ - @@latex:\phantomsection@@ *=ConstantBE=*  <<7O2LYAtD>>
  #+BEGIN_SRC julia :eval never :exports code
  struct ConstantBE <: BoundaryExtension
  #+END_SRC
- [[file:/home/picaud/GitHub/DirectConvolution.jl/src/directConvolution.jl::21][directConvolution.jl]], [[DBvcbdNU][back to index]]
- - @@latex:\phantomsection@@ *=MirrorBE=*  <<NlHjKfzk>>
+ [[file:/home/picaud/GitHub/DirectConvolution.jl/src/directConvolution.jl::21][directConvolution.jl:21]], [[o48QmWNy][back to index]]
+ - @@latex:\phantomsection@@ *=MirrorBE=*  <<8SqYsCPL>>
  #+BEGIN_SRC julia :eval never :exports code
  struct MirrorBE <: BoundaryExtension
  #+END_SRC
- [[file:/home/picaud/GitHub/DirectConvolution.jl/src/directConvolution.jl::25][directConvolution.jl]], [[DBvcbdNU][back to index]]
- - @@latex:\phantomsection@@ *=PeriodicBE=*  <<59X8dWEW>>
+ [[file:/home/picaud/GitHub/DirectConvolution.jl/src/directConvolution.jl::25][directConvolution.jl:25]], [[o48QmWNy][back to index]]
+ - @@latex:\phantomsection@@ *=PeriodicBE=*  <<tEN7PiTF>>
  #+BEGIN_SRC julia :eval never :exports code
  struct PeriodicBE <: BoundaryExtension
  #+END_SRC
- [[file:/home/picaud/GitHub/DirectConvolution.jl/src/directConvolution.jl::23][directConvolution.jl]], [[DBvcbdNU][back to index]]
- - @@latex:\phantomsection@@ *=ZeroPaddingBE=*  <<9ALJON6Z>>
+ [[file:/home/picaud/GitHub/DirectConvolution.jl/src/directConvolution.jl::23][directConvolution.jl:23]], [[o48QmWNy][back to index]]
+ - @@latex:\phantomsection@@ *=ZeroPaddingBE=*  <<YFAuWbiF>>
  #+BEGIN_SRC julia :eval never :exports code
  struct ZeroPaddingBE <: BoundaryExtension
  #+END_SRC
- [[file:/home/picaud/GitHub/DirectConvolution.jl/src/directConvolution.jl::19][directConvolution.jl]], [[DBvcbdNU][back to index]]
- - @@latex:\phantomsection@@ *=boundaryExtension=*  <<iS10tLrK>>
+ [[file:/home/picaud/GitHub/DirectConvolution.jl/src/directConvolution.jl::19][directConvolution.jl:19]], [[o48QmWNy][back to index]]
+ - @@latex:\phantomsection@@ *=boundaryExtension=*  <<B9fmWgD0>>
  #+BEGIN_SRC julia :eval never :exports code
  function boundaryExtension(β::AbstractArray{T,1},
 			    k::Int,
@@ -126,6 +242,8 @@ print_org_doc(documented_items,tag="BoundaryExtension",header_level=0)
  #+END_SRC
 
  #+RESULTS:
+ | -5 | -4 | -3 | -2 | -1 | 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 |
+ |  0 |  0 |  0 |  0 |  0 | 0 | 1 | 2 | 3 | 0 | 0 | 0 | 0 | 0 | 0 |  0 |
 
  #+BEGIN_SRC julia
  -5:10
@@ -153,7 +271,7 @@ print_org_doc(documented_items,tag="BoundaryExtension",header_level=0)
  | 10 |
 
  #+END_QUOTE
- [[file:/home/picaud/GitHub/DirectConvolution.jl/src/directConvolution.jl::109][directConvolution.jl]], [[DBvcbdNU][back to index]]
+ [[file:/home/picaud/GitHub/DirectConvolution.jl/src/directConvolution.jl::109][directConvolution.jl:109]], [[o48QmWNy][back to index]]
 
  #+BEGIN_SRC julia :eval never :exports code
  function boundaryExtension(β::AbstractArray{T,1},
@@ -196,7 +314,7 @@ print_org_doc(documented_items,tag="BoundaryExtension",header_level=0)
  | 10 |
 
  #+END_QUOTE
- [[file:/home/picaud/GitHub/DirectConvolution.jl/src/directConvolution.jl::127][directConvolution.jl]], [[DBvcbdNU][back to index]]
+ [[file:/home/picaud/GitHub/DirectConvolution.jl/src/directConvolution.jl::127][directConvolution.jl:127]], [[o48QmWNy][back to index]]
 
  #+BEGIN_SRC julia :eval never :exports code
  function boundaryExtension(β::AbstractArray{T,1},
@@ -239,7 +357,7 @@ print_org_doc(documented_items,tag="BoundaryExtension",header_level=0)
  | 10 |
 
  #+END_QUOTE
- [[file:/home/picaud/GitHub/DirectConvolution.jl/src/directConvolution.jl::147][directConvolution.jl]], [[DBvcbdNU][back to index]]
+ [[file:/home/picaud/GitHub/DirectConvolution.jl/src/directConvolution.jl::147][directConvolution.jl:147]], [[o48QmWNy][back to index]]
 
  #+BEGIN_SRC julia :eval never :exports code
  function boundaryExtension(β::AbstractArray{T,1},
@@ -282,8 +400,8 @@ print_org_doc(documented_items,tag="BoundaryExtension",header_level=0)
  | 10 |
 
  #+END_QUOTE
- [[file:/home/picaud/GitHub/DirectConvolution.jl/src/directConvolution.jl::161][directConvolution.jl]], [[DBvcbdNU][back to index]]
- - @@latex:\phantomsection@@ *=compute_Ωγ1=*  <<hFYnSayM>>
+ [[file:/home/picaud/GitHub/DirectConvolution.jl/src/directConvolution.jl::161][directConvolution.jl:161]], [[o48QmWNy][back to index]]
+ - @@latex:\phantomsection@@ *=compute_Ωγ1=*  <<oPfd54Oq>>
  #+BEGIN_SRC julia :eval never :exports code
  function compute_Ωγ1(Ωα::UnitRange{Int},
 		      λ::Int,
@@ -340,8 +458,8 @@ print_org_doc(documented_items,tag="BoundaryExtension",header_level=0)
  | 18 |
 
  #+END_QUOTE
- [[file:/home/picaud/GitHub/DirectConvolution.jl/src/directConvolution.jl::47][directConvolution.jl]], [[DBvcbdNU][back to index]]
- - @@latex:\phantomsection@@ *=relativeComplement_left=*  <<b0z5Axer>>
+ [[file:/home/picaud/GitHub/DirectConvolution.jl/src/directConvolution.jl::47][directConvolution.jl:47]], [[o48QmWNy][back to index]]
+ - @@latex:\phantomsection@@ *=relativeComplement_left=*  <<UfGFpaZ7>>
  #+BEGIN_SRC julia :eval never :exports code
  function relativeComplement_left(A::UnitRange{Int},
 				  B::UnitRange{Int})
@@ -369,8 +487,8 @@ print_org_doc(documented_items,tag="BoundaryExtension",header_level=0)
  $(A\setminus B)=\{6,7,8,9,10\}$ and the left part (elements that are
  $\in A$ but on the left side of $B$) is *empty*.
  #+END_QUOTE
- [[file:/home/picaud/GitHub/DirectConvolution.jl/src/directConvolution.jl::69][directConvolution.jl]], [[DBvcbdNU][back to index]]
- - @@latex:\phantomsection@@ *=relativeComplement_right=*  <<q3DObmcL>>
+ [[file:/home/picaud/GitHub/DirectConvolution.jl/src/directConvolution.jl::69][directConvolution.jl:69]], [[o48QmWNy][back to index]]
+ - @@latex:\phantomsection@@ *=relativeComplement_right=*  <<M0ywna74>>
  #+BEGIN_SRC julia :eval never :exports code
  function relativeComplement_right(A::UnitRange{Int},
 				   B::UnitRange{Int})
@@ -408,8 +526,8 @@ print_org_doc(documented_items,tag="BoundaryExtension",header_level=0)
  $(A\setminus B)=\{6,7,8,9,10\}$ and the right part (elements that are
  $\in A$ but on the right side of $B$) are $\{6,7,8,9,10\}$
  #+END_QUOTE
- [[file:/home/picaud/GitHub/DirectConvolution.jl/src/directConvolution.jl::88][directConvolution.jl]], [[DBvcbdNU][back to index]]
- - @@latex:\phantomsection@@ *=scale=*  <<aOpeXe2L>>
+ [[file:/home/picaud/GitHub/DirectConvolution.jl/src/directConvolution.jl::88][directConvolution.jl:88]], [[o48QmWNy][back to index]]
+ - @@latex:\phantomsection@@ *=scale=*  <<s7T9PtwU>>
  #+BEGIN_SRC julia :eval never :exports code
  function scale(λ::Int,Ω::UnitRange{Int})
  #+END_SRC
@@ -462,7 +580,7 @@ print_org_doc(documented_items,tag="BoundaryExtension",header_level=0)
  | -12 |
 
  #+END_QUOTE
- [[file:/home/picaud/GitHub/DirectConvolution.jl/src/directConvolution.jl::30][directConvolution.jl]], [[DBvcbdNU][back to index]]
+ [[file:/home/picaud/GitHub/DirectConvolution.jl/src/directConvolution.jl::30][directConvolution.jl:30]], [[o48QmWNy][back to index]]
  :END:
 
 *** Convolution computation
@@ -476,8 +594,8 @@ print_org_doc(documented_items,tag="Convolution",header_level=0)
  :RESULTS:
 
  # =WARNING:= Link target ("range_filter", "") not found
- <<slzeaQwS>> *Index:* *[d]* [[lOEhAGkS][directConv]], [[sJfVbO2Q][directConv!]], [[h8dZdFvp][directCrossCorrelation]] *[f]* [[3aOvHErS][filter_range]] 
- - @@latex:\phantomsection@@ *=directConv=*  <<lOEhAGkS>>
+ <<ZmA4ACsJ>> *Index:* *[d]* [[Gk7SMpWt][directConv]], [[Hjdlx5ue][directConv!]], [[UVeyNfdM][directCrossCorrelation]] *[f]* [[yVW637UF][filter_range]] 
+ - @@latex:\phantomsection@@ *=directConv=*  <<Gk7SMpWt>>
  #+BEGIN_SRC julia :eval never :exports code
  function directConv(α::LinearFilter{T},
 
@@ -494,7 +612,7 @@ print_org_doc(documented_items,tag="Convolution",header_level=0)
  Computes a convolution.
 
  Convenience function that allocate $\gamma$ and compute all its
- component using [[ViF3ZWjsdirectConv_details][directConv!(...)]]
+ component using [[BToluQmWdirectConv_details][directConv!(...)]]
 
  *Returns:* $\gamma$ a created vector of length identical to the $\beta$ one.
 
@@ -520,7 +638,7 @@ print_org_doc(documented_items,tag="Convolution",header_level=0)
  #+RESULTS:
 
  #+END_QUOTE
- [[file:/home/picaud/GitHub/DirectConvolution.jl/src/directConvolution.jl::296][directConvolution.jl]], [[slzeaQwS][back to index]]
+ [[file:/home/picaud/GitHub/DirectConvolution.jl/src/directConvolution.jl::296][directConvolution.jl:296]], [[ZmA4ACsJ][back to index]]
 
  #+BEGIN_SRC julia :eval never :exports code
  function directConv(α::LinearFilter{T},
@@ -538,8 +656,8 @@ print_org_doc(documented_items,tag="Convolution",header_level=0)
 
  *Returns:* $\gamma$ a created vector of length identical to the $\beta$ one.
  #+END_QUOTE
- [[file:/home/picaud/GitHub/DirectConvolution.jl/src/directConvolution.jl::342][directConvolution.jl]], [[slzeaQwS][back to index]]
- - @@latex:\phantomsection@@ *=directConv!=*  <<sJfVbO2Q>>
+ [[file:/home/picaud/GitHub/DirectConvolution.jl/src/directConvolution.jl::342][directConvolution.jl:342]], [[ZmA4ACsJ][back to index]]
+ - @@latex:\phantomsection@@ *=directConv!=*  <<Hjdlx5ue>>
  #+BEGIN_SRC julia :eval never :exports code
  function directConv!(tilde_α::AbstractArray{T,1},
 		      α_offset::Int,
@@ -553,8 +671,8 @@ print_org_doc(documented_items,tag="Convolution",header_level=0)
 							   LeftBE <: BoundaryExtension,
 							   RightBE <: BoundaryExtension}
  #+END_SRC
- [[file:/home/picaud/GitHub/DirectConvolution.jl/src/directConvolution.jl::178][directConvolution.jl]], [[slzeaQwS][back to index]]
-  @@latex:\phantomsection@@  <<ViF3ZWjsdirectConv_details>>
+ [[file:/home/picaud/GitHub/DirectConvolution.jl/src/directConvolution.jl::178][directConvolution.jl:178]], [[ZmA4ACsJ][back to index]]
+  @@latex:\phantomsection@@  <<BToluQmWdirectConv_details>>
  #+BEGIN_SRC julia :eval never :exports code
  function directConv!(α::LinearFilter{T},
 		      λ::Int,
@@ -608,8 +726,8 @@ print_org_doc(documented_items,tag="Convolution",header_level=0)
  #+RESULTS:
 
  #+END_QUOTE
- [[file:/home/picaud/GitHub/DirectConvolution.jl/src/directConvolution.jl::239][directConvolution.jl]], [[slzeaQwS][back to index]]
- - @@latex:\phantomsection@@ *=directCrossCorrelation=*  <<h8dZdFvp>>
+ [[file:/home/picaud/GitHub/DirectConvolution.jl/src/directConvolution.jl::239][directConvolution.jl:239]], [[ZmA4ACsJ][back to index]]
+ - @@latex:\phantomsection@@ *=directCrossCorrelation=*  <<UVeyNfdM>>
  #+BEGIN_SRC julia :eval never :exports code
  function directCrossCorrelation(α::LinearFilter{T},
 				 β::AbstractArray{T,1},
@@ -626,8 +744,8 @@ print_org_doc(documented_items,tag="Convolution",header_level=0)
 
  *Returns:* $\gamma$ a created vector of length identical to the $\beta$ one.
  #+END_QUOTE
- [[file:/home/picaud/GitHub/DirectConvolution.jl/src/directConvolution.jl::361][directConvolution.jl]], [[slzeaQwS][back to index]]
- - @@latex:\phantomsection@@ *=filter_range=*  <<3aOvHErS>>
+ [[file:/home/picaud/GitHub/DirectConvolution.jl/src/directConvolution.jl::361][directConvolution.jl:361]], [[ZmA4ACsJ][back to index]]
+ - @@latex:\phantomsection@@ *=filter_range=*  <<yVW637UF>>
  #+BEGIN_SRC julia :eval never :exports code
  filter_range(size::Int,offset::Int)::UnitRange
  #+END_SRC
@@ -637,8 +755,71 @@ print_org_doc(documented_items,tag="Convolution",header_level=0)
 
  *Caveat:* do not overload Base.range !!! 
  #+END_QUOTE
- [[file:/home/picaud/GitHub/DirectConvolution.jl/src/linearFilter.jl::28][linearFilter.jl]], [[slzeaQwS][back to index]]
+ [[file:/home/picaud/GitHub/DirectConvolution.jl/src/linearFilter.jl::28][linearFilter.jl:28]], [[ZmA4ACsJ][back to index]]
  :END:
+
+** Savitzky-Golay Filters
+#+BEGIN_SRC julia :results output drawer :eval no-export :exports results
+documented_items=create_documented_item_array_dir("~/GitHub/DirectConvolution.jl/src/");
+print_org_doc(documented_items,tag="SG_Filters",tag_to_ignore="Internal",header_level=0)
+#+END_SRC
+
+#+RESULTS:
+:RESULTS:
+
+<<uXjgzjoj>> *Index:* *[S]* [[0MFxlzF9][SG_Filter]], [[u9Pq5wG4][SavitzkyGolay_Filter_Set]] *[f]* [[nK7SkXEh][filter]] *[l]* [[JcdjC6n8][length]] *[m]* [[L0tTK4Ng][maxDerivativeOrder]] *[p]* [[ipIKoFRA][polynomialOrder]] 
+- @@latex:\phantomsection@@ *=SG_Filter=*  <<0MFxlzF9>> <<fggBK5vrSG_Filters_Constructor>>
+#+BEGIN_SRC julia :eval never :exports code
+function SG_Filter(T::DataType=Float64;halfWidth::Int=5,degree::Int=2)
+#+END_SRC
+#+BEGIN_QUOTE
+Creates a set of Savitzky-Golay filters
+
+- filter length is 2*halfWidth+1
+- polynomial degree is degree
+#+END_QUOTE
+[[file:/home/picaud/GitHub/DirectConvolution.jl/src/SG_Filter.jl::57][SG_Filter.jl:57]], [[uXjgzjoj][back to index]]
+- @@latex:\phantomsection@@ *=SavitzkyGolay_Filter_Set=*  <<u9Pq5wG4>>
+#+BEGIN_SRC julia :eval never :exports code
+struct SavitzkyGolay_Filter_Set{T<:AbstractFloat,N}
+#+END_SRC
+#+BEGIN_QUOTE
+A structure to store Savitzky-Golay filters.
+#+END_QUOTE
+[[file:/home/picaud/GitHub/DirectConvolution.jl/src/SG_Filter.jl::32][SG_Filter.jl:32]], [[uXjgzjoj][back to index]]
+- @@latex:\phantomsection@@ *=filter=*  <<nK7SkXEh>>
+#+BEGIN_SRC julia :eval never :exports code
+filter(sg::SavitzkyGolay_Filter_Set{T,N};derivativeOrder::Int=0) where {T<:AbstractFloat,N}
+#+END_SRC
+#+BEGIN_QUOTE
+Returns the filter to be used to compute the  smoothed derivatives of order *derivativeOrder*.
+#+END_QUOTE
+[[file:/home/picaud/GitHub/DirectConvolution.jl/src/SG_Filter.jl::39][SG_Filter.jl:39]], [[uXjgzjoj][back to index]]
+- @@latex:\phantomsection@@ *=length=*  <<JcdjC6n8>>
+#+BEGIN_SRC julia :eval never :exports code
+length(sg::SavitzkyGolay_Filter_Set{T,N}) where {T<:AbstractFloat,N}
+#+END_SRC
+#+BEGIN_QUOTE
+Returns filter length, this is an odd number, see [[fggBK5vrSG_Filters_Constructor][SG_Filter(...)]]
+#+END_QUOTE
+[[file:/home/picaud/GitHub/DirectConvolution.jl/src/SG_Filter.jl::44][SG_Filter.jl:44]], [[uXjgzjoj][back to index]]
+- @@latex:\phantomsection@@ *=maxDerivativeOrder=*  <<L0tTK4Ng>>
+#+BEGIN_SRC julia :eval never :exports code
+maxDerivativeOrder(sg::SavitzkyGolay_Filter_Set{T,N}) where {T<:AbstractFloat,N}
+#+END_SRC
+#+BEGIN_QUOTE
+Maximum order of the smoothed derivatives we can compute with *sg*
+#+END_QUOTE
+[[file:/home/picaud/GitHub/DirectConvolution.jl/src/SG_Filter.jl::48][SG_Filter.jl:48]], [[uXjgzjoj][back to index]]
+- @@latex:\phantomsection@@ *=polynomialOrder=*  <<ipIKoFRA>>
+#+BEGIN_SRC julia :eval never :exports code
+polynomialOrder(sg::SavitzkyGolay_Filter_Set{T,N}) where {T<:AbstractFloat,N}
+#+END_SRC
+#+BEGIN_QUOTE
+Returns the degree of the polynomial used to construct the Savitzky-Golay filters, see [[fggBK5vrSG_Filters_Constructor][SG_Filter(...)]].
+#+END_QUOTE
+[[file:/home/picaud/GitHub/DirectConvolution.jl/src/SG_Filter.jl::53][SG_Filter.jl:53]], [[uXjgzjoj][back to index]]
+:END:
 
 ** Undecimated Wavelet Transform
 *** UDWT Filters
@@ -650,8 +831,8 @@ print_org_doc(documented_items,tag="UDWT_Filter",header_level=0,case_sensitive=t
  #+RESULTS:
  :RESULTS:
 
- <<7BnhuQ2F>> *Index:* *[U]* [[Jae42X9U][UDWT_Filter]], [[WF7MErCJ][UDWT_Filter_Biorthogonal]], [[wtgho0b4][UDWT_Filter_Haar]], [[7H2mLxMl][UDWT_Filter_Starck2]] *[e]* [[XZsXs0xY][export]] *[t]* [[5LC0YRE7][tildeψ_filter]], [[QEdBHBeO][tildeψ_offset]], [[2E7yElGR][tildeϕ_filter]], [[j6Ec9PMt][tildeϕ_offset]] *[ψ]* [[NnkcTr1o][ψ_filter]], [[3asoLeoj][ψ_offset]] *[ϕ]* [[Fhnsu5gi][ϕ_filter]], [[TvdyJlt1][ϕ_offset]] 
- - @@latex:\phantomsection@@ *=UDWT_Filter=*  <<Jae42X9U>>
+ <<FsgrIOip>> *Index:* *[U]* [[eM23t55f][UDWT_Filter]], [[WTihHKnj][UDWT_Filter_Biorthogonal]], [[ZaY1UNtr][UDWT_Filter_Haar]], [[R1T6RfzI][UDWT_Filter_Starck2]] *[e]* [[pEkbFAgx][export]] *[t]* [[r5EOELLI][tildeψ_filter]], [[WMW8ECyV][tildeψ_offset]], [[d1gbTrDN][tildeϕ_filter]], [[3UJ3Wh8l][tildeϕ_offset]] *[ψ]* [[kGyoKSnA][ψ_filter]], [[GqAIbwkd][ψ_offset]] *[ϕ]* [[uugcyfJ4][ϕ_filter]], [[aivV2vL2][ϕ_offset]] 
+ - @@latex:\phantomsection@@ *=UDWT_Filter=*  <<eM23t55f>>
  #+BEGIN_SRC julia :eval never :exports code
  abstract type UDWT_Filter{T<:Number} <: UDWT_Filter_Biorthogonal{T}
  #+END_SRC
@@ -662,8 +843,8 @@ print_org_doc(documented_items,tag="UDWT_Filter",header_level=0,case_sensitive=t
  For orthogonal filters we have: $\phi=\tilde{\phi}$ and $\psi=\tilde{\psi}$
 
  #+END_QUOTE
- [[file:/home/picaud/GitHub/DirectConvolution.jl/src/udwt.jl::40][udwt.jl]], [[7BnhuQ2F][back to index]]
- - @@latex:\phantomsection@@ *=UDWT_Filter_Biorthogonal=*  <<WF7MErCJ>>
+ [[file:/home/picaud/GitHub/DirectConvolution.jl/src/udwt.jl::40][udwt.jl:40]], [[FsgrIOip][back to index]]
+ - @@latex:\phantomsection@@ *=UDWT_Filter_Biorthogonal=*  <<WTihHKnj>>
  #+BEGIN_SRC julia :eval never :exports code
  abstract type UDWT_Filter_Biorthogonal{T<:Number} 
  #+END_SRC
@@ -674,15 +855,15 @@ print_org_doc(documented_items,tag="UDWT_Filter",header_level=0,case_sensitive=t
 
  - [X] TODO must use LinearFilter struct 
  #+END_QUOTE
- [[file:/home/picaud/GitHub/DirectConvolution.jl/src/udwt.jl::12][udwt.jl]], [[7BnhuQ2F][back to index]]
- - @@latex:\phantomsection@@ *=UDWT_Filter_Haar=*  <<wtgho0b4>>
+ [[file:/home/picaud/GitHub/DirectConvolution.jl/src/udwt.jl::12][udwt.jl:12]], [[FsgrIOip][back to index]]
+ - @@latex:\phantomsection@@ *=UDWT_Filter_Haar=*  <<ZaY1UNtr>>
  #+BEGIN_SRC julia :eval never :exports code
  struct UDWT_Filter_Haar{T<:AbstractFloat} <: UDWT_Filter{T}
  #+END_SRC
  #+BEGIN_QUOTE
  Haar filter
  #+END_QUOTE
- [[file:/home/picaud/GitHub/DirectConvolution.jl/src/udwt.jl::66][udwt.jl]], [[7BnhuQ2F][back to index]]
+ [[file:/home/picaud/GitHub/DirectConvolution.jl/src/udwt.jl::66][udwt.jl:66]], [[FsgrIOip][back to index]]
 
  #+BEGIN_SRC julia :eval never :exports code
  UDWT_Filter_Haar{T}() where {T<:Real}
@@ -690,8 +871,8 @@ print_org_doc(documented_items,tag="UDWT_Filter",header_level=0,case_sensitive=t
  #+BEGIN_QUOTE
  Creates an instance
  #+END_QUOTE
- [[file:/home/picaud/GitHub/DirectConvolution.jl/src/udwt.jl::72][udwt.jl]], [[7BnhuQ2F][back to index]]
- - @@latex:\phantomsection@@ *=UDWT_Filter_Starck2=*  <<7H2mLxMl>>
+ [[file:/home/picaud/GitHub/DirectConvolution.jl/src/udwt.jl::72][udwt.jl:72]], [[FsgrIOip][back to index]]
+ - @@latex:\phantomsection@@ *=UDWT_Filter_Starck2=*  <<R1T6RfzI>>
  #+BEGIN_SRC julia :eval never :exports code
  struct UDWT_Filter_Starck2{T<:AbstractFloat} <: UDWT_Filter_Biorthogonal{T}
  #+END_SRC
@@ -700,7 +881,7 @@ print_org_doc(documented_items,tag="UDWT_Filter",header_level=0,case_sensitive=t
 
  Defined by Eq. 6 from http://ieeexplore.ieee.org/stamp/stamp.jsp?tp=&arnumber=4060954
  #+END_QUOTE
- [[file:/home/picaud/GitHub/DirectConvolution.jl/src/udwt.jl::80][udwt.jl]], [[7BnhuQ2F][back to index]]
+ [[file:/home/picaud/GitHub/DirectConvolution.jl/src/udwt.jl::80][udwt.jl:80]], [[FsgrIOip][back to index]]
 
  #+BEGIN_SRC julia :eval never :exports code
  UDWT_Filter_Starck2{T}() where {T<:Real}
@@ -708,77 +889,77 @@ print_org_doc(documented_items,tag="UDWT_Filter",header_level=0,case_sensitive=t
  #+BEGIN_QUOTE
  Creates an instance
  #+END_QUOTE
- [[file:/home/picaud/GitHub/DirectConvolution.jl/src/udwt.jl::90][udwt.jl]], [[7BnhuQ2F][back to index]]
- - @@latex:\phantomsection@@ *=export=*  <<XZsXs0xY>>
+ [[file:/home/picaud/GitHub/DirectConvolution.jl/src/udwt.jl::90][udwt.jl:90]], [[FsgrIOip][back to index]]
+ - @@latex:\phantomsection@@ *=export=*  <<pEkbFAgx>>
  #+BEGIN_SRC julia :eval never :exports code
  export UDWT_Filter_Haar, UDWT_Filter_Starck2
  #+END_SRC
- [[file:/home/picaud/GitHub/DirectConvolution.jl/src/udwt.jl::1][udwt.jl]], [[7BnhuQ2F][back to index]]
+ [[file:/home/picaud/GitHub/DirectConvolution.jl/src/udwt.jl::1][udwt.jl:1]], [[FsgrIOip][back to index]]
 
  #+BEGIN_SRC julia :eval never :exports code
  export ϕ_filter,ψ_filter,tildeϕ_filter,tildeψ_filter,ϕ_offset,ψ_offset,tildeϕ_offset,tildeψ_offset
  #+END_SRC
- [[file:/home/picaud/GitHub/DirectConvolution.jl/src/udwt.jl::3][udwt.jl]], [[7BnhuQ2F][back to index]]
- - @@latex:\phantomsection@@ *=tildeψ_filter=*  <<5LC0YRE7>>
+ [[file:/home/picaud/GitHub/DirectConvolution.jl/src/udwt.jl::3][udwt.jl:3]], [[FsgrIOip][back to index]]
+ - @@latex:\phantomsection@@ *=tildeψ_filter=*  <<r5EOELLI>>
  #+BEGIN_SRC julia :eval never :exports code
  tildeψ_filter(c::UDWT_Filter_Biorthogonal)::LinearFilter
  #+END_SRC
- [[file:/home/picaud/GitHub/DirectConvolution.jl/src/udwt.jl::27][udwt.jl]], [[7BnhuQ2F][back to index]]
+ [[file:/home/picaud/GitHub/DirectConvolution.jl/src/udwt.jl::27][udwt.jl:27]], [[FsgrIOip][back to index]]
 
  #+BEGIN_SRC julia :eval never :exports code
  tildeψ_filter(c::UDWT_Filter)::LinearFilter
  #+END_SRC
- [[file:/home/picaud/GitHub/DirectConvolution.jl/src/udwt.jl::53][udwt.jl]], [[7BnhuQ2F][back to index]]
- - @@latex:\phantomsection@@ *=tildeψ_offset=*  <<QEdBHBeO>>
+ [[file:/home/picaud/GitHub/DirectConvolution.jl/src/udwt.jl::53][udwt.jl:53]], [[FsgrIOip][back to index]]
+ - @@latex:\phantomsection@@ *=tildeψ_offset=*  <<WMW8ECyV>>
  #+BEGIN_SRC julia :eval never :exports code
  tildeψ_offset(c::UDWT_Filter_Biorthogonal)::Int
  #+END_SRC
- [[file:/home/picaud/GitHub/DirectConvolution.jl/src/udwt.jl::35][udwt.jl]], [[7BnhuQ2F][back to index]]
+ [[file:/home/picaud/GitHub/DirectConvolution.jl/src/udwt.jl::35][udwt.jl:35]], [[FsgrIOip][back to index]]
 
  #+BEGIN_SRC julia :eval never :exports code
  tildeψ_offset(c::UDWT_Filter)::Int
  #+END_SRC
- [[file:/home/picaud/GitHub/DirectConvolution.jl/src/udwt.jl::59][udwt.jl]], [[7BnhuQ2F][back to index]]
- - @@latex:\phantomsection@@ *=tildeϕ_filter=*  <<2E7yElGR>>
+ [[file:/home/picaud/GitHub/DirectConvolution.jl/src/udwt.jl::59][udwt.jl:59]], [[FsgrIOip][back to index]]
+ - @@latex:\phantomsection@@ *=tildeϕ_filter=*  <<d1gbTrDN>>
  #+BEGIN_SRC julia :eval never :exports code
  tildeϕ_filter(c::UDWT_Filter_Biorthogonal)::LinearFilter
  #+END_SRC
- [[file:/home/picaud/GitHub/DirectConvolution.jl/src/udwt.jl::25][udwt.jl]], [[7BnhuQ2F][back to index]]
+ [[file:/home/picaud/GitHub/DirectConvolution.jl/src/udwt.jl::25][udwt.jl:25]], [[FsgrIOip][back to index]]
 
  #+BEGIN_SRC julia :eval never :exports code
  tildeϕ_filter(c::UDWT_Filter)::LinearFilter
  #+END_SRC
- [[file:/home/picaud/GitHub/DirectConvolution.jl/src/udwt.jl::50][udwt.jl]], [[7BnhuQ2F][back to index]]
- - @@latex:\phantomsection@@ *=tildeϕ_offset=*  <<j6Ec9PMt>>
+ [[file:/home/picaud/GitHub/DirectConvolution.jl/src/udwt.jl::50][udwt.jl:50]], [[FsgrIOip][back to index]]
+ - @@latex:\phantomsection@@ *=tildeϕ_offset=*  <<3UJ3Wh8l>>
  #+BEGIN_SRC julia :eval never :exports code
  tildeϕ_offset(c::UDWT_Filter_Biorthogonal)::Int
  #+END_SRC
- [[file:/home/picaud/GitHub/DirectConvolution.jl/src/udwt.jl::33][udwt.jl]], [[7BnhuQ2F][back to index]]
+ [[file:/home/picaud/GitHub/DirectConvolution.jl/src/udwt.jl::33][udwt.jl:33]], [[FsgrIOip][back to index]]
 
  #+BEGIN_SRC julia :eval never :exports code
  tildeϕ_offset(c::UDWT_Filter)::Int
  #+END_SRC
- [[file:/home/picaud/GitHub/DirectConvolution.jl/src/udwt.jl::56][udwt.jl]], [[7BnhuQ2F][back to index]]
- - @@latex:\phantomsection@@ *=ψ_filter=*  <<NnkcTr1o>>
+ [[file:/home/picaud/GitHub/DirectConvolution.jl/src/udwt.jl::56][udwt.jl:56]], [[FsgrIOip][back to index]]
+ - @@latex:\phantomsection@@ *=ψ_filter=*  <<kGyoKSnA>>
  #+BEGIN_SRC julia :eval never :exports code
  ψ_filter(c::UDWT_Filter_Biorthogonal)::LinearFilter
  #+END_SRC
- [[file:/home/picaud/GitHub/DirectConvolution.jl/src/udwt.jl::23][udwt.jl]], [[7BnhuQ2F][back to index]]
- - @@latex:\phantomsection@@ *=ψ_offset=*  <<3asoLeoj>>
+ [[file:/home/picaud/GitHub/DirectConvolution.jl/src/udwt.jl::23][udwt.jl:23]], [[FsgrIOip][back to index]]
+ - @@latex:\phantomsection@@ *=ψ_offset=*  <<GqAIbwkd>>
  #+BEGIN_SRC julia :eval never :exports code
  ψ_offset(c::UDWT_Filter_Biorthogonal)::Int
  #+END_SRC
- [[file:/home/picaud/GitHub/DirectConvolution.jl/src/udwt.jl::31][udwt.jl]], [[7BnhuQ2F][back to index]]
- - @@latex:\phantomsection@@ *=ϕ_filter=*  <<Fhnsu5gi>>
+ [[file:/home/picaud/GitHub/DirectConvolution.jl/src/udwt.jl::31][udwt.jl:31]], [[FsgrIOip][back to index]]
+ - @@latex:\phantomsection@@ *=ϕ_filter=*  <<uugcyfJ4>>
  #+BEGIN_SRC julia :eval never :exports code
  ϕ_filter(c::UDWT_Filter_Biorthogonal)::LinearFilter
  #+END_SRC
- [[file:/home/picaud/GitHub/DirectConvolution.jl/src/udwt.jl::21][udwt.jl]], [[7BnhuQ2F][back to index]]
- - @@latex:\phantomsection@@ *=ϕ_offset=*  <<TvdyJlt1>>
+ [[file:/home/picaud/GitHub/DirectConvolution.jl/src/udwt.jl::21][udwt.jl:21]], [[FsgrIOip][back to index]]
+ - @@latex:\phantomsection@@ *=ϕ_offset=*  <<aivV2vL2>>
  #+BEGIN_SRC julia :eval never :exports code
  ϕ_offset(c::UDWT_Filter_Biorthogonal)::Int
  #+END_SRC
- [[file:/home/picaud/GitHub/DirectConvolution.jl/src/udwt.jl::29][udwt.jl]], [[7BnhuQ2F][back to index]]
+ [[file:/home/picaud/GitHub/DirectConvolution.jl/src/udwt.jl::29][udwt.jl:29]], [[FsgrIOip][back to index]]
  :END:
 
 *** UDWT Computational subroutines
@@ -788,15 +969,15 @@ print_org_doc(documented_items,tag="UDWT",header_level=0)
 
  #+RESULTS:
  :RESULTS:
- <<r1zggBFD>> *Index:* *[U]* [[SlruEqZm][UDWT]] *[e]* [[B2Qr33u6][export]] *[i]* [[EDa7ChXh][inverse_udwt]], [[EqC7v1ze][inverse_udwt!]] *[l]* [[jTnzQULM][length]] *[s]* [[PMTbdxyV][scale]] *[u]* [[4gR8g5kq][udwt]] 
- - @@latex:\phantomsection@@ *=UDWT=*  <<SlruEqZm>>
+ <<myWmnwMh>> *Index:* *[U]* [[XdD1Qafu][UDWT]] *[e]* [[4M9BFkRO][export]] *[i]* [[ASOkNWG3][inverse_udwt]], [[FsOXBv4i][inverse_udwt!]] *[l]* [[e0nQ5UDw][length]] *[s]* [[Rdl1ta7X][scale]] *[u]* [[GRV5vzww][udwt]] 
+ - @@latex:\phantomsection@@ *=UDWT=*  <<XdD1Qafu>>
  #+BEGIN_SRC julia :eval never :exports code
  struct UDWT{T<:Number}
  #+END_SRC
  #+BEGIN_QUOTE
  A structure to store 1D UDWT
  #+END_QUOTE
- [[file:/home/picaud/GitHub/DirectConvolution.jl/src/udwt.jl::99][udwt.jl]], [[r1zggBFD][back to index]]
+ [[file:/home/picaud/GitHub/DirectConvolution.jl/src/udwt.jl::99][udwt.jl:99]], [[myWmnwMh][back to index]]
 
  #+BEGIN_SRC julia :eval never :exports code
  UDWT{T}(filter::UDWT_Filter_Biorthogonal{T};
@@ -811,13 +992,13 @@ print_org_doc(documented_items,tag="UDWT",header_level=0)
  - *scale* : max scale
  - *n*: signal length
  #+END_QUOTE
- [[file:/home/picaud/GitHub/DirectConvolution.jl/src/udwt.jl::110][udwt.jl]], [[r1zggBFD][back to index]]
- - @@latex:\phantomsection@@ *=export=*  <<B2Qr33u6>>
+ [[file:/home/picaud/GitHub/DirectConvolution.jl/src/udwt.jl::110][udwt.jl:110]], [[myWmnwMh][back to index]]
+ - @@latex:\phantomsection@@ *=export=*  <<4M9BFkRO>>
  #+BEGIN_SRC julia :eval never :exports code
  export udwt, scale, inverse_udwt!, inverse_udwt
  #+END_SRC
- [[file:/home/picaud/GitHub/DirectConvolution.jl/src/udwt.jl::5][udwt.jl]], [[r1zggBFD][back to index]]
- - @@latex:\phantomsection@@ *=inverse_udwt=*  <<EDa7ChXh>>
+ [[file:/home/picaud/GitHub/DirectConvolution.jl/src/udwt.jl::5][udwt.jl:5]], [[myWmnwMh][back to index]]
+ - @@latex:\phantomsection@@ *=inverse_udwt=*  <<ASOkNWG3>>
  #+BEGIN_SRC julia :eval never :exports code
  function inverse_udwt(udwt_domain::UDWT{T})::Array{T,1} where {T<:Number}
  #+END_SRC
@@ -826,8 +1007,8 @@ print_org_doc(documented_items,tag="UDWT",header_level=0)
 
  *Returns:* a vector containing the reconstructed signal.
  #+END_QUOTE
- [[file:/home/picaud/GitHub/DirectConvolution.jl/src/udwt.jl::250][udwt.jl]], [[r1zggBFD][back to index]]
- - @@latex:\phantomsection@@ *=inverse_udwt!=*  <<EqC7v1ze>>
+ [[file:/home/picaud/GitHub/DirectConvolution.jl/src/udwt.jl::250][udwt.jl:250]], [[myWmnwMh][back to index]]
+ - @@latex:\phantomsection@@ *=inverse_udwt!=*  <<FsOXBv4i>>
  #+BEGIN_SRC julia :eval never :exports code
  function inverse_udwt!(udwt_domain::UDWT{T},reconstructed_signal::AbstractArray{T,1}) where {T<:Number}
  #+END_SRC
@@ -836,24 +1017,24 @@ print_org_doc(documented_items,tag="UDWT",header_level=0)
 
  *Caveat:* uses a pre-allocated vector =reconstructed_signal=
  #+END_QUOTE
- [[file:/home/picaud/GitHub/DirectConvolution.jl/src/udwt.jl::193][udwt.jl]], [[r1zggBFD][back to index]]
- - @@latex:\phantomsection@@ *=length=*  <<jTnzQULM>>
+ [[file:/home/picaud/GitHub/DirectConvolution.jl/src/udwt.jl::193][udwt.jl:193]], [[myWmnwMh][back to index]]
+ - @@latex:\phantomsection@@ *=length=*  <<e0nQ5UDw>>
  #+BEGIN_SRC julia :eval never :exports code
  length(udwt::UDWT)::Int
  #+END_SRC
  #+BEGIN_QUOTE
  Returns expected signal length
  #+END_QUOTE
- [[file:/home/picaud/GitHub/DirectConvolution.jl/src/udwt.jl::129][udwt.jl]], [[r1zggBFD][back to index]]
- - @@latex:\phantomsection@@ *=scale=*  <<PMTbdxyV>>
+ [[file:/home/picaud/GitHub/DirectConvolution.jl/src/udwt.jl::129][udwt.jl:129]], [[myWmnwMh][back to index]]
+ - @@latex:\phantomsection@@ *=scale=*  <<Rdl1ta7X>>
  #+BEGIN_SRC julia :eval never :exports code
  scale(udwt::UDWT)::Int
  #+END_SRC
  #+BEGIN_QUOTE
  Returns max scale
  #+END_QUOTE
- [[file:/home/picaud/GitHub/DirectConvolution.jl/src/udwt.jl::126][udwt.jl]], [[r1zggBFD][back to index]]
- - @@latex:\phantomsection@@ *=udwt=*  <<4gR8g5kq>>
+ [[file:/home/picaud/GitHub/DirectConvolution.jl/src/udwt.jl::126][udwt.jl:126]], [[myWmnwMh][back to index]]
+ - @@latex:\phantomsection@@ *=udwt=*  <<GRV5vzww>>
  #+BEGIN_SRC julia :eval never :exports code
  function udwt(signal::AbstractArray{T,1},filter::UDWT_Filter_Biorthogonal{T};scale::Int=3) where {T<:Number}
  #+END_SRC
@@ -864,7 +1045,7 @@ print_org_doc(documented_items,tag="UDWT",header_level=0)
  $$(\mathcal{V}_{j+1}f)[u]=(\bar{h}_j*\mathcal{V}_{j}f)[u]$$
 
  #+END_QUOTE
- [[file:/home/picaud/GitHub/DirectConvolution.jl/src/udwt.jl::133][udwt.jl]], [[r1zggBFD][back to index]]
+ [[file:/home/picaud/GitHub/DirectConvolution.jl/src/udwt.jl::133][udwt.jl:133]], [[myWmnwMh][back to index]]
  :END:
 
 

@@ -2,6 +2,8 @@ export SG_Filter
 export SavitzkyGolay_Filter, SavitzkyGolay_Filter_Set
 export maxDerivativeOrder, polynomialOrder
 
+import Base: filter, length
+
 function _Vandermonde(T::DataType=Float64;halfWidth::Int=5,degree::Int=2)::Array{T,2}
     
     @assert halfWidth>=0
@@ -27,24 +29,38 @@ function _Vandermonde(T::DataType=Float64;halfWidth::Int=5,degree::Int=2)::Array
 end
 
 
-# todo
+#+SG_Filters
+#
+# A structure to store Savitzky-Golay filters.
+#
 struct SavitzkyGolay_Filter_Set{T<:AbstractFloat,N}
     _filter_set::Array{LinearFilter_DefaultCentered{T,N},1}
 end
-
-Base.filter(sg::SavitzkyGolay_Filter_Set{T,N};derivativeOrder::Int=0) where {T<:AbstractFloat,N} = sg._filter_set[derivativeOrder+1]
-Base.length(sg::SavitzkyGolay_Filter_Set{T,N}) where {T<:AbstractFloat,N} = length(filter(sg))
+#+SG_Filters
+#
+# Returns the filter to be used to compute the  smoothed derivatives of order *derivativeOrder*.
+#
+filter(sg::SavitzkyGolay_Filter_Set{T,N};derivativeOrder::Int=0) where {T<:AbstractFloat,N} = sg._filter_set[derivativeOrder+1]
+#+SG_Filters
+#
+# Returns filter length, this is an odd number, see [[SG_Filters_Constructor][]]
+length(sg::SavitzkyGolay_Filter_Set{T,N}) where {T<:AbstractFloat,N} = length(filter(sg))
+#+SG_Filters
+#
+# Maximum order of the smoothed derivatives we can compute with *sg*
+#
 maxDerivativeOrder(sg::SavitzkyGolay_Filter_Set{T,N}) where {T<:AbstractFloat,N} = size(sg._filter_set,1)-1
+#+SG_Filters
+# Returns the degree of the polynomial used to construct the Savitzky-Golay filters, see [[SG_Filters_Constructor][]].
 polynomialOrder(sg::SavitzkyGolay_Filter_Set{T,N}) where {T<:AbstractFloat,N} = maxDerivativeOrder(sg)
     
-doc"""
-    SG_Filter(;halfWidth::Int=5,degree=2,T::Type=Float64)::Array{T,2}
-
-Returns Savitzky-Golay filter matrix.
-
-- filter length is 2*halfWidth+1
-- polynomial degree is degree
-"""                        
+#+SG_Filters L:SG_Filters_Constructor
+#
+# Creates a set of Savitzky-Golay filters
+#
+# - filter length is 2*halfWidth+1
+# - polynomial degree is degree
+#
 function SG_Filter(T::DataType=Float64;halfWidth::Int=5,degree::Int=2)
     @assert degree>=0
     @assert halfWidth>=1
