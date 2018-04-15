@@ -1,12 +1,15 @@
 #+SETUPFILE: ./Setup/setupFile.org
 #+TITLE: Direct Convolution Package
 
-
 This package goal is to compute convolution products 
 
-\begin{equation}
+\begin{equation*}
 \gamma[k]=\sum\limits_{i\in\Omega^\alpha}\alpha[i]\beta[k+\lambda i],\text{ with }\lambda\in\mathbb{Z}^*
-\end{equation}
+\end{equation*}
+
+
+#+ATTR_HTML: :align center :width 600px
+file:~/GitHub/DirectConvolution.jl/docs/figures/a_offset.png
 
 using direct (no FFT) methods. This can be helpful for short filters.
 
@@ -19,6 +22,15 @@ clone this repo and to browse it locally
 firefox docs/index.html
 #+END_SRC
 
-*Caveat:* this packages is still experimental and under development, *do not use it yet*!
+*Caveat:* this package is still in early development... This is the
+first package I publicly release. For documentation it uses
+=J4Org.jl=, a package I am currently developing to document code using
+Emacs Org-mode.
+
+This package is based on my old posts:
+- [[https://pixorblog.wordpress.com/2016/07/17/direct-convolution/][direct-convolution]]
+- [[https://pixorblog.wordpress.com/2016/07/13/savitzky-golay-filters-julia/][savitzky-golay-filters-julia]]
+- [[https://pixorblog.wordpress.com/2017/01/06/some-remarks-on-the-usage-of-derivatives-in-spectrum-processing/][some-remarks-on-the-usage-of-derivatives-in-spectrum-processing]]
+
 
 
