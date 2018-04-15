@@ -1,5 +1,5 @@
 export SG_Filter
-export SavitzkyGolay_Filter, SavitzkyGolay_Filter_Set
+export SavitzkyGolay_Filter, SG_Filter
 export maxDerivativeOrder, polynomialOrder
 
 import Base: filter, length
@@ -33,26 +33,26 @@ end
 #
 # A structure to store Savitzky-Golay filters.
 #
-struct SavitzkyGolay_Filter_Set{T<:AbstractFloat,N}
+struct SG_Filter{T<:AbstractFloat,N}
     _filter_set::Array{LinearFilter_DefaultCentered{T,N},1}
 end
 #+SG_Filters
 #
 # Returns the filter to be used to compute the  smoothed derivatives of order *derivativeOrder*.
 #
-filter(sg::SavitzkyGolay_Filter_Set{T,N};derivativeOrder::Int=0) where {T<:AbstractFloat,N} = sg._filter_set[derivativeOrder+1]
+filter(sg::SG_Filter{T,N};derivativeOrder::Int=0) where {T<:AbstractFloat,N} = sg._filter_set[derivativeOrder+1]
 #+SG_Filters
 #
 # Returns filter length, this is an odd number, see [[SG_Filters_Constructor][]]
-length(sg::SavitzkyGolay_Filter_Set{T,N}) where {T<:AbstractFloat,N} = length(filter(sg))
+length(sg::SG_Filter{T,N}) where {T<:AbstractFloat,N} = length(filter(sg))
 #+SG_Filters
 #
 # Maximum order of the smoothed derivatives we can compute with *sg*
 #
-maxDerivativeOrder(sg::SavitzkyGolay_Filter_Set{T,N}) where {T<:AbstractFloat,N} = size(sg._filter_set,1)-1
+maxDerivativeOrder(sg::SG_Filter{T,N}) where {T<:AbstractFloat,N} = size(sg._filter_set,1)-1
 #+SG_Filters
 # Returns the degree of the polynomial used to construct the Savitzky-Golay filters, see [[SG_Filters_Constructor][]].
-polynomialOrder(sg::SavitzkyGolay_Filter_Set{T,N}) where {T<:AbstractFloat,N} = maxDerivativeOrder(sg)
+polynomialOrder(sg::SG_Filter{T,N}) where {T<:AbstractFloat,N} = maxDerivativeOrder(sg)
     
 #+SG_Filters L:SG_Filters_Constructor
 #
@@ -81,5 +81,5 @@ function SG_Filter(T::DataType=Float64;halfWidth::Int=5,degree::Int=2)
     end
     
 # Returns filters set
-    return SavitzkyGolay_Filter_Set{T,n_coef}(buffer)
+    return SG_Filter{T,n_coef}(buffer)
 end
