@@ -33,7 +33,7 @@ This package goal is to compute convolution products
 \end{equation}
 
 #+ATTR_HTML: :align center :width 600px
-file:~/GitHub/DirectConvolution.jl/docs/figures/a_offset.png
+[[file:figures/a_offset.png]]
 
 using direct (no FFT) methods. 
 
