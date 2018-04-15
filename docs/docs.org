@@ -409,8 +409,8 @@ print_org_doc(documented_items,tag="UDWT_Filter",tag_to_ignore="Internal",header
  #+RESULTS:
  :RESULTS:
 
- <<EqWy1uYV>> *Index:* *[U]* [[6YchAWDS][UDWT_Filter]], [[lBzMNlyB][UDWT_Filter_Biorthogonal]], [[PJ92Wn2S][UDWT_Filter_Haar]], [[k4m8v7nq][UDWT_Filter_Starck2]] *[e]* [[rM1oP3fz][export]] *[t]* [[QUt0TgPH][tildeψ_filter]], [[qpHl982H][tildeψ_offset]], [[vWcFS8XB][tildeϕ_filter]], [[wmQwL9U3][tildeϕ_offset]] *[ψ]* [[lTKi3a3c][ψ_filter]], [[6NySDF5O][ψ_offset]] *[ϕ]* [[7k9pw1KS][ϕ_filter]], [[FFJj3HLR][ϕ_offset]] 
- - @@latex:\phantomsection@@ *=UDWT_Filter=*  <<6YchAWDS>>
+ <<sV6gR6k8>> *Index:* *[U]* [[4SMx3pk2][UDWT_Filter]], [[3LlQxGxz][UDWT_Filter_Biorthogonal]] *[t]* [[OsMAD3Fg][tildeψ_filter]], [[WuIiCEac][tildeψ_offset]], [[DaRShWmY][tildeϕ_filter]], [[dErpo1Mx][tildeϕ_offset]] *[ψ]* [[hBAWz8xt][ψ_filter]], [[UcPJfYpX][ψ_offset]] *[ϕ]* [[dEawQNiu][ϕ_filter]], [[pvuUsbE0][ϕ_offset]] 
+ - @@latex:\phantomsection@@ *=UDWT_Filter=*  <<4SMx3pk2>>
  #+BEGIN_SRC julia :eval never :exports code
  abstract type UDWT_Filter{T<:Number} <: UDWT_Filter_Biorthogonal{T}
  #+END_SRC
@@ -421,8 +421,8 @@ print_org_doc(documented_items,tag="UDWT_Filter",tag_to_ignore="Internal",header
  For orthogonal filters we have: $\phi=\tilde{\phi}$ and $\psi=\tilde{\psi}$
 
  #+END_QUOTE
- [[file:/home/picaud/GitHub/DirectConvolution.jl/src/udwt.jl::38][udwt.jl:38]], [[EqWy1uYV][back to index]]
- - @@latex:\phantomsection@@ *=UDWT_Filter_Biorthogonal=*  <<lBzMNlyB>>
+ [[file:/home/picaud/GitHub/DirectConvolution.jl/src/udwt.jl::35][udwt.jl:35]], [[sV6gR6k8][back to index]]
+ - @@latex:\phantomsection@@ *=UDWT_Filter_Biorthogonal=*  <<3LlQxGxz>>
  #+BEGIN_SRC julia :eval never :exports code
  abstract type UDWT_Filter_Biorthogonal{T<:Number} 
  #+END_SRC
@@ -431,15 +431,91 @@ print_org_doc(documented_items,tag="UDWT_Filter",tag_to_ignore="Internal",header
  $\tilde{\psi}$ filters associated to an undecimated biorthogonal
  wavelet transform
  #+END_QUOTE
- [[file:/home/picaud/GitHub/DirectConvolution.jl/src/udwt.jl::12][udwt.jl:12]], [[EqWy1uYV][back to index]]
- - @@latex:\phantomsection@@ *=UDWT_Filter_Haar=*  <<PJ92Wn2S>>
+ [[file:/home/picaud/GitHub/DirectConvolution.jl/src/udwt.jl::9][udwt.jl:9]], [[sV6gR6k8][back to index]]
+ - @@latex:\phantomsection@@ *=tildeψ_filter=*  <<OsMAD3Fg>>
+ #+BEGIN_SRC julia :eval never :exports code
+ tildeψ_filter(c::UDWT_Filter_Biorthogonal)::LinearFilter
+ #+END_SRC
+ [[file:/home/picaud/GitHub/DirectConvolution.jl/src/udwt.jl::22][udwt.jl:22]], [[sV6gR6k8][back to index]]
+
+ #+BEGIN_SRC julia :eval never :exports code
+ tildeψ_filter(c::UDWT_Filter)::LinearFilter
+ #+END_SRC
+ [[file:/home/picaud/GitHub/DirectConvolution.jl/src/udwt.jl::48][udwt.jl:48]], [[sV6gR6k8][back to index]]
+ - @@latex:\phantomsection@@ *=tildeψ_offset=*  <<WuIiCEac>>
+ #+BEGIN_SRC julia :eval never :exports code
+ tildeψ_offset(c::UDWT_Filter_Biorthogonal)::Int
+ #+END_SRC
+ [[file:/home/picaud/GitHub/DirectConvolution.jl/src/udwt.jl::30][udwt.jl:30]], [[sV6gR6k8][back to index]]
+
+ #+BEGIN_SRC julia :eval never :exports code
+ tildeψ_offset(c::UDWT_Filter)::Int
+ #+END_SRC
+ [[file:/home/picaud/GitHub/DirectConvolution.jl/src/udwt.jl::54][udwt.jl:54]], [[sV6gR6k8][back to index]]
+ - @@latex:\phantomsection@@ *=tildeϕ_filter=*  <<DaRShWmY>>
+ #+BEGIN_SRC julia :eval never :exports code
+ tildeϕ_filter(c::UDWT_Filter_Biorthogonal)::LinearFilter
+ #+END_SRC
+ [[file:/home/picaud/GitHub/DirectConvolution.jl/src/udwt.jl::20][udwt.jl:20]], [[sV6gR6k8][back to index]]
+
+ #+BEGIN_SRC julia :eval never :exports code
+ tildeϕ_filter(c::UDWT_Filter)::LinearFilter
+ #+END_SRC
+ [[file:/home/picaud/GitHub/DirectConvolution.jl/src/udwt.jl::45][udwt.jl:45]], [[sV6gR6k8][back to index]]
+ - @@latex:\phantomsection@@ *=tildeϕ_offset=*  <<dErpo1Mx>>
+ #+BEGIN_SRC julia :eval never :exports code
+ tildeϕ_offset(c::UDWT_Filter_Biorthogonal)::Int
+ #+END_SRC
+ [[file:/home/picaud/GitHub/DirectConvolution.jl/src/udwt.jl::28][udwt.jl:28]], [[sV6gR6k8][back to index]]
+
+ #+BEGIN_SRC julia :eval never :exports code
+ tildeϕ_offset(c::UDWT_Filter)::Int
+ #+END_SRC
+ [[file:/home/picaud/GitHub/DirectConvolution.jl/src/udwt.jl::51][udwt.jl:51]], [[sV6gR6k8][back to index]]
+ - @@latex:\phantomsection@@ *=ψ_filter=*  <<hBAWz8xt>>
+ #+BEGIN_SRC julia :eval never :exports code
+ ψ_filter(c::UDWT_Filter_Biorthogonal)::LinearFilter
+ #+END_SRC
+ [[file:/home/picaud/GitHub/DirectConvolution.jl/src/udwt.jl::18][udwt.jl:18]], [[sV6gR6k8][back to index]]
+ - @@latex:\phantomsection@@ *=ψ_offset=*  <<UcPJfYpX>>
+ #+BEGIN_SRC julia :eval never :exports code
+ ψ_offset(c::UDWT_Filter_Biorthogonal)::Int
+ #+END_SRC
+ [[file:/home/picaud/GitHub/DirectConvolution.jl/src/udwt.jl::26][udwt.jl:26]], [[sV6gR6k8][back to index]]
+ - @@latex:\phantomsection@@ *=ϕ_filter=*  <<dEawQNiu>>
+ #+BEGIN_SRC julia :eval never :exports code
+ ϕ_filter(c::UDWT_Filter_Biorthogonal)::LinearFilter
+ #+END_SRC
+ [[file:/home/picaud/GitHub/DirectConvolution.jl/src/udwt.jl::16][udwt.jl:16]], [[sV6gR6k8][back to index]]
+ - @@latex:\phantomsection@@ *=ϕ_offset=*  <<pvuUsbE0>>
+ #+BEGIN_SRC julia :eval never :exports code
+ ϕ_offset(c::UDWT_Filter_Biorthogonal)::Int
+ #+END_SRC
+ [[file:/home/picaud/GitHub/DirectConvolution.jl/src/udwt.jl::24][udwt.jl:24]], [[sV6gR6k8][back to index]]
+ :END:
+
+*** UDWT Available Filters
+
+For the moment this is just for demonstration, more filters will be
+added in the future.
+
+ #+BEGIN_SRC julia :results output drawer :eval no-export :exports results
+documented_items=create_documented_item_array_dir("~/GitHub/DirectConvolution.jl/src/");
+print_org_doc(documented_items,tag="UDWT_Filter_Available",tag_to_ignore="Internal",header_level=0,case_sensitive=true)
+ #+END_SRC
+
+ #+RESULTS:
+ :RESULTS:
+
+ <<KnhcZUtD>> *Index:* *[U]* [[A8FkSn0E][UDWT_Filter_Haar]], [[KvUuBRjH][UDWT_Filter_Starck2]] 
+ - @@latex:\phantomsection@@ *=UDWT_Filter_Haar=*  <<A8FkSn0E>>
  #+BEGIN_SRC julia :eval never :exports code
  struct UDWT_Filter_Haar{T<:AbstractFloat} <: UDWT_Filter{T}
  #+END_SRC
  #+BEGIN_QUOTE
  Haar filter
  #+END_QUOTE
- [[file:/home/picaud/GitHub/DirectConvolution.jl/src/udwt.jl::64][udwt.jl:64]], [[EqWy1uYV][back to index]]
+ [[file:/home/picaud/GitHub/DirectConvolution.jl/src/udwt.jl::61][udwt.jl:61]], [[KnhcZUtD][back to index]]
 
  #+BEGIN_SRC julia :eval never :exports code
  UDWT_Filter_Haar{T}() where {T<:Real}
@@ -447,8 +523,8 @@ print_org_doc(documented_items,tag="UDWT_Filter",tag_to_ignore="Internal",header
  #+BEGIN_QUOTE
  Creates an instance
  #+END_QUOTE
- [[file:/home/picaud/GitHub/DirectConvolution.jl/src/udwt.jl::70][udwt.jl:70]], [[EqWy1uYV][back to index]]
- - @@latex:\phantomsection@@ *=UDWT_Filter_Starck2=*  <<k4m8v7nq>>
+ [[file:/home/picaud/GitHub/DirectConvolution.jl/src/udwt.jl::67][udwt.jl:67]], [[KnhcZUtD][back to index]]
+ - @@latex:\phantomsection@@ *=UDWT_Filter_Starck2=*  <<KvUuBRjH>>
  #+BEGIN_SRC julia :eval never :exports code
  struct UDWT_Filter_Starck2{T<:AbstractFloat} <: UDWT_Filter_Biorthogonal{T}
  #+END_SRC
@@ -457,7 +533,7 @@ print_org_doc(documented_items,tag="UDWT_Filter",tag_to_ignore="Internal",header
 
  Defined by Eq. 6 from http://ieeexplore.ieee.org/stamp/stamp.jsp?tp=&arnumber=4060954
  #+END_QUOTE
- [[file:/home/picaud/GitHub/DirectConvolution.jl/src/udwt.jl::78][udwt.jl:78]], [[EqWy1uYV][back to index]]
+ [[file:/home/picaud/GitHub/DirectConvolution.jl/src/udwt.jl::75][udwt.jl:75]], [[KnhcZUtD][back to index]]
 
  #+BEGIN_SRC julia :eval never :exports code
  UDWT_Filter_Starck2{T}() where {T<:Real}
@@ -465,78 +541,9 @@ print_org_doc(documented_items,tag="UDWT_Filter",tag_to_ignore="Internal",header
  #+BEGIN_QUOTE
  Creates an instance
  #+END_QUOTE
- [[file:/home/picaud/GitHub/DirectConvolution.jl/src/udwt.jl::88][udwt.jl:88]], [[EqWy1uYV][back to index]]
- - @@latex:\phantomsection@@ *=export=*  <<rM1oP3fz>>
- #+BEGIN_SRC julia :eval never :exports code
- export UDWT_Filter_Haar, UDWT_Filter_Starck2
- #+END_SRC
- [[file:/home/picaud/GitHub/DirectConvolution.jl/src/udwt.jl::1][udwt.jl:1]], [[EqWy1uYV][back to index]]
-
- #+BEGIN_SRC julia :eval never :exports code
- export ϕ_filter,ψ_filter,tildeϕ_filter,tildeψ_filter,ϕ_offset,ψ_offset,tildeϕ_offset,tildeψ_offset
- #+END_SRC
- [[file:/home/picaud/GitHub/DirectConvolution.jl/src/udwt.jl::3][udwt.jl:3]], [[EqWy1uYV][back to index]]
- - @@latex:\phantomsection@@ *=tildeψ_filter=*  <<QUt0TgPH>>
- #+BEGIN_SRC julia :eval never :exports code
- tildeψ_filter(c::UDWT_Filter_Biorthogonal)::LinearFilter
- #+END_SRC
- [[file:/home/picaud/GitHub/DirectConvolution.jl/src/udwt.jl::25][udwt.jl:25]], [[EqWy1uYV][back to index]]
-
- #+BEGIN_SRC julia :eval never :exports code
- tildeψ_filter(c::UDWT_Filter)::LinearFilter
- #+END_SRC
- [[file:/home/picaud/GitHub/DirectConvolution.jl/src/udwt.jl::51][udwt.jl:51]], [[EqWy1uYV][back to index]]
- - @@latex:\phantomsection@@ *=tildeψ_offset=*  <<qpHl982H>>
- #+BEGIN_SRC julia :eval never :exports code
- tildeψ_offset(c::UDWT_Filter_Biorthogonal)::Int
- #+END_SRC
- [[file:/home/picaud/GitHub/DirectConvolution.jl/src/udwt.jl::33][udwt.jl:33]], [[EqWy1uYV][back to index]]
-
- #+BEGIN_SRC julia :eval never :exports code
- tildeψ_offset(c::UDWT_Filter)::Int
- #+END_SRC
- [[file:/home/picaud/GitHub/DirectConvolution.jl/src/udwt.jl::57][udwt.jl:57]], [[EqWy1uYV][back to index]]
- - @@latex:\phantomsection@@ *=tildeϕ_filter=*  <<vWcFS8XB>>
- #+BEGIN_SRC julia :eval never :exports code
- tildeϕ_filter(c::UDWT_Filter_Biorthogonal)::LinearFilter
- #+END_SRC
- [[file:/home/picaud/GitHub/DirectConvolution.jl/src/udwt.jl::23][udwt.jl:23]], [[EqWy1uYV][back to index]]
-
- #+BEGIN_SRC julia :eval never :exports code
- tildeϕ_filter(c::UDWT_Filter)::LinearFilter
- #+END_SRC
- [[file:/home/picaud/GitHub/DirectConvolution.jl/src/udwt.jl::48][udwt.jl:48]], [[EqWy1uYV][back to index]]
- - @@latex:\phantomsection@@ *=tildeϕ_offset=*  <<wmQwL9U3>>
- #+BEGIN_SRC julia :eval never :exports code
- tildeϕ_offset(c::UDWT_Filter_Biorthogonal)::Int
- #+END_SRC
- [[file:/home/picaud/GitHub/DirectConvolution.jl/src/udwt.jl::31][udwt.jl:31]], [[EqWy1uYV][back to index]]
-
- #+BEGIN_SRC julia :eval never :exports code
- tildeϕ_offset(c::UDWT_Filter)::Int
- #+END_SRC
- [[file:/home/picaud/GitHub/DirectConvolution.jl/src/udwt.jl::54][udwt.jl:54]], [[EqWy1uYV][back to index]]
- - @@latex:\phantomsection@@ *=ψ_filter=*  <<lTKi3a3c>>
- #+BEGIN_SRC julia :eval never :exports code
- ψ_filter(c::UDWT_Filter_Biorthogonal)::LinearFilter
- #+END_SRC
- [[file:/home/picaud/GitHub/DirectConvolution.jl/src/udwt.jl::21][udwt.jl:21]], [[EqWy1uYV][back to index]]
- - @@latex:\phantomsection@@ *=ψ_offset=*  <<6NySDF5O>>
- #+BEGIN_SRC julia :eval never :exports code
- ψ_offset(c::UDWT_Filter_Biorthogonal)::Int
- #+END_SRC
- [[file:/home/picaud/GitHub/DirectConvolution.jl/src/udwt.jl::29][udwt.jl:29]], [[EqWy1uYV][back to index]]
- - @@latex:\phantomsection@@ *=ϕ_filter=*  <<7k9pw1KS>>
- #+BEGIN_SRC julia :eval never :exports code
- ϕ_filter(c::UDWT_Filter_Biorthogonal)::LinearFilter
- #+END_SRC
- [[file:/home/picaud/GitHub/DirectConvolution.jl/src/udwt.jl::19][udwt.jl:19]], [[EqWy1uYV][back to index]]
- - @@latex:\phantomsection@@ *=ϕ_offset=*  <<FFJj3HLR>>
- #+BEGIN_SRC julia :eval never :exports code
- ϕ_offset(c::UDWT_Filter_Biorthogonal)::Int
- #+END_SRC
- [[file:/home/picaud/GitHub/DirectConvolution.jl/src/udwt.jl::27][udwt.jl:27]], [[EqWy1uYV][back to index]]
+ [[file:/home/picaud/GitHub/DirectConvolution.jl/src/udwt.jl::85][udwt.jl:85]], [[KnhcZUtD][back to index]]
  :END:
+
 
 *** UDWT Computational subroutines
  #+BEGIN_SRC julia :results output drawer :eval no-export :exports results

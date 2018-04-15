@@ -1,8 +1,5 @@
-#+UDWT_Filter
 export UDWT_Filter_Haar, UDWT_Filter_Starck2
-#+UDWT_Filter
 export ϕ_filter,ψ_filter,tildeϕ_filter,tildeψ_filter,ϕ_offset,ψ_offset,tildeϕ_offset,tildeψ_offset
-#+UDWT
 export udwt, scale, inverse_udwt!, inverse_udwt
 
 import Base: length
@@ -61,13 +58,13 @@ tildeψ_offset(c::UDWT_Filter)::Int = ψ_offset(c)
 # Filter examples
 
 
-#+UDWT_Filter
+#+UDWT_Filter_Available
 # Haar filter
 struct UDWT_Filter_Haar{T<:AbstractFloat} <: UDWT_Filter{T}
     _ϕ_filter::LinearFilter_Default{T,2}
     _ψ_filter::LinearFilter_Default{T,2}
 
-    #+UDWT_Filter
+    #+UDWT_Filter_Available
     # Creates an instance
     UDWT_Filter_Haar{T}() where {T<:Real} = new(LinearFilter_Default{T,2}(SVector{2,T}([+1/2 +1/2]),0),
                                                 LinearFilter_Default{T,2}(SVector{2,T}([-1/2 +1/2]),0))
@@ -75,7 +72,7 @@ end
 
 
 
-#+UDWT_Filter
+#+UDWT_Filter_Available
 # Starck2 filter
 #
 # Defined by Eq. 6 from http://ieeexplore.ieee.org/stamp/stamp.jsp?tp=&arnumber=4060954
@@ -85,7 +82,7 @@ struct UDWT_Filter_Starck2{T<:AbstractFloat} <: UDWT_Filter_Biorthogonal{T}
     _tildeϕ_filter::LinearFilter_DefaultCentered{T,1}
     _tildeψ_filter::LinearFilter_DefaultCentered{T,1}
 
-    #+UDWT_Filter
+    #+UDWT_Filter_Available
     # Creates an instance
     UDWT_Filter_Starck2{T}() where {T<:Real} = new(LinearFilter_DefaultCentered{T,5}(SVector{5,T}([+1/16 +4/16 +6/16 +4/16 +1/16])),
                                                    LinearFilter_DefaultCentered{T,5}(SVector{5,T}([-1/16 -4/16 +10/16 -4/16 -1/16])),
