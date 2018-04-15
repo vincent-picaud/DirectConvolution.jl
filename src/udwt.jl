@@ -1,5 +1,5 @@
 export UDWT_Filter_Haar, UDWT_Filter_Starck2
-export ϕ_filter,ψ_filter,tildeϕ_filter,tildeψ_filter,ϕ_offset,ψ_offset,tildeϕ_offset,tildeψ_offset
+export ϕ_filter,ψ_filter,tildeϕ_filter,tildeψ_filter
 export udwt, scale, inverse_udwt!, inverse_udwt
 
 import Base: length
@@ -21,14 +21,6 @@ abstract type UDWT_Filter_Biorthogonal{T<:Number} end
 tildeϕ_filter(c::UDWT_Filter_Biorthogonal)::LinearFilter = c._tildeϕ_filter
 #+UDWT_Filter
 tildeψ_filter(c::UDWT_Filter_Biorthogonal)::LinearFilter = c._tildeψ_filter
-#+UDWT_Filter
-ϕ_offset(c::UDWT_Filter_Biorthogonal)::Int = offset(ϕ_filter(c))
-#+UDWT_Filter
-ψ_offset(c::UDWT_Filter_Biorthogonal)::Int = offset(ψ_filter(c))
-#+UDWT_Filter
-tildeϕ_offset(c::UDWT_Filter_Biorthogonal)::Int = offset(tildeϕ_filter(c))
-#+UDWT_Filter
-tildeψ_offset(c::UDWT_Filter_Biorthogonal)::Int = offset(tildeψ_filter(c))
 
 
 
@@ -47,12 +39,6 @@ tildeϕ_filter(c::UDWT_Filter)::LinearFilter = ϕ_filter(c)
 
 #+UDWT_Filter
 tildeψ_filter(c::UDWT_Filter)::LinearFilter = ψ_filter(c)
-
-#+UDWT_Filter
-tildeϕ_offset(c::UDWT_Filter)::Int = ϕ_offset(c)
-
-#+UDWT_Filter
-tildeψ_offset(c::UDWT_Filter)::Int = ψ_offset(c)
 
 
 # Filter examples
