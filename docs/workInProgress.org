@@ -13,6 +13,7 @@ using J4Org
 
 * Project Journal
 ** [2018-04-04 Wed] doc with J4org online
+** [2018-04-15 Sun] tag v=0.0.1 !
 
 * Project TODO
 

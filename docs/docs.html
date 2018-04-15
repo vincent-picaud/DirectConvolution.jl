@@ -3,7 +3,7 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
-<!-- 2018-04-15 Sun 12:25 -->
+<!-- 2018-04-15 Sun 17:50 -->
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Direct Convolution Package</title>
@@ -331,33 +331,34 @@ for the JavaScript code in this tag.
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents">
 <ul>
-<li><a href="#org045bb25">1. Introduction</a></li>
-<li><a href="#org15de850">2. API documentation</a>
+<li><a href="#org8097994">1. Introduction</a></li>
+<li><a href="#org9ff030e">2. API documentation</a>
 <ul>
-<li><a href="#org0755740">2.1. Linear Filter</a></li>
-<li><a href="#org39f9ac5">2.2. Convolution functions</a>
+<li><a href="#orgf1ccd2c">2.1. Linear Filter</a></li>
+<li><a href="#orgd9b9118">2.2. Convolution functions</a>
 <ul>
-<li><a href="#orgfb53a31">2.2.1. Boundary extensions</a></li>
-<li><a href="#orga1173e9">2.2.2. Convolution computation</a></li>
+<li><a href="#orgc024c0c">2.2.1. Boundary extensions</a></li>
+<li><a href="#org9ccbb65">2.2.2. Convolution computation</a></li>
 </ul>
 </li>
-<li><a href="#org2c84d2b">2.3. Savitzky-Golay Filters</a></li>
-<li><a href="#orged60d2f">2.4. Undecimated Wavelet Transform</a>
+<li><a href="#orgea0c589">2.3. Savitzky-Golay Filters</a></li>
+<li><a href="#org2d01069">2.4. Undecimated Wavelet Transform</a>
 <ul>
-<li><a href="#orge4a63db">2.4.1. UDWT Filters</a></li>
-<li><a href="#org38dc304">2.4.2. UDWT Computational subroutines</a></li>
+<li><a href="#org24b7a72">2.4.1. UDWT Filters</a></li>
+<li><a href="#org2f01685">2.4.2. UDWT Available Filters</a></li>
+<li><a href="#org6fbb797">2.4.3. UDWT Computational subroutines</a></li>
 </ul>
 </li>
 </ul>
 </li>
-<li><a href="#orga4dbaf6">3. Unit tests</a></li>
-<li><a href="#org580a825">4. Internal documentation</a></li>
+<li><a href="#org904df3d">3. Unit tests</a></li>
+<li><a href="#orgcd629fe">4. Internal documentation</a></li>
 </ul>
 </div>
 </div>
 
-<div id="outline-container-org045bb25" class="outline-2">
-<h2 id="org045bb25"><span class="section-number-2">1</span> Introduction</h2>
+<div id="outline-container-org8097994" class="outline-2">
+<h2 id="org8097994"><span class="section-number-2">1</span> Introduction</h2>
 <div class="outline-text-2" id="text-1">
 <p>
 This package goal is to compute convolution products 
@@ -380,22 +381,22 @@ using direct (no FFT) methods.
 </div>
 </div>
 
-<div id="outline-container-org15de850" class="outline-2">
-<h2 id="org15de850"><span class="section-number-2">2</span> API documentation</h2>
+<div id="outline-container-org9ff030e" class="outline-2">
+<h2 id="org9ff030e"><span class="section-number-2">2</span> API documentation</h2>
 <div class="outline-text-2" id="text-2">
 </div>
-<div id="outline-container-org0755740" class="outline-3">
-<h3 id="org0755740"><span class="section-number-3">2.1</span> Linear Filter</h3>
+<div id="outline-container-orgf1ccd2c" class="outline-3">
+<h3 id="orgf1ccd2c"><span class="section-number-3">2.1</span> Linear Filter</h3>
 <div class="outline-text-3" id="text-2-1">
 <p>
 
 </p>
 
 <p>
-<a id="org550b0c5"></a> <b>Index:</b> <b>[L]</b> <a href="#org1289cae">LinearFilter</a> <b>[f]</b> <a href="#org7e8bc2e">fcoef</a> <b>[l]</b> <a href="#orgf902443">length</a> <b>[o]</b> <a href="#org55dc71f">offset</a> <b>[r]</b> <a href="#org71b3cd7">range</a> 
+<a id="orgc427272"></a> <b>Index:</b> <b>[L]</b> <a href="#orgf98a14b">LinearFilter</a> <b>[f]</b> <a href="#org060ed84">fcoef</a> <b>[l]</b> <a href="#org5646acf">length</a> <b>[o]</b> <a href="#org9ad7530">offset</a> <b>[r]</b> <a href="#org9cfd9c3">range</a> 
 </p>
 <ul class="org-ul">
-<li><b><code>LinearFilter</code></b>  <a id="org1289cae"></a> <a id="orgaf82b16"></a></li>
+<li><b><code>LinearFilter</code></b>  <a id="orgf98a14b"></a> <a id="orged8023e"></a></li>
 </ul>
 <div class="org-src-container">
 <pre class="src src-julia"><span style="color: #a020f0;">abstract type</span> <span style="color: #228b22;">LinearFilter</span>{T&lt;:<span style="color: #228b22;">Number</span>} 
@@ -407,7 +408,7 @@ Abstract type defining a linear filter. A linear filter is defined by its coeffi
 </p>
 </blockquote>
 <p>
-<a href="file:///home/picaud/GitHub/DirectConvolution.jl/src/linearFilter.jl#MissingReference">linearFilter.jl:7</a>, <a href="#org550b0c5">back to index</a>
+<a href="file:///home/picaud/GitHub/DirectConvolution.jl/src/linearFilter.jl#MissingReference">linearFilter.jl:7</a>, <a href="#orgc427272">back to index</a>
 </p>
 
 <div class="org-src-container">
@@ -420,7 +421,7 @@ Creates a linear filter from its coefficients and an offset
 </p>
 
 <p>
-The <b>offset</b> is the position of the filter coefficient to be aligned with zero, see <a href="#org6928514">range(&#x2026;)</a>.
+The <b>offset</b> is the position of the filter coefficient to be aligned with zero, see <a href="#org07db7b4">range(&#x2026;)</a>.
 </p>
 
 <p>
@@ -443,7 +444,7 @@ hcat([range(f);],fcoef(f))
 </div>
 </blockquote>
 <p>
-<a href="file:///home/picaud/GitHub/DirectConvolution.jl/src/linearFilter.jl#MissingReference">linearFilter.jl:104</a>, <a href="#org550b0c5">back to index</a>
+<a href="file:///home/picaud/GitHub/DirectConvolution.jl/src/linearFilter.jl#MissingReference">linearFilter.jl:104</a>, <a href="#orgc427272">back to index</a>
 </p>
 
 <div class="org-src-container">
@@ -475,10 +476,10 @@ hcat([range(f);],fcoef(f))
 </div>
 </blockquote>
 <p>
-<a href="file:///home/picaud/GitHub/DirectConvolution.jl/src/linearFilter.jl#MissingReference">linearFilter.jl:118</a>, <a href="#org550b0c5">back to index</a>
+<a href="file:///home/picaud/GitHub/DirectConvolution.jl/src/linearFilter.jl#MissingReference">linearFilter.jl:118</a>, <a href="#orgc427272">back to index</a>
 </p>
 <ul class="org-ul">
-<li><b><code>fcoef</code></b>  <a id="org7e8bc2e"></a></li>
+<li><b><code>fcoef</code></b>  <a id="org060ed84"></a></li>
 </ul>
 <div class="org-src-container">
 <pre class="src src-julia">fcoef(c::<span style="color: #228b22;">LinearFilter</span>)
@@ -490,10 +491,10 @@ Returns filter coefficients
 </p>
 </blockquote>
 <p>
-<a href="file:///home/picaud/GitHub/DirectConvolution.jl/src/linearFilter.jl#MissingReference">linearFilter.jl:13</a>, <a href="#org550b0c5">back to index</a>
+<a href="file:///home/picaud/GitHub/DirectConvolution.jl/src/linearFilter.jl#MissingReference">linearFilter.jl:13</a>, <a href="#orgc427272">back to index</a>
 </p>
 <ul class="org-ul">
-<li><b><code>length</code></b>  <a id="orgf902443"></a></li>
+<li><b><code>length</code></b>  <a id="org5646acf"></a></li>
 </ul>
 <div class="org-src-container">
 <pre class="src src-julia">length(c::<span style="color: #228b22;">LinearFilter</span>)::<span style="color: #228b22;">Int</span>
@@ -505,10 +506,10 @@ Returns filter length
 </p>
 </blockquote>
 <p>
-<a href="file:///home/picaud/GitHub/DirectConvolution.jl/src/linearFilter.jl#MissingReference">linearFilter.jl:17</a>, <a href="#org550b0c5">back to index</a>
+<a href="file:///home/picaud/GitHub/DirectConvolution.jl/src/linearFilter.jl#MissingReference">linearFilter.jl:17</a>, <a href="#orgc427272">back to index</a>
 </p>
 <ul class="org-ul">
-<li><b><code>offset</code></b>  <a id="org55dc71f"></a></li>
+<li><b><code>offset</code></b>  <a id="org9ad7530"></a></li>
 </ul>
 <div class="org-src-container">
 <pre class="src src-julia">offset(c::<span style="color: #228b22;">LinearFilter</span>)::<span style="color: #228b22;">Int</span>
@@ -524,14 +525,14 @@ Returns filter offset
 </p>
 
 <p>
-See: <a href="#org6928514">range(&#x2026;)</a>
+See: <a href="#org07db7b4">range(&#x2026;)</a>
 </p>
 </blockquote>
 <p>
-<a href="file:///home/picaud/GitHub/DirectConvolution.jl/src/linearFilter.jl#MissingReference">linearFilter.jl:20</a>, <a href="#org550b0c5">back to index</a>
+<a href="file:///home/picaud/GitHub/DirectConvolution.jl/src/linearFilter.jl#MissingReference">linearFilter.jl:20</a>, <a href="#orgc427272">back to index</a>
 </p>
 <ul class="org-ul">
-<li><b><code>range</code></b>  <a id="org71b3cd7"></a> <a id="org6928514"></a></li>
+<li><b><code>range</code></b>  <a id="org9cfd9c3"></a> <a id="org07db7b4"></a></li>
 </ul>
 <div class="org-src-container">
 <pre class="src src-julia">range(c::<span style="color: #228b22;">LinearFilter</span>)::<span style="color: #228b22;">UnitRange</span>
@@ -550,31 +551,31 @@ Filter support is defined by
 </p>
 </blockquote>
 <p>
-<a href="file:///home/picaud/GitHub/DirectConvolution.jl/src/linearFilter.jl#MissingReference">linearFilter.jl:36</a>, <a href="#org550b0c5">back to index</a>
+<a href="file:///home/picaud/GitHub/DirectConvolution.jl/src/linearFilter.jl#MissingReference">linearFilter.jl:36</a>, <a href="#orgc427272">back to index</a>
 </p>
 </div>
 </div>
 
-<div id="outline-container-org39f9ac5" class="outline-3">
-<h3 id="org39f9ac5"><span class="section-number-3">2.2</span> Convolution functions</h3>
+<div id="outline-container-orgd9b9118" class="outline-3">
+<h3 id="orgd9b9118"><span class="section-number-3">2.2</span> Convolution functions</h3>
 <div class="outline-text-3" id="text-2-2">
 <p>
 These are the main functions of the package, allowing to compute Eq. \ref{eq:main}.
 </p>
 </div>
 
-<div id="outline-container-orgfb53a31" class="outline-4">
-<h4 id="orgfb53a31"><span class="section-number-4">2.2.1</span> Boundary extensions</h4>
+<div id="outline-container-orgc024c0c" class="outline-4">
+<h4 id="orgc024c0c"><span class="section-number-4">2.2.1</span> Boundary extensions</h4>
 <div class="outline-text-4" id="text-2-2-1">
 <p>
 
 </p>
 
 <p>
-<a id="orgfe3c184"></a> <b>Index:</b> <b>[B]</b> <a href="#orga0723f0">BoundaryExtension</a> <b>[C]</b> <a href="#orgf4430aa">ConstantBE</a> <b>[M]</b> <a href="#orgea05320">MirrorBE</a> <b>[P]</b> <a href="#orgc3353a6">PeriodicBE</a> <b>[Z]</b> <a href="#orgee4a4c8">ZeroPaddingBE</a> 
+<a id="org42fa96d"></a> <b>Index:</b> <b>[B]</b> <a href="#orgef76502">BoundaryExtension</a> <b>[C]</b> <a href="#org0714836">ConstantBE</a> <b>[M]</b> <a href="#org2c38b86">MirrorBE</a> <b>[P]</b> <a href="#orgca3926d">PeriodicBE</a> <b>[Z]</b> <a href="#org0f26068">ZeroPaddingBE</a> 
 </p>
 <ul class="org-ul">
-<li><b><code>BoundaryExtension</code></b>  <a id="orga0723f0"></a></li>
+<li><b><code>BoundaryExtension</code></b>  <a id="orgef76502"></a></li>
 </ul>
 <div class="org-src-container">
 <pre class="src src-julia"> <span style="color: #a020f0;">abstract type</span> <span style="color: #228b22;">BoundaryExtension</span> 
@@ -599,63 +600,63 @@ Used for tag dispatching, parent of available boundary extensions
 </div>
 </blockquote>
 <p>
-<a href="file:///home/picaud/GitHub/DirectConvolution.jl/src/directConvolution.jl#MissingReference">directConvolution.jl:11</a>, <a href="#orgfe3c184">back to index</a>
+<a href="file:///home/picaud/GitHub/DirectConvolution.jl/src/directConvolution.jl#MissingReference">directConvolution.jl:11</a>, <a href="#org42fa96d">back to index</a>
 </p>
 <ul class="org-ul">
-<li><b><code>ConstantBE</code></b>  <a id="orgf4430aa"></a></li>
+<li><b><code>ConstantBE</code></b>  <a id="org0714836"></a></li>
 </ul>
 <div class="org-src-container">
 <pre class="src src-julia"> <span style="color: #a020f0;">struct</span> <span style="color: #228b22;">ConstantBE</span> &lt;: BoundaryExtension
 </pre>
 </div>
 <p>
-<a href="file:///home/picaud/GitHub/DirectConvolution.jl/src/directConvolution.jl#MissingReference">directConvolution.jl:21</a>, <a href="#orgfe3c184">back to index</a>
+<a href="file:///home/picaud/GitHub/DirectConvolution.jl/src/directConvolution.jl#MissingReference">directConvolution.jl:21</a>, <a href="#org42fa96d">back to index</a>
 </p>
 <ul class="org-ul">
-<li><b><code>MirrorBE</code></b>  <a id="orgea05320"></a></li>
+<li><b><code>MirrorBE</code></b>  <a id="org2c38b86"></a></li>
 </ul>
 <div class="org-src-container">
 <pre class="src src-julia"> <span style="color: #a020f0;">struct</span> <span style="color: #228b22;">MirrorBE</span> &lt;: BoundaryExtension
 </pre>
 </div>
 <p>
-<a href="file:///home/picaud/GitHub/DirectConvolution.jl/src/directConvolution.jl#MissingReference">directConvolution.jl:25</a>, <a href="#orgfe3c184">back to index</a>
+<a href="file:///home/picaud/GitHub/DirectConvolution.jl/src/directConvolution.jl#MissingReference">directConvolution.jl:25</a>, <a href="#org42fa96d">back to index</a>
 </p>
 <ul class="org-ul">
-<li><b><code>PeriodicBE</code></b>  <a id="orgc3353a6"></a></li>
+<li><b><code>PeriodicBE</code></b>  <a id="orgca3926d"></a></li>
 </ul>
 <div class="org-src-container">
 <pre class="src src-julia"> <span style="color: #a020f0;">struct</span> <span style="color: #228b22;">PeriodicBE</span> &lt;: BoundaryExtension
 </pre>
 </div>
 <p>
-<a href="file:///home/picaud/GitHub/DirectConvolution.jl/src/directConvolution.jl#MissingReference">directConvolution.jl:23</a>, <a href="#orgfe3c184">back to index</a>
+<a href="file:///home/picaud/GitHub/DirectConvolution.jl/src/directConvolution.jl#MissingReference">directConvolution.jl:23</a>, <a href="#org42fa96d">back to index</a>
 </p>
 <ul class="org-ul">
-<li><b><code>ZeroPaddingBE</code></b>  <a id="orgee4a4c8"></a></li>
+<li><b><code>ZeroPaddingBE</code></b>  <a id="org0f26068"></a></li>
 </ul>
 <div class="org-src-container">
 <pre class="src src-julia"> <span style="color: #a020f0;">struct</span> <span style="color: #228b22;">ZeroPaddingBE</span> &lt;: BoundaryExtension
 </pre>
 </div>
 <p>
-<a href="file:///home/picaud/GitHub/DirectConvolution.jl/src/directConvolution.jl#MissingReference">directConvolution.jl:19</a>, <a href="#orgfe3c184">back to index</a>
+<a href="file:///home/picaud/GitHub/DirectConvolution.jl/src/directConvolution.jl#MissingReference">directConvolution.jl:19</a>, <a href="#org42fa96d">back to index</a>
 </p>
 </div>
 </div>
 
-<div id="outline-container-orga1173e9" class="outline-4">
-<h4 id="orga1173e9"><span class="section-number-4">2.2.2</span> Convolution computation</h4>
+<div id="outline-container-org9ccbb65" class="outline-4">
+<h4 id="org9ccbb65"><span class="section-number-4">2.2.2</span> Convolution computation</h4>
 <div class="outline-text-4" id="text-2-2-2">
 <p>
 
 </p>
 
 <p>
-<a id="orgd7c2d70"></a> <b>Index:</b> <b>[d]</b> <a href="#org27e3e9a">directConv</a>, <a href="#orgd2984c1">directConv!</a>, <a href="#org395284d">directCrossCorrelation</a> 
+<a id="orgea1c195"></a> <b>Index:</b> <b>[d]</b> <a href="#org16c8916">directConv</a>, <a href="#orgac715c6">directConv!</a>, <a href="#orge6880c3">directCrossCorrelation</a> 
 </p>
 <ul class="org-ul">
-<li><b><code>directConv</code></b>  <a id="org27e3e9a"></a></li>
+<li><b><code>directConv</code></b>  <a id="org16c8916"></a></li>
 </ul>
 <div class="org-src-container">
 <pre class="src src-julia"> <span style="color: #a020f0;">function</span> <span style="color: #0000ff;">directConv</span>(&#945;::<span style="color: #228b22;">LinearFilter</span>{T},
@@ -677,7 +678,7 @@ Computes a convolution.
 
 <p>
 Convenience function that allocate \(\gamma\) and compute all its
-component using <a href="#org58b9883">directConv!(&#x2026;)</a>
+component using <a href="#orgd73494b">directConv!(&#x2026;)</a>
 </p>
 
 <p>
@@ -703,7 +704,7 @@ component using <a href="#org58b9883">directConv!(&#x2026;)</a>
 </div>
 </blockquote>
 <p>
-<a href="file:///home/picaud/GitHub/DirectConvolution.jl/src/directConvolution.jl#MissingReference">directConvolution.jl:296</a>, <a href="#orgd7c2d70">back to index</a>
+<a href="file:///home/picaud/GitHub/DirectConvolution.jl/src/directConvolution.jl#MissingReference">directConvolution.jl:296</a>, <a href="#orgea1c195">back to index</a>
 </p>
 
 <div class="org-src-container">
@@ -730,10 +731,10 @@ This is a convenience function where \(\lambda=-1\)
 </p>
 </blockquote>
 <p>
-<a href="file:///home/picaud/GitHub/DirectConvolution.jl/src/directConvolution.jl#MissingReference">directConvolution.jl:342</a>, <a href="#orgd7c2d70">back to index</a>
+<a href="file:///home/picaud/GitHub/DirectConvolution.jl/src/directConvolution.jl#MissingReference">directConvolution.jl:342</a>, <a href="#orgea1c195">back to index</a>
 </p>
 <ul class="org-ul">
-<li><b><code>directConv!</code></b>  <a id="orgd2984c1"></a> <a id="org58b9883"></a></li>
+<li><b><code>directConv!</code></b>  <a id="orgac715c6"></a> <a id="orgd73494b"></a></li>
 </ul>
 <div class="org-src-container">
 <pre class="src src-julia"> <span style="color: #a020f0;">function</span> <span style="color: #0000ff;">directConv!</span>(&#945;::<span style="color: #228b22;">LinearFilter</span>{T},
@@ -794,10 +795,10 @@ compute a cross-correlation.
 </div>
 </blockquote>
 <p>
-<a href="file:///home/picaud/GitHub/DirectConvolution.jl/src/directConvolution.jl#MissingReference">directConvolution.jl:239</a>, <a href="#orgd7c2d70">back to index</a>
+<a href="file:///home/picaud/GitHub/DirectConvolution.jl/src/directConvolution.jl#MissingReference">directConvolution.jl:239</a>, <a href="#orgea1c195">back to index</a>
 </p>
 <ul class="org-ul">
-<li><b><code>directCrossCorrelation</code></b>  <a id="org395284d"></a></li>
+<li><b><code>directCrossCorrelation</code></b>  <a id="orge6880c3"></a></li>
 </ul>
 <div class="org-src-container">
 <pre class="src src-julia"> <span style="color: #a020f0;">function</span> <span style="color: #0000ff;">directCrossCorrelation</span>(&#945;::<span style="color: #228b22;">LinearFilter</span>{T},
@@ -823,24 +824,24 @@ This is a convenience function where \(\lambda=+1\)
 </p>
 </blockquote>
 <p>
-<a href="file:///home/picaud/GitHub/DirectConvolution.jl/src/directConvolution.jl#MissingReference">directConvolution.jl:361</a>, <a href="#orgd7c2d70">back to index</a>
+<a href="file:///home/picaud/GitHub/DirectConvolution.jl/src/directConvolution.jl#MissingReference">directConvolution.jl:361</a>, <a href="#orgea1c195">back to index</a>
 </p>
 </div>
 </div>
 </div>
 
-<div id="outline-container-org2c84d2b" class="outline-3">
-<h3 id="org2c84d2b"><span class="section-number-3">2.3</span> Savitzky-Golay Filters</h3>
+<div id="outline-container-orgea0c589" class="outline-3">
+<h3 id="orgea0c589"><span class="section-number-3">2.3</span> Savitzky-Golay Filters</h3>
 <div class="outline-text-3" id="text-2-3">
 <p>
 
 </p>
 
 <p>
-<a id="org61f0668"></a> <b>Index:</b> <b>[S]</b> <a href="#org062f1bd">SG_Filter</a> <b>[f]</b> <a href="#orgd27fb32">filter</a> <b>[l]</b> <a href="#org6a06951">length</a> <b>[m]</b> <a href="#org9f0075a">maxDerivativeOrder</a> <b>[p]</b> <a href="#org5899720">polynomialOrder</a> 
+<a id="org0a81b24"></a> <b>Index:</b> <b>[S]</b> <a href="#org412464e">SG_Filter</a> <b>[f]</b> <a href="#orgec67bdd">filter</a> <b>[l]</b> <a href="#orgbd232d3">length</a> <b>[m]</b> <a href="#orgd3440ca">maxDerivativeOrder</a> <b>[p]</b> <a href="#orgd1a8f61">polynomialOrder</a> 
 </p>
 <ul class="org-ul">
-<li><b><code>SG_Filter</code></b>  <a id="org062f1bd"></a></li>
+<li><b><code>SG_Filter</code></b>  <a id="org412464e"></a></li>
 </ul>
 <div class="org-src-container">
 <pre class="src src-julia"><span style="color: #a020f0;">struct</span> <span style="color: #228b22;">SG_Filter</span>{T&lt;:<span style="color: #228b22;">AbstractFloat</span>,N}
@@ -852,8 +853,8 @@ A structure to store Savitzky-Golay filters.
 </p>
 </blockquote>
 <p>
-<a href="file:///home/picaud/GitHub/DirectConvolution.jl/src/SG_Filter.jl#MissingReference">SG_Filter.jl:32</a>, <a href="#org61f0668">back to index</a>
-   <a id="org876aead"></a>
+<a href="file:///home/picaud/GitHub/DirectConvolution.jl/src/SG_Filter.jl#MissingReference">SG_Filter.jl:32</a>, <a href="#org0a81b24">back to index</a>
+   <a id="orge0d19e4"></a>
 </p>
 <div class="org-src-container">
 <pre class="src src-julia"><span style="color: #a020f0;">function</span> <span style="color: #0000ff;">SG_Filter</span>(T::<span style="color: #228b22;">DataType</span>=<span style="color: #228b22;">Float64</span>;halfWidth::<span style="color: #228b22;">Int</span>=5,degree::<span style="color: #228b22;">Int</span>=2)
@@ -870,10 +871,10 @@ Creates a set of Savitzky-Golay filters
 </ul>
 </blockquote>
 <p>
-<a href="file:///home/picaud/GitHub/DirectConvolution.jl/src/SG_Filter.jl#MissingReference">SG_Filter.jl:57</a>, <a href="#org61f0668">back to index</a>
+<a href="file:///home/picaud/GitHub/DirectConvolution.jl/src/SG_Filter.jl#MissingReference">SG_Filter.jl:57</a>, <a href="#org0a81b24">back to index</a>
 </p>
 <ul class="org-ul">
-<li><b><code>filter</code></b>  <a id="orgd27fb32"></a></li>
+<li><b><code>filter</code></b>  <a id="orgec67bdd"></a></li>
 </ul>
 <div class="org-src-container">
 <pre class="src src-julia">filter(sg::<span style="color: #228b22;">SG_Filter</span>{T,N};derivativeOrder::<span style="color: #228b22;">Int</span>=0) <span style="color: #a020f0;">where</span> {T&lt;:<span style="color: #228b22;">AbstractFloat</span>,N}
@@ -885,10 +886,10 @@ Returns the filter to be used to compute the  smoothed derivatives of order <b>d
 </p>
 </blockquote>
 <p>
-<a href="file:///home/picaud/GitHub/DirectConvolution.jl/src/SG_Filter.jl#MissingReference">SG_Filter.jl:39</a>, <a href="#org61f0668">back to index</a>
+<a href="file:///home/picaud/GitHub/DirectConvolution.jl/src/SG_Filter.jl#MissingReference">SG_Filter.jl:39</a>, <a href="#org0a81b24">back to index</a>
 </p>
 <ul class="org-ul">
-<li><b><code>length</code></b>  <a id="org6a06951"></a></li>
+<li><b><code>length</code></b>  <a id="orgbd232d3"></a></li>
 </ul>
 <div class="org-src-container">
 <pre class="src src-julia">length(sg::<span style="color: #228b22;">SG_Filter</span>{T,N}) <span style="color: #a020f0;">where</span> {T&lt;:<span style="color: #228b22;">AbstractFloat</span>,N}
@@ -896,14 +897,14 @@ Returns the filter to be used to compute the  smoothed derivatives of order <b>d
 </div>
 <blockquote>
 <p>
-Returns filter length, this is an odd number, see <a href="#org876aead">SG_Filter(&#x2026;)</a>
+Returns filter length, this is an odd number, see <a href="#orge0d19e4">SG_Filter(&#x2026;)</a>
 </p>
 </blockquote>
 <p>
-<a href="file:///home/picaud/GitHub/DirectConvolution.jl/src/SG_Filter.jl#MissingReference">SG_Filter.jl:44</a>, <a href="#org61f0668">back to index</a>
+<a href="file:///home/picaud/GitHub/DirectConvolution.jl/src/SG_Filter.jl#MissingReference">SG_Filter.jl:44</a>, <a href="#org0a81b24">back to index</a>
 </p>
 <ul class="org-ul">
-<li><b><code>maxDerivativeOrder</code></b>  <a id="org9f0075a"></a></li>
+<li><b><code>maxDerivativeOrder</code></b>  <a id="orgd3440ca"></a></li>
 </ul>
 <div class="org-src-container">
 <pre class="src src-julia">maxDerivativeOrder(sg::<span style="color: #228b22;">SG_Filter</span>{T,N}) <span style="color: #a020f0;">where</span> {T&lt;:<span style="color: #228b22;">AbstractFloat</span>,N}
@@ -915,10 +916,10 @@ Maximum order of the smoothed derivatives we can compute with <b>sg</b>
 </p>
 </blockquote>
 <p>
-<a href="file:///home/picaud/GitHub/DirectConvolution.jl/src/SG_Filter.jl#MissingReference">SG_Filter.jl:48</a>, <a href="#org61f0668">back to index</a>
+<a href="file:///home/picaud/GitHub/DirectConvolution.jl/src/SG_Filter.jl#MissingReference">SG_Filter.jl:48</a>, <a href="#org0a81b24">back to index</a>
 </p>
 <ul class="org-ul">
-<li><b><code>polynomialOrder</code></b>  <a id="org5899720"></a></li>
+<li><b><code>polynomialOrder</code></b>  <a id="orgd1a8f61"></a></li>
 </ul>
 <div class="org-src-container">
 <pre class="src src-julia">polynomialOrder(sg::<span style="color: #228b22;">SG_Filter</span>{T,N}) <span style="color: #a020f0;">where</span> {T&lt;:<span style="color: #228b22;">AbstractFloat</span>,N}
@@ -926,31 +927,31 @@ Maximum order of the smoothed derivatives we can compute with <b>sg</b>
 </div>
 <blockquote>
 <p>
-Returns the degree of the polynomial used to construct the Savitzky-Golay filters, see <a href="#org876aead">SG_Filter(&#x2026;)</a>.
+Returns the degree of the polynomial used to construct the Savitzky-Golay filters, see <a href="#orge0d19e4">SG_Filter(&#x2026;)</a>.
 </p>
 </blockquote>
 <p>
-<a href="file:///home/picaud/GitHub/DirectConvolution.jl/src/SG_Filter.jl#MissingReference">SG_Filter.jl:53</a>, <a href="#org61f0668">back to index</a>
+<a href="file:///home/picaud/GitHub/DirectConvolution.jl/src/SG_Filter.jl#MissingReference">SG_Filter.jl:53</a>, <a href="#org0a81b24">back to index</a>
 </p>
 </div>
 </div>
 
-<div id="outline-container-orged60d2f" class="outline-3">
-<h3 id="orged60d2f"><span class="section-number-3">2.4</span> Undecimated Wavelet Transform</h3>
+<div id="outline-container-org2d01069" class="outline-3">
+<h3 id="org2d01069"><span class="section-number-3">2.4</span> Undecimated Wavelet Transform</h3>
 <div class="outline-text-3" id="text-2-4">
 </div>
-<div id="outline-container-orge4a63db" class="outline-4">
-<h4 id="orge4a63db"><span class="section-number-4">2.4.1</span> UDWT Filters</h4>
+<div id="outline-container-org24b7a72" class="outline-4">
+<h4 id="org24b7a72"><span class="section-number-4">2.4.1</span> UDWT Filters</h4>
 <div class="outline-text-4" id="text-2-4-1">
 <p>
 
 </p>
 
 <p>
-<a id="org29034d4"></a> <b>Index:</b> <b>[U]</b> <a href="#org0bb5bfb">UDWT_Filter</a>, <a href="#org9d89a58">UDWT_Filter_Biorthogonal</a>, <a href="#orgb74eeac">UDWT_Filter_Haar</a>, <a href="#orgb7b6137">UDWT_Filter_Starck2</a> <b>[e]</b> <a href="#orgb2b762e">export</a> <b>[t]</b> <a href="#orgd996cae">tildeψ_filter</a>, <a href="#org889c1ba">tildeψ_offset</a>, <a href="#org2f5f625">tildeϕ_filter</a>, <a href="#orgcbf08a2">tildeϕ_offset</a> <b>[ψ]</b> <a href="#org2780156">ψ_filter</a>, <a href="#org1ea30e3">ψ_offset</a> <b>[ϕ]</b> <a href="#org7347de1">ϕ_filter</a>, <a href="#orgd375104">ϕ_offset</a> 
+<a id="org87037a5"></a> <b>Index:</b> <b>[U]</b> <a href="#orgaea21e5">UDWT_Filter</a>, <a href="#org1cfa81d">UDWT_Filter_Biorthogonal</a> <b>[t]</b> <a href="#org484b5dd">tildeψ_filter</a>, <a href="#org3817fa3">tildeψ_offset</a>, <a href="#orgf4943ee">tildeϕ_filter</a>, <a href="#org8920fc8">tildeϕ_offset</a> <b>[ψ]</b> <a href="#org7b5bc53">ψ_filter</a>, <a href="#orgb62f3f2">ψ_offset</a> <b>[ϕ]</b> <a href="#orgc61b9ad">ϕ_filter</a>, <a href="#orga550bcd">ϕ_offset</a> 
 </p>
 <ul class="org-ul">
-<li><b><code>UDWT_Filter</code></b>  <a id="org0bb5bfb"></a></li>
+<li><b><code>UDWT_Filter</code></b>  <a id="orgaea21e5"></a></li>
 </ul>
 <div class="org-src-container">
 <pre class="src src-julia"> <span style="color: #a020f0;">abstract type</span> <span style="color: #228b22;">UDWT_Filter</span>{T&lt;:<span style="color: #228b22;">Number</span>} &lt;: <span style="color: #228b22;">UDWT_Filter_Biorthogonal</span>{T}
@@ -967,10 +968,10 @@ For orthogonal filters we have: \(\phi=\tilde{\phi}\) and \(\psi=\tilde{\psi}\)
 </p>
 </blockquote>
 <p>
-<a href="file:///home/picaud/GitHub/DirectConvolution.jl/src/udwt.jl#MissingReference">udwt.jl:38</a>, <a href="#org29034d4">back to index</a>
+<a href="file:///home/picaud/GitHub/DirectConvolution.jl/src/udwt.jl#MissingReference">udwt.jl:35</a>, <a href="#org87037a5">back to index</a>
 </p>
 <ul class="org-ul">
-<li><b><code>UDWT_Filter_Biorthogonal</code></b>  <a id="org9d89a58"></a></li>
+<li><b><code>UDWT_Filter_Biorthogonal</code></b>  <a id="org1cfa81d"></a></li>
 </ul>
 <div class="org-src-container">
 <pre class="src src-julia"> <span style="color: #a020f0;">abstract type</span> <span style="color: #228b22;">UDWT_Filter_Biorthogonal</span>{T&lt;:<span style="color: #228b22;">Number</span>} 
@@ -984,10 +985,140 @@ wavelet transform
 </p>
 </blockquote>
 <p>
-<a href="file:///home/picaud/GitHub/DirectConvolution.jl/src/udwt.jl#MissingReference">udwt.jl:12</a>, <a href="#org29034d4">back to index</a>
+<a href="file:///home/picaud/GitHub/DirectConvolution.jl/src/udwt.jl#MissingReference">udwt.jl:9</a>, <a href="#org87037a5">back to index</a>
 </p>
 <ul class="org-ul">
-<li><b><code>UDWT_Filter_Haar</code></b>  <a id="orgb74eeac"></a></li>
+<li><b><code>tildeψ_filter</code></b>  <a id="org484b5dd"></a></li>
+</ul>
+<div class="org-src-container">
+<pre class="src src-julia"> tilde&#968;_filter(c::<span style="color: #228b22;">UDWT_Filter_Biorthogonal</span>)::<span style="color: #228b22;">LinearFilter</span>
+</pre>
+</div>
+<p>
+<a href="file:///home/picaud/GitHub/DirectConvolution.jl/src/udwt.jl#MissingReference">udwt.jl:22</a>, <a href="#org87037a5">back to index</a>
+</p>
+
+<div class="org-src-container">
+<pre class="src src-julia"> tilde&#968;_filter(c::<span style="color: #228b22;">UDWT_Filter</span>)::<span style="color: #228b22;">LinearFilter</span>
+</pre>
+</div>
+<p>
+<a href="file:///home/picaud/GitHub/DirectConvolution.jl/src/udwt.jl#MissingReference">udwt.jl:48</a>, <a href="#org87037a5">back to index</a>
+</p>
+<ul class="org-ul">
+<li><b><code>tildeψ_offset</code></b>  <a id="org3817fa3"></a></li>
+</ul>
+<div class="org-src-container">
+<pre class="src src-julia"> tilde&#968;_offset(c::<span style="color: #228b22;">UDWT_Filter_Biorthogonal</span>)::<span style="color: #228b22;">Int</span>
+</pre>
+</div>
+<p>
+<a href="file:///home/picaud/GitHub/DirectConvolution.jl/src/udwt.jl#MissingReference">udwt.jl:30</a>, <a href="#org87037a5">back to index</a>
+</p>
+
+<div class="org-src-container">
+<pre class="src src-julia"> tilde&#968;_offset(c::<span style="color: #228b22;">UDWT_Filter</span>)::<span style="color: #228b22;">Int</span>
+</pre>
+</div>
+<p>
+<a href="file:///home/picaud/GitHub/DirectConvolution.jl/src/udwt.jl#MissingReference">udwt.jl:54</a>, <a href="#org87037a5">back to index</a>
+</p>
+<ul class="org-ul">
+<li><b><code>tildeϕ_filter</code></b>  <a id="orgf4943ee"></a></li>
+</ul>
+<div class="org-src-container">
+<pre class="src src-julia"> tilde&#981;_filter(c::<span style="color: #228b22;">UDWT_Filter_Biorthogonal</span>)::<span style="color: #228b22;">LinearFilter</span>
+</pre>
+</div>
+<p>
+<a href="file:///home/picaud/GitHub/DirectConvolution.jl/src/udwt.jl#MissingReference">udwt.jl:20</a>, <a href="#org87037a5">back to index</a>
+</p>
+
+<div class="org-src-container">
+<pre class="src src-julia"> tilde&#981;_filter(c::<span style="color: #228b22;">UDWT_Filter</span>)::<span style="color: #228b22;">LinearFilter</span>
+</pre>
+</div>
+<p>
+<a href="file:///home/picaud/GitHub/DirectConvolution.jl/src/udwt.jl#MissingReference">udwt.jl:45</a>, <a href="#org87037a5">back to index</a>
+</p>
+<ul class="org-ul">
+<li><b><code>tildeϕ_offset</code></b>  <a id="org8920fc8"></a></li>
+</ul>
+<div class="org-src-container">
+<pre class="src src-julia"> tilde&#981;_offset(c::<span style="color: #228b22;">UDWT_Filter_Biorthogonal</span>)::<span style="color: #228b22;">Int</span>
+</pre>
+</div>
+<p>
+<a href="file:///home/picaud/GitHub/DirectConvolution.jl/src/udwt.jl#MissingReference">udwt.jl:28</a>, <a href="#org87037a5">back to index</a>
+</p>
+
+<div class="org-src-container">
+<pre class="src src-julia"> tilde&#981;_offset(c::<span style="color: #228b22;">UDWT_Filter</span>)::<span style="color: #228b22;">Int</span>
+</pre>
+</div>
+<p>
+<a href="file:///home/picaud/GitHub/DirectConvolution.jl/src/udwt.jl#MissingReference">udwt.jl:51</a>, <a href="#org87037a5">back to index</a>
+</p>
+<ul class="org-ul">
+<li><b><code>ψ_filter</code></b>  <a id="org7b5bc53"></a></li>
+</ul>
+<div class="org-src-container">
+<pre class="src src-julia"> &#968;_filter(c::<span style="color: #228b22;">UDWT_Filter_Biorthogonal</span>)::<span style="color: #228b22;">LinearFilter</span>
+</pre>
+</div>
+<p>
+<a href="file:///home/picaud/GitHub/DirectConvolution.jl/src/udwt.jl#MissingReference">udwt.jl:18</a>, <a href="#org87037a5">back to index</a>
+</p>
+<ul class="org-ul">
+<li><b><code>ψ_offset</code></b>  <a id="orgb62f3f2"></a></li>
+</ul>
+<div class="org-src-container">
+<pre class="src src-julia"> &#968;_offset(c::<span style="color: #228b22;">UDWT_Filter_Biorthogonal</span>)::<span style="color: #228b22;">Int</span>
+</pre>
+</div>
+<p>
+<a href="file:///home/picaud/GitHub/DirectConvolution.jl/src/udwt.jl#MissingReference">udwt.jl:26</a>, <a href="#org87037a5">back to index</a>
+</p>
+<ul class="org-ul">
+<li><b><code>ϕ_filter</code></b>  <a id="orgc61b9ad"></a></li>
+</ul>
+<div class="org-src-container">
+<pre class="src src-julia"> &#981;_filter(c::<span style="color: #228b22;">UDWT_Filter_Biorthogonal</span>)::<span style="color: #228b22;">LinearFilter</span>
+</pre>
+</div>
+<p>
+<a href="file:///home/picaud/GitHub/DirectConvolution.jl/src/udwt.jl#MissingReference">udwt.jl:16</a>, <a href="#org87037a5">back to index</a>
+</p>
+<ul class="org-ul">
+<li><b><code>ϕ_offset</code></b>  <a id="orga550bcd"></a></li>
+</ul>
+<div class="org-src-container">
+<pre class="src src-julia"> &#981;_offset(c::<span style="color: #228b22;">UDWT_Filter_Biorthogonal</span>)::<span style="color: #228b22;">Int</span>
+</pre>
+</div>
+<p>
+<a href="file:///home/picaud/GitHub/DirectConvolution.jl/src/udwt.jl#MissingReference">udwt.jl:24</a>, <a href="#org87037a5">back to index</a>
+</p>
+</div>
+</div>
+
+<div id="outline-container-org2f01685" class="outline-4">
+<h4 id="org2f01685"><span class="section-number-4">2.4.2</span> UDWT Available Filters</h4>
+<div class="outline-text-4" id="text-2-4-2">
+<p>
+For the moment this is just for demonstration, more filters will be
+added in the future.
+</p>
+
+<p>
+
+</p>
+
+<p>
+<a id="org7c8c3df"></a> <b>Index:</b> <b>[U]</b> <a href="#org8451e2f">UDWT_Filter_Haar</a>, <a href="#org8a06d99">UDWT_Filter_Starck2</a> 
+</p>
+<ul class="org-ul">
+<li><b><code>UDWT_Filter_Haar</code></b>  <a id="org8451e2f"></a></li>
 </ul>
 <div class="org-src-container">
 <pre class="src src-julia"> <span style="color: #a020f0;">struct</span> <span style="color: #228b22;">UDWT_Filter_Haar</span>{T&lt;:<span style="color: #228b22;">AbstractFloat</span>} &lt;: <span style="color: #228b22;">UDWT_Filter</span>{T}
@@ -999,7 +1130,7 @@ Haar filter
 </p>
 </blockquote>
 <p>
-<a href="file:///home/picaud/GitHub/DirectConvolution.jl/src/udwt.jl#MissingReference">udwt.jl:64</a>, <a href="#org29034d4">back to index</a>
+<a href="file:///home/picaud/GitHub/DirectConvolution.jl/src/udwt.jl#MissingReference">udwt.jl:61</a>, <a href="#org7c8c3df">back to index</a>
 </p>
 
 <div class="org-src-container">
@@ -1012,10 +1143,10 @@ Creates an instance
 </p>
 </blockquote>
 <p>
-<a href="file:///home/picaud/GitHub/DirectConvolution.jl/src/udwt.jl#MissingReference">udwt.jl:70</a>, <a href="#org29034d4">back to index</a>
+<a href="file:///home/picaud/GitHub/DirectConvolution.jl/src/udwt.jl#MissingReference">udwt.jl:67</a>, <a href="#org7c8c3df">back to index</a>
 </p>
 <ul class="org-ul">
-<li><b><code>UDWT_Filter_Starck2</code></b>  <a id="orgb7b6137"></a></li>
+<li><b><code>UDWT_Filter_Starck2</code></b>  <a id="org8a06d99"></a></li>
 </ul>
 <div class="org-src-container">
 <pre class="src src-julia"> <span style="color: #a020f0;">struct</span> <span style="color: #228b22;">UDWT_Filter_Starck2</span>{T&lt;:<span style="color: #228b22;">AbstractFloat</span>} &lt;: <span style="color: #228b22;">UDWT_Filter_Biorthogonal</span>{T}
@@ -1031,7 +1162,7 @@ Defined by Eq. 6 from <a href="http://ieeexplore.ieee.org/stamp/stamp.jsp?tp=&am
 </p>
 </blockquote>
 <p>
-<a href="file:///home/picaud/GitHub/DirectConvolution.jl/src/udwt.jl#MissingReference">udwt.jl:78</a>, <a href="#org29034d4">back to index</a>
+<a href="file:///home/picaud/GitHub/DirectConvolution.jl/src/udwt.jl#MissingReference">udwt.jl:75</a>, <a href="#org7c8c3df">back to index</a>
 </p>
 
 <div class="org-src-container">
@@ -1044,149 +1175,20 @@ Creates an instance
 </p>
 </blockquote>
 <p>
-<a href="file:///home/picaud/GitHub/DirectConvolution.jl/src/udwt.jl#MissingReference">udwt.jl:88</a>, <a href="#org29034d4">back to index</a>
-</p>
-<ul class="org-ul">
-<li><b><code>export</code></b>  <a id="orgb2b762e"></a></li>
-</ul>
-<div class="org-src-container">
-<pre class="src src-julia"> <span style="color: #a020f0;">export</span> UDWT_Filter_Haar, UDWT_Filter_Starck2
-</pre>
-</div>
-<p>
-<a href="file:///home/picaud/GitHub/DirectConvolution.jl/src/udwt.jl#MissingReference">udwt.jl:1</a>, <a href="#org29034d4">back to index</a>
-</p>
-
-<div class="org-src-container">
-<pre class="src src-julia"> <span style="color: #a020f0;">export</span> &#981;_filter,&#968;_filter,tilde&#981;_filter,tilde&#968;_filter,&#981;_offset,&#968;_offset,tilde&#981;_offset,tilde&#968;_offset
-</pre>
-</div>
-<p>
-<a href="file:///home/picaud/GitHub/DirectConvolution.jl/src/udwt.jl#MissingReference">udwt.jl:3</a>, <a href="#org29034d4">back to index</a>
-</p>
-<ul class="org-ul">
-<li><b><code>tildeψ_filter</code></b>  <a id="orgd996cae"></a></li>
-</ul>
-<div class="org-src-container">
-<pre class="src src-julia"> tilde&#968;_filter(c::<span style="color: #228b22;">UDWT_Filter_Biorthogonal</span>)::<span style="color: #228b22;">LinearFilter</span>
-</pre>
-</div>
-<p>
-<a href="file:///home/picaud/GitHub/DirectConvolution.jl/src/udwt.jl#MissingReference">udwt.jl:25</a>, <a href="#org29034d4">back to index</a>
-</p>
-
-<div class="org-src-container">
-<pre class="src src-julia"> tilde&#968;_filter(c::<span style="color: #228b22;">UDWT_Filter</span>)::<span style="color: #228b22;">LinearFilter</span>
-</pre>
-</div>
-<p>
-<a href="file:///home/picaud/GitHub/DirectConvolution.jl/src/udwt.jl#MissingReference">udwt.jl:51</a>, <a href="#org29034d4">back to index</a>
-</p>
-<ul class="org-ul">
-<li><b><code>tildeψ_offset</code></b>  <a id="org889c1ba"></a></li>
-</ul>
-<div class="org-src-container">
-<pre class="src src-julia"> tilde&#968;_offset(c::<span style="color: #228b22;">UDWT_Filter_Biorthogonal</span>)::<span style="color: #228b22;">Int</span>
-</pre>
-</div>
-<p>
-<a href="file:///home/picaud/GitHub/DirectConvolution.jl/src/udwt.jl#MissingReference">udwt.jl:33</a>, <a href="#org29034d4">back to index</a>
-</p>
-
-<div class="org-src-container">
-<pre class="src src-julia"> tilde&#968;_offset(c::<span style="color: #228b22;">UDWT_Filter</span>)::<span style="color: #228b22;">Int</span>
-</pre>
-</div>
-<p>
-<a href="file:///home/picaud/GitHub/DirectConvolution.jl/src/udwt.jl#MissingReference">udwt.jl:57</a>, <a href="#org29034d4">back to index</a>
-</p>
-<ul class="org-ul">
-<li><b><code>tildeϕ_filter</code></b>  <a id="org2f5f625"></a></li>
-</ul>
-<div class="org-src-container">
-<pre class="src src-julia"> tilde&#981;_filter(c::<span style="color: #228b22;">UDWT_Filter_Biorthogonal</span>)::<span style="color: #228b22;">LinearFilter</span>
-</pre>
-</div>
-<p>
-<a href="file:///home/picaud/GitHub/DirectConvolution.jl/src/udwt.jl#MissingReference">udwt.jl:23</a>, <a href="#org29034d4">back to index</a>
-</p>
-
-<div class="org-src-container">
-<pre class="src src-julia"> tilde&#981;_filter(c::<span style="color: #228b22;">UDWT_Filter</span>)::<span style="color: #228b22;">LinearFilter</span>
-</pre>
-</div>
-<p>
-<a href="file:///home/picaud/GitHub/DirectConvolution.jl/src/udwt.jl#MissingReference">udwt.jl:48</a>, <a href="#org29034d4">back to index</a>
-</p>
-<ul class="org-ul">
-<li><b><code>tildeϕ_offset</code></b>  <a id="orgcbf08a2"></a></li>
-</ul>
-<div class="org-src-container">
-<pre class="src src-julia"> tilde&#981;_offset(c::<span style="color: #228b22;">UDWT_Filter_Biorthogonal</span>)::<span style="color: #228b22;">Int</span>
-</pre>
-</div>
-<p>
-<a href="file:///home/picaud/GitHub/DirectConvolution.jl/src/udwt.jl#MissingReference">udwt.jl:31</a>, <a href="#org29034d4">back to index</a>
-</p>
-
-<div class="org-src-container">
-<pre class="src src-julia"> tilde&#981;_offset(c::<span style="color: #228b22;">UDWT_Filter</span>)::<span style="color: #228b22;">Int</span>
-</pre>
-</div>
-<p>
-<a href="file:///home/picaud/GitHub/DirectConvolution.jl/src/udwt.jl#MissingReference">udwt.jl:54</a>, <a href="#org29034d4">back to index</a>
-</p>
-<ul class="org-ul">
-<li><b><code>ψ_filter</code></b>  <a id="org2780156"></a></li>
-</ul>
-<div class="org-src-container">
-<pre class="src src-julia"> &#968;_filter(c::<span style="color: #228b22;">UDWT_Filter_Biorthogonal</span>)::<span style="color: #228b22;">LinearFilter</span>
-</pre>
-</div>
-<p>
-<a href="file:///home/picaud/GitHub/DirectConvolution.jl/src/udwt.jl#MissingReference">udwt.jl:21</a>, <a href="#org29034d4">back to index</a>
-</p>
-<ul class="org-ul">
-<li><b><code>ψ_offset</code></b>  <a id="org1ea30e3"></a></li>
-</ul>
-<div class="org-src-container">
-<pre class="src src-julia"> &#968;_offset(c::<span style="color: #228b22;">UDWT_Filter_Biorthogonal</span>)::<span style="color: #228b22;">Int</span>
-</pre>
-</div>
-<p>
-<a href="file:///home/picaud/GitHub/DirectConvolution.jl/src/udwt.jl#MissingReference">udwt.jl:29</a>, <a href="#org29034d4">back to index</a>
-</p>
-<ul class="org-ul">
-<li><b><code>ϕ_filter</code></b>  <a id="org7347de1"></a></li>
-</ul>
-<div class="org-src-container">
-<pre class="src src-julia"> &#981;_filter(c::<span style="color: #228b22;">UDWT_Filter_Biorthogonal</span>)::<span style="color: #228b22;">LinearFilter</span>
-</pre>
-</div>
-<p>
-<a href="file:///home/picaud/GitHub/DirectConvolution.jl/src/udwt.jl#MissingReference">udwt.jl:19</a>, <a href="#org29034d4">back to index</a>
-</p>
-<ul class="org-ul">
-<li><b><code>ϕ_offset</code></b>  <a id="orgd375104"></a></li>
-</ul>
-<div class="org-src-container">
-<pre class="src src-julia"> &#981;_offset(c::<span style="color: #228b22;">UDWT_Filter_Biorthogonal</span>)::<span style="color: #228b22;">Int</span>
-</pre>
-</div>
-<p>
-<a href="file:///home/picaud/GitHub/DirectConvolution.jl/src/udwt.jl#MissingReference">udwt.jl:27</a>, <a href="#org29034d4">back to index</a>
+<a href="file:///home/picaud/GitHub/DirectConvolution.jl/src/udwt.jl#MissingReference">udwt.jl:85</a>, <a href="#org7c8c3df">back to index</a>
 </p>
 </div>
 </div>
 
-<div id="outline-container-org38dc304" class="outline-4">
-<h4 id="org38dc304"><span class="section-number-4">2.4.2</span> UDWT Computational subroutines</h4>
-<div class="outline-text-4" id="text-2-4-2">
+
+<div id="outline-container-org6fbb797" class="outline-4">
+<h4 id="org6fbb797"><span class="section-number-4">2.4.3</span> UDWT Computational subroutines</h4>
+<div class="outline-text-4" id="text-2-4-3">
 <p>
-<a id="orgc6c298b"></a> <b>Index:</b> <b>[U]</b> <a href="#org5dbce81">UDWT</a> <b>[e]</b> <a href="#org1c3ce9a">export</a> <b>[i]</b> <a href="#org2c01a1a">inverse_udwt</a>, <a href="#orgd4b060a">inverse_udwt!</a> <b>[l]</b> <a href="#orgef1a0f0">length</a> <b>[s]</b> <a href="#orgde2a49a">scale</a> <b>[u]</b> <a href="#org195e498">udwt</a> 
+<a id="org37d5860"></a> <b>Index:</b> <b>[U]</b> <a href="#org9f406ce">UDWT</a> <b>[e]</b> <a href="#orga59443a">export</a> <b>[i]</b> <a href="#orgef539cf">inverse_udwt</a>, <a href="#orga3c6109">inverse_udwt!</a> <b>[l]</b> <a href="#org9e47c5b">length</a> <b>[s]</b> <a href="#org475fb26">scale</a> <b>[u]</b> <a href="#orgb686589">udwt</a> 
 </p>
 <ul class="org-ul">
-<li><b><code>UDWT</code></b>  <a id="org5dbce81"></a></li>
+<li><b><code>UDWT</code></b>  <a id="org9f406ce"></a></li>
 </ul>
 <div class="org-src-container">
 <pre class="src src-julia"> <span style="color: #a020f0;">struct</span> <span style="color: #228b22;">UDWT</span>{T&lt;:<span style="color: #228b22;">Number</span>}
@@ -1198,7 +1200,7 @@ A structure to store 1D UDWT
 </p>
 </blockquote>
 <p>
-<a href="file:///home/picaud/GitHub/DirectConvolution.jl/src/udwt.jl#MissingReference">udwt.jl:97</a>, <a href="#orgc6c298b">back to index</a>
+<a href="file:///home/picaud/GitHub/DirectConvolution.jl/src/udwt.jl#MissingReference">udwt.jl:97</a>, <a href="#org37d5860">back to index</a>
 </p>
 
 <div class="org-src-container">
@@ -1222,20 +1224,20 @@ Creates an instance
 </ul>
 </blockquote>
 <p>
-<a href="file:///home/picaud/GitHub/DirectConvolution.jl/src/udwt.jl#MissingReference">udwt.jl:108</a>, <a href="#orgc6c298b">back to index</a>
+<a href="file:///home/picaud/GitHub/DirectConvolution.jl/src/udwt.jl#MissingReference">udwt.jl:108</a>, <a href="#org37d5860">back to index</a>
 </p>
 <ul class="org-ul">
-<li><b><code>export</code></b>  <a id="org1c3ce9a"></a></li>
+<li><b><code>export</code></b>  <a id="orga59443a"></a></li>
 </ul>
 <div class="org-src-container">
 <pre class="src src-julia"> <span style="color: #a020f0;">export</span> udwt, scale, inverse_udwt!, inverse_udwt
 </pre>
 </div>
 <p>
-<a href="file:///home/picaud/GitHub/DirectConvolution.jl/src/udwt.jl#MissingReference">udwt.jl:5</a>, <a href="#orgc6c298b">back to index</a>
+<a href="file:///home/picaud/GitHub/DirectConvolution.jl/src/udwt.jl#MissingReference">udwt.jl:5</a>, <a href="#org37d5860">back to index</a>
 </p>
 <ul class="org-ul">
-<li><b><code>inverse_udwt</code></b>  <a id="org2c01a1a"></a></li>
+<li><b><code>inverse_udwt</code></b>  <a id="orgef539cf"></a></li>
 </ul>
 <div class="org-src-container">
 <pre class="src src-julia"> <span style="color: #a020f0;">function</span> <span style="color: #0000ff;">inverse_udwt</span>(udwt_domain::<span style="color: #228b22;">UDWT</span>{T})::<span style="color: #228b22;">Array</span>{T,1} <span style="color: #a020f0;">where</span> {T&lt;:<span style="color: #228b22;">Number</span>}
@@ -1251,10 +1253,10 @@ Performs an 1D <b>inverse</b> undecimated wavelet transform
 </p>
 </blockquote>
 <p>
-<a href="file:///home/picaud/GitHub/DirectConvolution.jl/src/udwt.jl#MissingReference">udwt.jl:248</a>, <a href="#orgc6c298b">back to index</a>
+<a href="file:///home/picaud/GitHub/DirectConvolution.jl/src/udwt.jl#MissingReference">udwt.jl:248</a>, <a href="#org37d5860">back to index</a>
 </p>
 <ul class="org-ul">
-<li><b><code>inverse_udwt!</code></b>  <a id="orgd4b060a"></a></li>
+<li><b><code>inverse_udwt!</code></b>  <a id="orga3c6109"></a></li>
 </ul>
 <div class="org-src-container">
 <pre class="src src-julia"> <span style="color: #a020f0;">function</span> <span style="color: #0000ff;">inverse_udwt!</span>(udwt_domain::<span style="color: #228b22;">UDWT</span>{T},reconstructed_signal::<span style="color: #228b22;">AbstractArray</span>{T,1}) <span style="color: #a020f0;">where</span> {T&lt;:<span style="color: #228b22;">Number</span>}
@@ -1270,10 +1272,10 @@ Performs an 1D <b>inverse</b> undecimated wavelet transform
 </p>
 </blockquote>
 <p>
-<a href="file:///home/picaud/GitHub/DirectConvolution.jl/src/udwt.jl#MissingReference">udwt.jl:191</a>, <a href="#orgc6c298b">back to index</a>
+<a href="file:///home/picaud/GitHub/DirectConvolution.jl/src/udwt.jl#MissingReference">udwt.jl:191</a>, <a href="#org37d5860">back to index</a>
 </p>
 <ul class="org-ul">
-<li><b><code>length</code></b>  <a id="orgef1a0f0"></a></li>
+<li><b><code>length</code></b>  <a id="org9e47c5b"></a></li>
 </ul>
 <div class="org-src-container">
 <pre class="src src-julia"> length(udwt::<span style="color: #228b22;">UDWT</span>)::<span style="color: #228b22;">Int</span>
@@ -1285,10 +1287,10 @@ Returns expected signal length
 </p>
 </blockquote>
 <p>
-<a href="file:///home/picaud/GitHub/DirectConvolution.jl/src/udwt.jl#MissingReference">udwt.jl:127</a>, <a href="#orgc6c298b">back to index</a>
+<a href="file:///home/picaud/GitHub/DirectConvolution.jl/src/udwt.jl#MissingReference">udwt.jl:127</a>, <a href="#org37d5860">back to index</a>
 </p>
 <ul class="org-ul">
-<li><b><code>scale</code></b>  <a id="orgde2a49a"></a></li>
+<li><b><code>scale</code></b>  <a id="org475fb26"></a></li>
 </ul>
 <div class="org-src-container">
 <pre class="src src-julia"> scale(udwt::<span style="color: #228b22;">UDWT</span>)::<span style="color: #228b22;">Int</span>
@@ -1300,10 +1302,10 @@ Returns max scale
 </p>
 </blockquote>
 <p>
-<a href="file:///home/picaud/GitHub/DirectConvolution.jl/src/udwt.jl#MissingReference">udwt.jl:124</a>, <a href="#orgc6c298b">back to index</a>
+<a href="file:///home/picaud/GitHub/DirectConvolution.jl/src/udwt.jl#MissingReference">udwt.jl:124</a>, <a href="#org37d5860">back to index</a>
 </p>
 <ul class="org-ul">
-<li><b><code>udwt</code></b>  <a id="org195e498"></a></li>
+<li><b><code>udwt</code></b>  <a id="orgb686589"></a></li>
 </ul>
 <div class="org-src-container">
 <pre class="src src-julia"> <span style="color: #a020f0;">function</span> <span style="color: #0000ff;">udwt</span>(signal::<span style="color: #228b22;">AbstractArray</span>{T,1},filter::<span style="color: #228b22;">UDWT_Filter_Biorthogonal</span>{T};scale::<span style="color: #228b22;">Int</span>=3) <span style="color: #a020f0;">where</span> {T&lt;:<span style="color: #228b22;">Number</span>}
@@ -1320,7 +1322,7 @@ Performs an 1D undecimated wavelet transform
 </p>
 </blockquote>
 <p>
-<a href="file:///home/picaud/GitHub/DirectConvolution.jl/src/udwt.jl#MissingReference">udwt.jl:131</a>, <a href="#orgc6c298b">back to index</a>
+<a href="file:///home/picaud/GitHub/DirectConvolution.jl/src/udwt.jl#MissingReference">udwt.jl:131</a>, <a href="#org37d5860">back to index</a>
 </p>
 </div>
 </div>
@@ -1330,8 +1332,8 @@ Performs an 1D undecimated wavelet transform
 
 
 
-<div id="outline-container-orga4dbaf6" class="outline-2">
-<h2 id="orga4dbaf6"><span class="section-number-2">3</span> Unit tests</h2>
+<div id="outline-container-org904df3d" class="outline-2">
+<h2 id="org904df3d"><span class="section-number-2">3</span> Unit tests</h2>
 <div class="outline-text-2" id="text-3">
 <pre class="example">
 Test Summary:     | Pass  Total
@@ -1341,18 +1343,18 @@ DirectConvolution |   39     39
 </div>
 </div>
 
-<div id="outline-container-org580a825" class="outline-2">
-<h2 id="org580a825"><span class="section-number-2">4</span> Internal documentation</h2>
+<div id="outline-container-orgcd629fe" class="outline-2">
+<h2 id="orgcd629fe"><span class="section-number-2">4</span> Internal documentation</h2>
 <div class="outline-text-2" id="text-4">
 <p>
 
 </p>
 
 <p>
-<a id="org00e3d73"></a> <b>Index:</b> <b>[L]</b> <a href="#org09b7213">LinearFilter_Default</a>, <a href="#orgcb80f78">LinearFilter_DefaultCentered</a> <b>[b]</b> <a href="#org78458a0">boundaryExtension</a> <b>[c]</b> <a href="#orgcbced04">compute_Ωγ1</a> <b>[d]</b> <a href="#org55adc71">directConv!</a> <b>[f]</b> <a href="#org55dc548">filter_range</a> <b>[i]</b> <a href="#orgd0f9cbc">isapprox</a> <b>[o]</b> <a href="#org5a0090b">offset</a> <b>[r]</b> <a href="#org44e4ac9">range</a>, <a href="#org2f22883">relativeComplement_left</a>, <a href="#org0ec8282">relativeComplement_right</a> <b>[s]</b> <a href="#org984522b">scale</a> 
+<a id="orgf5307fd"></a> <b>Index:</b> <b>[L]</b> <a href="#org7778969">LinearFilter_Default</a>, <a href="#org32e202a">LinearFilter_DefaultCentered</a> <b>[b]</b> <a href="#org627ba7a">boundaryExtension</a> <b>[c]</b> <a href="#org917dd18">compute_Ωγ1</a> <b>[d]</b> <a href="#org1b15b36">directConv!</a> <b>[f]</b> <a href="#org8853f60">filter_range</a> <b>[i]</b> <a href="#orge242ab6">isapprox</a> <b>[o]</b> <a href="#org8e24bd9">offset</a> <b>[r]</b> <a href="#org47452d4">range</a>, <a href="#org5701252">relativeComplement_left</a>, <a href="#org6a94e67">relativeComplement_right</a> <b>[s]</b> <a href="#orgebee013">scale</a> 
 </p>
 <ul class="org-ul">
-<li><b><code>LinearFilter_Default</code></b>  <a id="org09b7213"></a></li>
+<li><b><code>LinearFilter_Default</code></b>  <a id="org7778969"></a></li>
 </ul>
 <div class="org-src-container">
 <pre class="src src-julia"><span style="color: #a020f0;">struct</span> <span style="color: #228b22;">LinearFilter_Default</span>{T&lt;:<span style="color: #228b22;">Number</span>,N} &lt;: <span style="color: #228b22;">LinearFilter</span>{T}
@@ -1364,7 +1366,7 @@ Default linear filter
 </p>
 </blockquote>
 <p>
-<a href="file:///home/picaud/GitHub/DirectConvolution.jl/src/linearFilter.jl#MissingReference">linearFilter.jl:53</a>, <a href="#org00e3d73">back to index</a>
+<a href="file:///home/picaud/GitHub/DirectConvolution.jl/src/linearFilter.jl#MissingReference">linearFilter.jl:53</a>, <a href="#orgf5307fd">back to index</a>
 </p>
 
 <div class="org-src-container">
@@ -1394,10 +1396,10 @@ range(linear_filter)
 </div>
 </blockquote>
 <p>
-<a href="file:///home/picaud/GitHub/DirectConvolution.jl/src/linearFilter.jl#MissingReference">linearFilter.jl:62</a>, <a href="#org00e3d73">back to index</a>
+<a href="file:///home/picaud/GitHub/DirectConvolution.jl/src/linearFilter.jl#MissingReference">linearFilter.jl:62</a>, <a href="#orgf5307fd">back to index</a>
 </p>
 <ul class="org-ul">
-<li><b><code>LinearFilter_DefaultCentered</code></b>  <a id="orgcb80f78"></a></li>
+<li><b><code>LinearFilter_DefaultCentered</code></b>  <a id="org32e202a"></a></li>
 </ul>
 <div class="org-src-container">
 <pre class="src src-julia"><span style="color: #a020f0;">struct</span> <span style="color: #228b22;">LinearFilter_DefaultCentered</span>{T&lt;:<span style="color: #228b22;">Number</span>,N} &lt;: <span style="color: #228b22;">LinearFilter</span>{T}
@@ -1413,7 +1415,7 @@ Array length has to be odd, 2n+1. Filter offset is n by construction.
 </p>
 </blockquote>
 <p>
-<a href="file:///home/picaud/GitHub/DirectConvolution.jl/src/linearFilter.jl#MissingReference">linearFilter.jl:77</a>, <a href="#org00e3d73">back to index</a>
+<a href="file:///home/picaud/GitHub/DirectConvolution.jl/src/linearFilter.jl#MissingReference">linearFilter.jl:77</a>, <a href="#orgf5307fd">back to index</a>
 </p>
 
 <div class="org-src-container">
@@ -1421,10 +1423,10 @@ Array length has to be odd, 2n+1. Filter offset is n by construction.
 </pre>
 </div>
 <p>
-<a href="file:///home/picaud/GitHub/DirectConvolution.jl/src/linearFilter.jl#MissingReference">linearFilter.jl:87</a>, <a href="#org00e3d73">back to index</a>
+<a href="file:///home/picaud/GitHub/DirectConvolution.jl/src/linearFilter.jl#MissingReference">linearFilter.jl:87</a>, <a href="#orgf5307fd">back to index</a>
 </p>
 <ul class="org-ul">
-<li><b><code>boundaryExtension</code></b>  <a id="org78458a0"></a></li>
+<li><b><code>boundaryExtension</code></b>  <a id="org627ba7a"></a></li>
 </ul>
 <div class="org-src-container">
 <pre class="src src-julia"><span style="color: #a020f0;">function</span> <span style="color: #0000ff;">boundaryExtension</span>(&#946;::<span style="color: #228b22;">AbstractArray</span>{T,1},
@@ -1448,7 +1450,7 @@ hcat(r,map(x-&gt;DirectConvolution.boundaryExtension([1:3;],x,ZeroPaddingBE),r))
 </div>
 </blockquote>
 <p>
-<a href="file:///home/picaud/GitHub/DirectConvolution.jl/src/directConvolution.jl#MissingReference">directConvolution.jl:109</a>, <a href="#org00e3d73">back to index</a>
+<a href="file:///home/picaud/GitHub/DirectConvolution.jl/src/directConvolution.jl#MissingReference">directConvolution.jl:109</a>, <a href="#orgf5307fd">back to index</a>
 </p>
 
 <div class="org-src-container">
@@ -1473,7 +1475,7 @@ hcat(r,map(x-&gt;DirectConvolution.boundaryExtension([1:3;],x,ConstantBE),r))'
 </div>
 </blockquote>
 <p>
-<a href="file:///home/picaud/GitHub/DirectConvolution.jl/src/directConvolution.jl#MissingReference">directConvolution.jl:127</a>, <a href="#org00e3d73">back to index</a>
+<a href="file:///home/picaud/GitHub/DirectConvolution.jl/src/directConvolution.jl#MissingReference">directConvolution.jl:127</a>, <a href="#orgf5307fd">back to index</a>
 </p>
 
 <div class="org-src-container">
@@ -1498,7 +1500,7 @@ hcat(r,map(x-&gt;DirectConvolution.boundaryExtension([1:3;],x,PeriodicBE),r))'
 </div>
 </blockquote>
 <p>
-<a href="file:///home/picaud/GitHub/DirectConvolution.jl/src/directConvolution.jl#MissingReference">directConvolution.jl:147</a>, <a href="#org00e3d73">back to index</a>
+<a href="file:///home/picaud/GitHub/DirectConvolution.jl/src/directConvolution.jl#MissingReference">directConvolution.jl:147</a>, <a href="#orgf5307fd">back to index</a>
 </p>
 
 <div class="org-src-container">
@@ -1523,10 +1525,10 @@ hcat(r,map(x-&gt;DirectConvolution.boundaryExtension([1:3;],x,MirrorBE),r))'
 </div>
 </blockquote>
 <p>
-<a href="file:///home/picaud/GitHub/DirectConvolution.jl/src/directConvolution.jl#MissingReference">directConvolution.jl:161</a>, <a href="#org00e3d73">back to index</a>
+<a href="file:///home/picaud/GitHub/DirectConvolution.jl/src/directConvolution.jl#MissingReference">directConvolution.jl:161</a>, <a href="#orgf5307fd">back to index</a>
 </p>
 <ul class="org-ul">
-<li><b><code>compute_Ωγ1</code></b>  <a id="orgcbced04"></a></li>
+<li><b><code>compute_Ωγ1</code></b>  <a id="org917dd18"></a></li>
 </ul>
 <div class="org-src-container">
 <pre class="src src-julia"><span style="color: #a020f0;">function</span> <span style="color: #0000ff;">compute_&#937;&#947;1</span>(&#937;&#945;::<span style="color: #228b22;">UnitRange</span>{<span style="color: #228b22;">Int</span>},
@@ -1561,10 +1563,10 @@ the computation of \(\gamma[k],\ k\in\Omega^\gamma\) is splitted into two parts:
 </div>
 </blockquote>
 <p>
-<a href="file:///home/picaud/GitHub/DirectConvolution.jl/src/directConvolution.jl#MissingReference">directConvolution.jl:47</a>, <a href="#org00e3d73">back to index</a>
+<a href="file:///home/picaud/GitHub/DirectConvolution.jl/src/directConvolution.jl#MissingReference">directConvolution.jl:47</a>, <a href="#orgf5307fd">back to index</a>
 </p>
 <ul class="org-ul">
-<li><b><code>directConv!</code></b>  <a id="org55adc71"></a></li>
+<li><b><code>directConv!</code></b>  <a id="org1b15b36"></a></li>
 </ul>
 <div class="org-src-container">
 <pre class="src src-julia"><span style="color: #a020f0;">function</span> <span style="color: #0000ff;">directConv!</span>(tilde_&#945;::<span style="color: #228b22;">AbstractArray</span>{T,1},
@@ -1581,10 +1583,10 @@ the computation of \(\gamma[k],\ k\in\Omega^\gamma\) is splitted into two parts:
 </pre>
 </div>
 <p>
-<a href="file:///home/picaud/GitHub/DirectConvolution.jl/src/directConvolution.jl#MissingReference">directConvolution.jl:178</a>, <a href="#org00e3d73">back to index</a>
+<a href="file:///home/picaud/GitHub/DirectConvolution.jl/src/directConvolution.jl#MissingReference">directConvolution.jl:178</a>, <a href="#orgf5307fd">back to index</a>
 </p>
 <ul class="org-ul">
-<li><b><code>filter_range</code></b>  <a id="org55dc548"></a></li>
+<li><b><code>filter_range</code></b>  <a id="org8853f60"></a></li>
 </ul>
 <div class="org-src-container">
 <pre class="src src-julia">filter_range(size::<span style="color: #228b22;">Int</span>,offset::<span style="color: #228b22;">Int</span>)::<span style="color: #228b22;">UnitRange</span>
@@ -1592,7 +1594,7 @@ the computation of \(\gamma[k],\ k\in\Omega^\gamma\) is splitted into two parts:
 </div>
 <blockquote>
 <p>
-Computes <a href="#orgd2fea2c">range(&#x2026;)</a> using primitive types.
+Computes <a href="#orgf2837ff">range(&#x2026;)</a> using primitive types.
 This allows reuse by <code>directConv!</code> for instance.
 </p>
 
@@ -1601,10 +1603,10 @@ This allows reuse by <code>directConv!</code> for instance.
 </p>
 </blockquote>
 <p>
-<a href="file:///home/picaud/GitHub/DirectConvolution.jl/src/linearFilter.jl#MissingReference">linearFilter.jl:28</a>, <a href="#org00e3d73">back to index</a>
+<a href="file:///home/picaud/GitHub/DirectConvolution.jl/src/linearFilter.jl#MissingReference">linearFilter.jl:28</a>, <a href="#orgf5307fd">back to index</a>
 </p>
 <ul class="org-ul">
-<li><b><code>isapprox</code></b>  <a id="orgd0f9cbc"></a></li>
+<li><b><code>isapprox</code></b>  <a id="orge242ab6"></a></li>
 </ul>
 <div class="org-src-container">
 <pre class="src src-julia"><span style="color: #a020f0;">function</span> <span style="color: #0000ff;">isapprox</span>(f::<span style="color: #228b22;">LinearFilter</span>{T},v::<span style="color: #228b22;">AbstractArray</span>{T,1}) <span style="color: #a020f0;">where</span> {T&lt;:<span style="color: #228b22;">Number</span>}
@@ -1616,20 +1618,20 @@ For convenience only, used in utests
 </p>
 </blockquote>
 <p>
-<a href="file:///home/picaud/GitHub/DirectConvolution.jl/src/linearFilter.jl#MissingReference">linearFilter.jl:45</a>, <a href="#org00e3d73">back to index</a>
+<a href="file:///home/picaud/GitHub/DirectConvolution.jl/src/linearFilter.jl#MissingReference">linearFilter.jl:45</a>, <a href="#orgf5307fd">back to index</a>
 </p>
 <ul class="org-ul">
-<li><b><code>offset</code></b>  <a id="org5a0090b"></a></li>
+<li><b><code>offset</code></b>  <a id="org8e24bd9"></a></li>
 </ul>
 <div class="org-src-container">
 <pre class="src src-julia">offset(f::<span style="color: #228b22;">LinearFilter_DefaultCentered</span>{T,N}) <span style="color: #a020f0;">where</span> {T&lt;:<span style="color: #228b22;">Number</span>,N}
 </pre>
 </div>
 <p>
-<a href="file:///home/picaud/GitHub/DirectConvolution.jl/src/linearFilter.jl#MissingReference">linearFilter.jl:94</a>, <a href="#org00e3d73">back to index</a>
+<a href="file:///home/picaud/GitHub/DirectConvolution.jl/src/linearFilter.jl#MissingReference">linearFilter.jl:94</a>, <a href="#orgf5307fd">back to index</a>
 </p>
 <ul class="org-ul">
-<li><b><code>range</code></b>  <a id="org44e4ac9"></a> <a id="orgd2fea2c"></a></li>
+<li><b><code>range</code></b>  <a id="org47452d4"></a> <a id="orgf2837ff"></a></li>
 </ul>
 <div class="org-src-container">
 <pre class="src src-julia">range(c::<span style="color: #228b22;">LinearFilter</span>)::<span style="color: #228b22;">UnitRange</span>
@@ -1648,10 +1650,10 @@ Filter support is defined by
 </p>
 </blockquote>
 <p>
-<a href="file:///home/picaud/GitHub/DirectConvolution.jl/src/linearFilter.jl#MissingReference">linearFilter.jl:36</a>, <a href="#org00e3d73">back to index</a>
+<a href="file:///home/picaud/GitHub/DirectConvolution.jl/src/linearFilter.jl#MissingReference">linearFilter.jl:36</a>, <a href="#orgf5307fd">back to index</a>
 </p>
 <ul class="org-ul">
-<li><b><code>relativeComplement_left</code></b>  <a id="org2f22883"></a></li>
+<li><b><code>relativeComplement_left</code></b>  <a id="org5701252"></a></li>
 </ul>
 <div class="org-src-container">
 <pre class="src src-julia"><span style="color: #a020f0;">function</span> <span style="color: #0000ff;">relativeComplement_left</span>(A::<span style="color: #228b22;">UnitRange</span>{<span style="color: #228b22;">Int</span>},
@@ -1688,10 +1690,10 @@ Left relative complement
 </p>
 </blockquote>
 <p>
-<a href="file:///home/picaud/GitHub/DirectConvolution.jl/src/directConvolution.jl#MissingReference">directConvolution.jl:69</a>, <a href="#org00e3d73">back to index</a>
+<a href="file:///home/picaud/GitHub/DirectConvolution.jl/src/directConvolution.jl#MissingReference">directConvolution.jl:69</a>, <a href="#orgf5307fd">back to index</a>
 </p>
 <ul class="org-ul">
-<li><b><code>relativeComplement_right</code></b>  <a id="org0ec8282"></a></li>
+<li><b><code>relativeComplement_right</code></b>  <a id="org6a94e67"></a></li>
 </ul>
 <div class="org-src-container">
 <pre class="src src-julia"><span style="color: #a020f0;">function</span> <span style="color: #0000ff;">relativeComplement_right</span>(A::<span style="color: #228b22;">UnitRange</span>{<span style="color: #228b22;">Int</span>},
@@ -1728,10 +1730,10 @@ Left relative complement
 </p>
 </blockquote>
 <p>
-<a href="file:///home/picaud/GitHub/DirectConvolution.jl/src/directConvolution.jl#MissingReference">directConvolution.jl:88</a>, <a href="#org00e3d73">back to index</a>
+<a href="file:///home/picaud/GitHub/DirectConvolution.jl/src/directConvolution.jl#MissingReference">directConvolution.jl:88</a>, <a href="#orgf5307fd">back to index</a>
 </p>
 <ul class="org-ul">
-<li><b><code>scale</code></b>  <a id="org984522b"></a></li>
+<li><b><code>scale</code></b>  <a id="orgebee013"></a></li>
 </ul>
 <div class="org-src-container">
 <pre class="src src-julia"><span style="color: #a020f0;">function</span> <span style="color: #0000ff;">scale</span>(&#955;::<span style="color: #228b22;">Int</span>,&#937;::<span style="color: #228b22;">UnitRange</span>{<span style="color: #228b22;">Int</span>})
@@ -1772,14 +1774,14 @@ What we need is:
 </div>
 </blockquote>
 <p>
-<a href="file:///home/picaud/GitHub/DirectConvolution.jl/src/directConvolution.jl#MissingReference">directConvolution.jl:30</a>, <a href="#org00e3d73">back to index</a>
+<a href="file:///home/picaud/GitHub/DirectConvolution.jl/src/directConvolution.jl#MissingReference">directConvolution.jl:30</a>, <a href="#orgf5307fd">back to index</a>
 </p>
 </div>
 </div>
 </div>
 <div id="postamble" class="status">
 <p class="author">Author: picaud</p>
-<p class="date">Created: 2018-04-15 Sun 12:25</p>
+<p class="date">Created: 2018-04-15 Sun 17:50</p>
 <p class="validation"><a href="http://validator.w3.org/check?uri=referer">Validate</a></p>
 </div>
 </body>
