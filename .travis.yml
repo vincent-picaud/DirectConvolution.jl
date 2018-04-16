@@ -22,9 +22,9 @@ git:
 #  apt: # apt-get for linux
 #    packages:
 #    - gfortran
-before_script:
-   -  julia -e 'Pkg.add("StaticArrays")'
-   -  julia -e 'Pkg.add("Plots")'
+#before_script:
+#   -  julia -e 'Pkg.add("StaticArrays")'
+#   -  julia -e 'Pkg.add("Plots")'
 # homebrew for mac
 #  - if [ $TRAVIS_OS_NAME = osx ]; then brew install gcc; fi
 
