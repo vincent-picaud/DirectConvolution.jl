@@ -6,7 +6,7 @@
 <!-- 2018-04-17 Tue 00:11 -->
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>Index</title>
+<title>Getting started with directConv functions</title>
 <meta name="generator" content="Org mode" />
 <meta name="author" content="picaud" />
 <style type="text/css">
@@ -244,7 +244,7 @@ for the JavaScript code in this tag.
 
 <!--/*--><![CDATA[/*><!--*/
 org_html_manager.set("TOC_DEPTH", "3");
-org_html_manager.set("LINK_HOME", "index.html");
+org_html_manager.set("LINK_HOME", "../index.html");
 org_html_manager.set("LINK_UP", "");
 org_html_manager.set("LOCAL_TOC", "1");
 org_html_manager.set("VIEW_BUTTONS", "0");
@@ -301,11 +301,372 @@ for the JavaScript code in this tag.
  }
 /*]]>*///-->
 </script>
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+        displayAlign: "center",
+        displayIndent: "0em",
+
+        "HTML-CSS": { scale: 100,
+                        linebreaks: { automatic: "false" },
+                        webFont: "TeX"
+                       },
+        SVG: {scale: 100,
+              linebreaks: { automatic: "false" },
+              font: "TeX"},
+        NativeMML: {scale: 100},
+        TeX: { equationNumbers: {autoNumber: "AMS"},
+               MultLineWidth: "85%",
+               TagSide: "right",
+               TagIndent: ".8em"
+             }
+});
+</script>
+<script type="text/javascript"
+        src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-AMS_HTML"></script>
 </head>
 <body>
 <div id="content">
-<h1 class="title">Index</h1>
+<h1 class="title">Getting started with directConv functions</h1>
+<div id="table-of-contents">
+<h2>Table of Contents</h2>
+<div id="text-table-of-contents">
+<ul>
+<li><a href="#orgd29ccb6">1. Comparison with Julia native <code>conv()</code> function</a></li>
+<li><a href="#org4acab5d">2. Performance</a></li>
+<li><a href="#org2ea3021">3. Versatility</a>
+<ul>
+<li><a href="#org3d1b750">3.1. Parallel computation</a></li>
+<li><a href="#orgaa0ab0a">3.2. Boundary extensions</a></li>
+<li><a href="#org81c856a">3.3. Adjoint</a></li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
 
+<div id="outline-container-orgd29ccb6" class="outline-2">
+<h2 id="orgd29ccb6"><span class="section-number-2">1</span> Comparison with Julia native <code>conv()</code> function</h2>
+<div class="outline-text-2" id="text-1">
+<p>
+With Julia native <code>conv</code> function
+</p>
+
+<div class="org-src-container">
+<pre class="src src-julia">&#945;=rand(5);
+&#946;=rand(10);
+&#947;_ftt=conv(&#945;,&#946;)
+</pre>
+</div>
+
+<div class="org-src-container">
+<pre class="src src-julia">14-element <span style="color: #228b22;">Array</span>{<span style="color: #228b22;">Float64</span>,1}:
+ 0.402904
+ 0.505882
+ 1.15125 
+ 1.47962 
+ 1.99807 
+ 1.85214 
+ 1.7075  
+ 1.35912 
+ 1.65875 
+ 0.959882
+ 0.911886
+ 0.423296
+ 0.203666
+ 0.25129
+</pre>
+</div>
+
+<p>
+<code>conv</code> function returns an array of size \(|\alpha|+|\beta|-1\), here
+</p>
+
+<div class="org-src-container">
+<pre class="src src-julia">14
+</pre>
+</div>
+
+<p>
+With <code>DirectConvolution.jl</code> one must first define a filter with <code>offset=0</code>, then use the <code>directConv</code> function:
+</p>
+
+<div class="org-src-container">
+<pre class="src src-julia">&#945;_filter=LinearFilter(&#945;,0)
+&#947;_direct=directConv(&#945;_filter,&#946;)
+</pre>
+</div>
+
+<div class="org-src-container">
+<pre class="src src-julia">DirectConvolution.LinearFilter_Default{<span style="color: #228b22;">Float64</span>,5}([0.427921, 0.0962768, 0.912445, 0.323381, 0.925985], 0)
+10-element <span style="color: #228b22;">Array</span>{<span style="color: #228b22;">Float64</span>,1}:
+ 0.402904
+ 0.505882
+ 1.15125 
+ 1.47962 
+ 1.99807 
+ 1.85214 
+ 1.7075  
+ 1.35912 
+ 1.65875 
+ 0.959882
+</pre>
+</div>
+
+<p>
+A difference with the native Julia <code>conv</code> function is that the
+returned signal as the same size as the initial \(\beta\) signal.
+</p>
+
+<p>
+Let's use first check that the results are identical (for their common parts):
+</p>
+
+<div class="org-src-container">
+<pre class="src src-julia">norm(&#947;_ftt[1:endof(&#947;_direct)]-&#947;_direct)
+</pre>
+</div>
+
+<div class="org-src-container">
+<pre class="src src-julia">4.440892098500626e-16
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-org4acab5d" class="outline-2">
+<h2 id="org4acab5d"><span class="section-number-2">2</span> Performance</h2>
+<div class="outline-text-2" id="text-2">
+<p>
+The following is not a complete benchmark, but gives some
+ideas. Please also note that for the moment <code>directConv</code> is a pure
+Julia, straightforward implementation.
+</p>
+
+<p>
+With the given α, β and γ we get:
+</p>
+
+<div class="org-src-container">
+<pre class="src src-julia">r_ftt=<span style="color: #483d8b;">@benchmark</span>(conv(&#945;,&#946;))
+</pre>
+</div>
+
+<div class="org-src-container">
+<pre class="src src-julia">BenchmarkTools.Trial: 
+  memory estimate:  9.17 KiB
+  allocs estimate:  132
+  --------------
+  minimum time:     35.768 &#956;s (0.00% GC)
+  median time:      38.904 &#956;s (0.00% GC)
+  mean time:        50.621 &#956;s (11.52% GC)
+  maximum time:     25.670 ms (70.91% GC)
+  --------------
+  samples:          10000
+  evals/sample:     1
+</pre>
+</div>
+
+<div class="org-src-container">
+<pre class="src src-julia">r_direct=<span style="color: #483d8b;">@benchmark</span>(directConv(&#945;_filter,&#946;))
+</pre>
+</div>
+
+<div class="org-src-container">
+<pre class="src src-julia">BenchmarkTools.Trial: 
+  memory estimate:  432 bytes
+  allocs estimate:  5
+  --------------
+  minimum time:     477.944 ns (0.00% GC)
+  median time:      542.553 ns (0.00% GC)
+  mean time:        675.989 ns (16.89% GC)
+  maximum time:     33.986 &#956;s (96.55% GC)
+  --------------
+  samples:          10000
+  evals/sample:     197
+</pre>
+</div>
+
+<p>
+For these short filters we have a
+</p>
+
+<div class="org-src-container">
+<pre class="src src-julia">median(r_ftt.times)/median(r_direct.times)
+</pre>
+</div>
+
+<div class="org-src-container">
+<pre class="src src-julia">71.70539749071415
+</pre>
+</div>
+
+<p>
+speed up.
+</p>
+
+<p>
+For a more realistic size for \(\beta\), we still get this speedup:
+</p>
+
+<div class="org-src-container">
+<pre class="src src-julia">&#946;=rand(1000);
+r_ftt=<span style="color: #483d8b;">@benchmark</span>(conv(&#945;,&#946;));
+r_direct=<span style="color: #483d8b;">@benchmark</span>(directConv(&#945;_filter,&#946;));
+median(r_ftt.times)/median(r_direct.times)
+</pre>
+</div>
+
+<div class="org-src-container">
+<pre class="src src-julia">17.436937437493054
+</pre>
+</div>
+
+<p>
+Typical size for \(\alpha\) is around \(5\) for applications like wavelets
+transform. If we increase this size the direct approach is less and
+less competitive compared to the FFT approach. However on my computer
+it is still advantageous to use it for an \(\alpha\) size of \(40\).
+</p>
+
+<div class="org-src-container">
+<pre class="src src-julia">&#945;=rand(40);
+&#945;_filter=LinearFilter(&#945;,0);
+r_ftt=<span style="color: #483d8b;">@benchmark</span>(conv(&#945;,&#946;));
+r_direct=<span style="color: #483d8b;">@benchmark</span>(directConv(&#945;_filter,&#946;));
+median(r_ftt.times)/median(r_direct.times)
+</pre>
+</div>
+
+<div class="org-src-container">
+<pre class="src src-julia">3.857301012905038
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-org2ea3021" class="outline-2">
+<h2 id="org2ea3021"><span class="section-number-2">3</span> Versatility</h2>
+<div class="outline-text-2" id="text-3">
+</div>
+<div id="outline-container-org3d1b750" class="outline-3">
+<h3 id="org3d1b750"><span class="section-number-3">3.1</span> Parallel computation</h3>
+<div class="outline-text-3" id="text-3-1">
+<p>
+The <code>directConv</code> functions can be used in various ways. For instance we can compute a convolution by splitting destination
+</p>
+
+<div class="org-src-container">
+<pre class="src src-julia">&#945;=LinearFilter(rand(10),0);
+&#946;=rand(100);
+
+&#947;_ref = directConv(&#945;,&#946;);        <span style="color: #b22222;"># </span><span style="color: #b22222;">compute all in one call</span>
+
+&#947; = <span style="color: #228b22;">Vector</span>{<span style="color: #228b22;">Float64</span>}(length(&#946;));
+directConv!(&#945;,-1,&#946;,&#947;,1:25);     <span style="color: #b22222;"># </span><span style="color: #b22222;">independant computations 1:25</span>
+directConv!(&#945;,-1,&#946;,&#947;,25:75);    <span style="color: #b22222;">#                         </span><span style="color: #b22222;">25:75      </span>
+directConv!(&#945;,-1,&#946;,&#947;,75:100);   <span style="color: #b22222;">#                         </span><span style="color: #b22222;">75:100 </span>
+
+norm(&#947;_ref-&#947;) <span style="color: #b22222;"># </span><span style="color: #b22222;">check that results are identical</span>
+</pre>
+</div>
+
+<div class="org-src-container">
+<pre class="src src-julia">0.0
+</pre>
+</div>
+
+<p>
+This can be used for parallel computations. (no done yet) 
+</p>
+</div>
+</div>
+
+<div id="outline-container-orgaa0ab0a" class="outline-3">
+<h3 id="orgaa0ab0a"><span class="section-number-3">3.2</span> Boundary extensions</h3>
+<div class="outline-text-3" id="text-3-2">
+<p>
+Boundary extensions are rigorously implemented and are free of all
+limitations. For instance you can even use a filter α bigger than the
+signal β, with mirror symmetry on left and periodic extension of the
+right:
+</p>
+
+<div class="org-src-container">
+<pre class="src src-julia">&#945;=LinearFilter([0,0,0,1,0,0,0],-6); <span style="color: #b22222;"># </span><span style="color: #b22222;">with offset=-6, mimic a filter of support 6:12</span>
+&#946;=[1,2,3,4];
+&#947; = zeros(<span style="color: #228b22;">Int</span>,20);
+directConv!(&#945;,-1,&#946;,&#947;,1:20,MirrorBE,PeriodicBE); 
+plot(1:20, &#947;, markershape = <span style="color: #483d8b;">:hexagon</span>)
+</pre>
+</div>
+
+
+
+<div class="figure">
+<p><img src="getting_started_figures/be.png" alt="be.png" align="center" width="600px" />
+</p>
+<p><span class="figure-number">Figure 1: </span>Mirror symmetry on left, periodic extension on right</p>
+</div>
+
+<p>
+With zero padding we can also check commutativity \(\alpha \circledast \beta = \beta \circledast \alpha\):
+</p>
+
+<div class="org-src-container">
+<pre class="src src-julia">&#945;=rand(4);
+&#946;=rand(6);
+t&#945;&#946;=zeros(6);
+directConv!(LinearFilter(&#945;,0),-1,&#946;,t&#945;&#946;,1:6);
+t&#946;&#945;=zeros(6);
+directConv!(LinearFilter(&#946;,0),-1,&#945;,t&#946;&#945;,1:6);
+norm(t&#945;&#946;-t&#946;&#945;)
+</pre>
+</div>
+
+<div class="org-src-container">
+<pre class="src src-julia">0.0
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-org81c856a" class="outline-3">
+<h3 id="org81c856a"><span class="section-number-3">3.3</span> Adjoint</h3>
+<div class="outline-text-3" id="text-3-3">
+<p>
+From
+\[
+\gamma[k]=\sum\limits_{i\in\Omega^\alpha}\alpha[i]\beta[k+\lambda i],\text{ with }\lambda\in\mathbb{Z}^*
+\]
+with free \(\lambda\) we can compute convolution (\(\lambda=-1\)) cross-correlation (\(\lambda=+1\)) and more generally adjoint operator:
+\[
+\forall \lambda\in\mathbb{Z}^*,\ \langle \alpha\bigodot\limits_{\lambda}v ,w \rangle_E = 
+\langle v , \alpha\bigodot\limits_{-\lambda} w \rangle_F
+\]
+</p>
+
+<p>
+This relation only holds true for zero padding and periodic boundary extension:
+</p>
+
+<div class="org-src-container">
+<pre class="src src-julia">&#945;=LinearFilter(rand(5));
+v=rand(8);
+w=rand(8);
+
+dot(directConv(&#945;,-3,v),w) - dot(directConv(&#945;,+3,w),v)
+dot(directConv(&#945;,-3,v,PeriodicBE,PeriodicBE),w) - dot(directConv(&#945;,+3,w,PeriodicBE,PeriodicBE),v)
+</pre>
+</div>
+
+<div class="org-src-container">
+<pre class="src src-julia">-2.220446049250313e-16
+-4.440892098500626e-16
+</pre>
+</div>
+</div>
+</div>
+</div>
 </div>
 <div id="postamble" class="status">
 <p class="author">Author: picaud</p>

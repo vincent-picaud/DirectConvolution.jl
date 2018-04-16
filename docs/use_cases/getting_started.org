@@ -1,0 +1,316 @@
+#+SETUPFILE: ../Setup/setupFile-1.org
+#+TITLE: Getting started with directConv functions
+#+PROPERTY: header-args:julia :session *directConvolution_session*  :exports code :eval no-export
+
+#+BEGIN_EXPORT latex
+\definecolor{bg}{rgb}{0.95,0.95,0.95}
+\setminted[]{
+  bgcolor=bg,
+  breaklines=true,
+  breakanywhere=true,
+  mathescape,
+  fontsize=\footnotesize}
+#+END_EXPORT
+
+#+BEGIN_SRC julia :exports none
+using Plots
+using DirectConvolution
+using BenchmarkTools
+#+END_SRC
+
+#+RESULTS:
+
+* Comparison with Julia native =conv()= function 
+
+With Julia native =conv= function
+
+#+BEGIN_SRC julia :exports both :results output :wrap "SRC julia :exports code :eval never"
+α=rand(5);
+β=rand(10);
+γ_ftt=conv(α,β)
+#+END_SRC
+
+#+RESULTS:
+#+BEGIN_SRC julia :exports code :eval never
+
+
+14-element Array{Float64,1}:
+ 0.402904
+ 0.505882
+ 1.15125 
+ 1.47962 
+ 1.99807 
+ 1.85214 
+ 1.7075  
+ 1.35912 
+ 1.65875 
+ 0.959882
+ 0.911886
+ 0.423296
+ 0.203666
+ 0.25129
+#+END_SRC
+
+=conv= function returns an array of size $|\alpha|+|\beta|-1$, here
+
+#+BEGIN_SRC julia :exports results :results output :wrap "SRC julia :exports code :eval never"
+length(γ_ftt)
+#+END_SRC
+
+#+RESULTS:
+#+BEGIN_SRC julia :exports code :eval never
+14
+#+END_SRC
+
+With =DirectConvolution.jl= one must first define a filter with =offset=0=, then use the =directConv= function:
+
+#+BEGIN_SRC julia :exports both :results output drawer :wrap "SRC julia :exports code :eval never"
+α_filter=LinearFilter(α,0)
+γ_direct=directConv(α_filter,β)
+#+END_SRC
+
+#+RESULTS:
+#+BEGIN_SRC julia :exports code :eval never
+DirectConvolution.LinearFilter_Default{Float64,5}([0.427921, 0.0962768, 0.912445, 0.323381, 0.925985], 0)
+10-element Array{Float64,1}:
+ 0.402904
+ 0.505882
+ 1.15125 
+ 1.47962 
+ 1.99807 
+ 1.85214 
+ 1.7075  
+ 1.35912 
+ 1.65875 
+ 0.959882
+#+END_SRC
+
+A difference with the native Julia =conv= function is that the
+returned signal as the same size as the initial $\beta$ signal.
+
+Let's use first check that the results are identical (for their common parts):
+
+#+BEGIN_SRC julia :exports both :results output drawer :wrap "SRC julia :exports code :eval never"
+norm(γ_ftt[1:endof(γ_direct)]-γ_direct)
+#+END_SRC
+
+#+RESULTS:
+#+BEGIN_SRC julia :exports code :eval never
+4.440892098500626e-16
+#+END_SRC
+
+* Performance
+
+The following is not a complete benchmark, but gives some
+ideas. Please also note that for the moment =directConv= is a pure
+Julia, straightforward implementation.
+
+With the given α, β and γ we get:
+
+#+BEGIN_SRC julia :exports both :results output drawer :wrap "SRC julia :exports code :eval never"
+r_ftt=@benchmark(conv(α,β))
+#+END_SRC
+
+#+RESULTS:
+#+BEGIN_SRC julia :exports code :eval never
+BenchmarkTools.Trial: 
+  memory estimate:  9.17 KiB
+  allocs estimate:  132
+  --------------
+  minimum time:     35.768 μs (0.00% GC)
+  median time:      38.904 μs (0.00% GC)
+  mean time:        50.621 μs (11.52% GC)
+  maximum time:     25.670 ms (70.91% GC)
+  --------------
+  samples:          10000
+  evals/sample:     1
+#+END_SRC
+
+#+BEGIN_SRC julia :exports both :results output drawer :wrap "SRC julia :exports code :eval never"
+r_direct=@benchmark(directConv(α_filter,β))
+#+END_SRC
+
+#+RESULTS:
+#+BEGIN_SRC julia :exports code :eval never
+BenchmarkTools.Trial: 
+  memory estimate:  432 bytes
+  allocs estimate:  5
+  --------------
+  minimum time:     477.944 ns (0.00% GC)
+  median time:      542.553 ns (0.00% GC)
+  mean time:        675.989 ns (16.89% GC)
+  maximum time:     33.986 μs (96.55% GC)
+  --------------
+  samples:          10000
+  evals/sample:     197
+#+END_SRC
+
+For these short filters we have a
+
+#+BEGIN_SRC julia :exports both :results output drawer :wrap "SRC julia :exports code :eval never"
+median(r_ftt.times)/median(r_direct.times)
+#+END_SRC
+
+#+RESULTS:
+#+BEGIN_SRC julia :exports code :eval never
+71.70539749071415
+#+END_SRC
+
+speed up.
+
+For a more realistic size for $\beta$, we still get this speedup:
+
+#+BEGIN_SRC julia :exports both :results output drawer :wrap "SRC julia :exports code :eval never"
+β=rand(1000);
+r_ftt=@benchmark(conv(α,β));
+r_direct=@benchmark(directConv(α_filter,β));
+median(r_ftt.times)/median(r_direct.times)
+#+END_SRC
+
+#+RESULTS:
+#+BEGIN_SRC julia :exports code :eval never
+
+
+
+17.436937437493054
+#+END_SRC
+
+Typical size for $\alpha$ is around $5$ for applications like wavelets
+transform. If we increase this size the direct approach is less and
+less competitive compared to the FFT approach. However on my computer
+it is still advantageous to use it for an $\alpha$ size of $40$.
+
+#+BEGIN_SRC julia :exports both :results output drawer :wrap "SRC julia :exports code :eval never"
+α=rand(40);
+α_filter=LinearFilter(α,0);
+r_ftt=@benchmark(conv(α,β));
+r_direct=@benchmark(directConv(α_filter,β));
+median(r_ftt.times)/median(r_direct.times)
+#+END_SRC
+
+#+RESULTS:
+#+BEGIN_SRC julia :exports code :eval never
+
+
+
+
+3.857301012905038
+#+END_SRC
+
+* Versatility
+
+** Parallel computation
+
+The =directConv= functions can be used in various ways. For instance we can compute a convolution by splitting destination
+
+#+BEGIN_SRC julia :exports both :results output drawer :wrap "SRC julia :exports code :eval never"
+α=LinearFilter(rand(10),0);
+β=rand(100);
+
+γ_ref = directConv(α,β);        # compute all in one call
+
+γ = Vector{Float64}(length(β));
+directConv!(α,-1,β,γ,1:25);     # independant computations 1:25
+directConv!(α,-1,β,γ,25:75);    #                         25:75      
+directConv!(α,-1,β,γ,75:100);   #                         75:100 
+
+norm(γ_ref-γ) # check that results are identical
+#+END_SRC
+
+#+RESULTS:
+#+BEGIN_SRC julia :exports code :eval never
+
+
+
+
+
+
+
+
+
+
+0.0
+#+END_SRC
+
+This can be used for parallel computations. (no done yet) 
+
+** Boundary extensions
+
+Boundary extensions are rigorously implemented and are free of all
+limitations. For instance you can even use a filter α bigger than the
+signal β, with mirror symmetry on left and periodic extension of the
+right:
+
+#+BEGIN_SRC julia :exports both :results none :wrap "SRC julia :exports code :eval never"
+α=LinearFilter([0,0,0,1,0,0,0],-6); # with offset=-6, mimic a filter of support 6:12
+β=[1,2,3,4];
+γ = zeros(Int,20);
+directConv!(α,-1,β,γ,1:20,MirrorBE,PeriodicBE); 
+plot(1:20, γ, markershape = :hexagon)
+#+END_SRC
+
+
+#+BEGIN_SRC julia :results graphics :file getting_started_figures/be.png :exports results
+savefig("getting_started_figures/be.png")
+#+END_SRC
+
+#+ATTR_HTML: :align center :width 600px
+#+CAPTION: Mirror symmetry on left, periodic extension on right
+#+RESULTS:
+[[file:getting_started_figures/be.png]]
+
+With zero padding we can also check commutativity $\alpha \circledast \beta = \beta \circledast \alpha$:
+
+#+BEGIN_SRC julia :exports both :results output drawer :wrap "SRC julia :exports code :eval never"
+α=rand(4);
+β=rand(6);
+tαβ=zeros(6);
+directConv!(LinearFilter(α,0),-1,β,tαβ,1:6);
+tβα=zeros(6);
+directConv!(LinearFilter(β,0),-1,α,tβα,1:6);
+norm(tαβ-tβα)
+#+END_SRC
+
+#+RESULTS:
+#+BEGIN_SRC julia :exports code :eval never
+
+
+
+
+
+
+0.0
+#+END_SRC
+
+** Adjoint
+
+From
+$$
+\gamma[k]=\sum\limits_{i\in\Omega^\alpha}\alpha[i]\beta[k+\lambda i],\text{ with }\lambda\in\mathbb{Z}^*
+$$
+with free $\lambda$ we can compute convolution ($\lambda=-1$) cross-correlation ($\lambda=+1$) and more generally adjoint operator:
+$$
+\forall \lambda\in\mathbb{Z}^*,\ \langle \alpha\bigodot\limits_{\lambda}v ,w \rangle_E = 
+\langle v , \alpha\bigodot\limits_{-\lambda} w \rangle_F
+$$
+
+This relation only holds true for zero padding and periodic boundary extension:
+
+#+BEGIN_SRC julia :exports both :results output drawer :wrap "SRC julia :exports code :eval never"
+α=LinearFilter(rand(5));
+v=rand(8);
+w=rand(8);
+
+dot(directConv(α,-3,v),w) - dot(directConv(α,+3,w),v)
+dot(directConv(α,-3,v,PeriodicBE,PeriodicBE),w) - dot(directConv(α,+3,w,PeriodicBE,PeriodicBE),v)
+#+END_SRC
+
+#+RESULTS:
+#+BEGIN_SRC julia :exports code :eval never
+
+
+
+
+-2.220446049250313e-16
+-4.440892098500626e-16
+#+END_SRC

@@ -7,6 +7,7 @@
 - [[file:theindex.org][Index]]
 - [[file:workInProgress.org][Work in Progress]]
 - use_cases
+  - [[file:use_cases/getting_started.org][Getting started with directConv functions]]
   - [[file:use_cases/sg.org][Savitzky-Golay filters]]
   - [[file:use_cases/udwt.org][Undecimated Wavelet Transform]]
 
