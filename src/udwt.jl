@@ -118,7 +118,9 @@ length(udwt::UDWT)::Int = size(udwt.W,1)
 # $$(\mathcal{W}_{j+1}f)[u]=(\bar{g}_j*\mathcal{V}_{j}f)[u]$$
 # $$(\mathcal{V}_{j+1}f)[u]=(\bar{h}_j*\mathcal{V}_{j}f)[u]$$
 # 
-function udwt(signal::AbstractArray{T,1},filter::UDWT_Filter_Biorthogonal{T};scale::Int=3) where {T<:Number}
+function udwt(signal::AbstractArray{T,1},
+              filter::UDWT_Filter_Biorthogonal{T};
+              scale::Int=3) where {T<:Number}
 
     @assert scale>=0
 
@@ -144,11 +146,11 @@ function udwt(signal::AbstractArray{T,1},filter::UDWT_Filter_Biorthogonal{T};sca
                     
                     Vsp1,
                     Ωγ,
-                      
+                    
                     boundary,
                     boundary)
 
-       
+        
         # Computes Ws+1 from Ws
         #
         directConv!(ψ_filter(filter),
@@ -158,7 +160,7 @@ function udwt(signal::AbstractArray{T,1},filter::UDWT_Filter_Biorthogonal{T};sca
                     
                     Wsp1,
                     Ωγ,
-                      
+                    
                     boundary,
                     boundary)
 
@@ -177,7 +179,8 @@ end
 #
 # *Caveat:* uses a pre-allocated vector =reconstructed_signal=
 #
-function inverse_udwt!(udwt_domain::UDWT{T},reconstructed_signal::AbstractArray{T,1}) where {T<:Number}
+function inverse_udwt!(udwt_domain::UDWT{T},
+                       reconstructed_signal::AbstractArray{T,1}) where {T<:Number}
 
     @assert length(udwt_domain) == length(reconstructed_signal)
 
@@ -202,7 +205,7 @@ function inverse_udwt!(udwt_domain::UDWT{T},reconstructed_signal::AbstractArray{
                     
                     buffer,
                     Ωγ,
-                      
+                    
                     boundary,
                     boundary)
 
@@ -217,7 +220,7 @@ function inverse_udwt!(udwt_domain::UDWT{T},reconstructed_signal::AbstractArray{
                     
                     buffer,
                     Ωγ,
-                      
+                    
                     boundary,
                     boundary,
                     accumulate=true)
