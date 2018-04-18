@@ -1,6 +1,4 @@
-export SG_Filter
-export SavitzkyGolay_Filter, SG_Filter
-export maxDerivativeOrder, polynomialOrder
+export SG_Filter, maxDerivativeOrder, polynomialOrder
 
 import Base: filter, length
 
@@ -61,7 +59,7 @@ polynomialOrder(sg::SG_Filter{T,N}) where {T<:AbstractFloat,N} = maxDerivativeOr
 # - filter length is 2*halfWidth+1
 # - polynomial degree is degree
 #
-function SG_Filter(T::DataType=Float64;halfWidth::Int=5,degree::Int=2)
+function SG_Filter(T::DataType=Float64;halfWidth::Int=5,degree::Int=2)::SG_Filter
     @assert degree>=0
     @assert halfWidth>=1
     @assert 2*halfWidth>degree
@@ -71,13 +69,12 @@ function SG_Filter(T::DataType=Float64;halfWidth::Int=5,degree::Int=2)
     SG=R\Q'
 
     const n_filter,n_coef = size(SG)
-    const sg_type = LinearFilter_DefaultCentered{T,n_coef}
 
-    buffer=Array{sg_type,1}()
+    buffer=Array{LinearFilter_DefaultCentered{T,n_coef},1}()
     
     for i in 1:n_filter
         SG[i,:]*=factorial(i-1)
-        push!(buffer,sg_type(SVector{n_coef,T}(SG[i,:])))
+        push!(buffer,LinearFilter(SG[i,:]))
     end
     
 # Returns filters set
