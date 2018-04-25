@@ -3,7 +3,7 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
-<!-- 2018-04-15 Sun 12:29 -->
+<!-- 2018-04-25 Wed 09:00 -->
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Savitzky-Golay filters</title>
@@ -331,21 +331,26 @@ for the JavaScript code in this tag.
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents">
 <ul>
-<li><a href="#org0e9359c">1. Savitzky-Golay filters</a>
+<li><a href="#orgbe38d61">1. Savitzky-Golay filters</a>
 <ul>
-<li><a href="#orgb3d92f9">1.1. Smoothing example</a></li>
-<li><a href="#org3248f65">1.2. First order smoothed derivative</a></li>
+<li><a href="#org312c077">1.1. Smoothing example</a></li>
+<li><a href="#orga786599">1.2. First order smoothed derivative</a>
+<ul>
+<li><a href="#org45b71e3">1.2.1. <code>directConv</code> instead of <code>directCrossCorrelation</code></a></li>
+</ul>
+</li>
 </ul>
 </li>
 </ul>
 </div>
 </div>
 
-<div id="outline-container-org0e9359c" class="outline-2">
-<h2 id="org0e9359c"><span class="section-number-2">1</span> Savitzky-Golay filters</h2>
+<div id="outline-container-orgbe38d61" class="outline-2">
+<h2 id="orgbe38d61"><span class="section-number-2">1</span> Savitzky-Golay filters</h2>
 <div class="outline-text-2" id="text-1">
 <p>
-Creates a set of Savitzky-Golay filters, window width is \(11=2*5+1\) and polynomial degree is \(3\).
+Creates a set of Savitzky-Golay filters. In this example, window width
+is \(11=2*5+1\) and polynomial degree is \(3\).
 </p>
 
 <div class="org-src-container">
@@ -386,7 +391,8 @@ p=plot!(range(d2filter),fcoef(d2filter),markershape = <span style="color: #483d8
 </div>
 
 
-<div class="figure">
+
+<div id="orgb33cd17" class="figure">
 <p><img src="sg_figures/filter_coef.png" alt="filter_coef.png" align="center" width="600px" />
 </p>
 <p><span class="figure-number">Figure 1: </span>Savitzky-Golay filters</p>
@@ -402,14 +408,13 @@ Maximum derivative order is equal to the polynomial order, however there is a de
 </pre>
 </div>
 
-<div class="org-src-container">
-<pre class="src src-julia">3
+<pre class="example">
+3
 </pre>
 </div>
-</div>
 
-<div id="outline-container-orgb3d92f9" class="outline-3">
-<h3 id="orgb3d92f9"><span class="section-number-3">1.1</span> Smoothing example</h3>
+<div id="outline-container-org312c077" class="outline-3">
+<h3 id="org312c077"><span class="section-number-3">1.1</span> Smoothing example</h3>
 <div class="outline-text-3" id="text-1-1">
 <p>
 First load a signal 
@@ -426,7 +431,7 @@ then compute a smoothed version
 </p>
 
 <div class="org-src-container">
-<pre class="src src-julia">smoothed=directConv(d0filter,signal,ConstantBE,ConstantBE)
+<pre class="src src-julia">smoothed=directCrossCorrelation(d0filter,signal,ConstantBE,ConstantBE)
 
 p=plot(signal,label=<span style="color: #8b2252;">"signal"</span>)
 p=plot!(smoothed, label=<span style="color: #8b2252;">"smoothed"</span>,linewidth=2)
@@ -440,19 +445,29 @@ p=plot!(signal-smoothed, label=<span style="color: #8b2252;">"residue"</span>)
 </p>
 <p><span class="figure-number">Figure 2: </span>Savitzky-Golay smoothing</p>
 </div>
+
+
+<p>
+<b>Caveat:</b> to apply Savitzky-Golay one must use
+ <code>directCrossCorrelation</code> and not <code>directConv</code>, otherwise the filter
+ coefficients are taken in the reversed order. This has no impact on
+ smoothing because the filters are symmetric, but this would change
+ the sign of the smoothed odd-order (\(f'\), \(f'''\)&#x2026;) derivatives that
+ have antisymmetric filter coefficients. You can see Fig. <a href="#orgb33cd17">Filter
+ coefficients</a> and see this <a href="#org45b71e3">detailed illustration</a>.
+</p>
 </div>
 </div>
 
-
-<div id="outline-container-org3248f65" class="outline-3">
-<h3 id="org3248f65"><span class="section-number-3">1.2</span> First order smoothed derivative</h3>
+<div id="outline-container-orga786599" class="outline-3">
+<h3 id="orga786599"><span class="section-number-3">1.2</span> First order smoothed derivative</h3>
 <div class="outline-text-3" id="text-1-2">
 <p>
 Smoothed first order derivative example:
 </p>
 
 <div class="org-src-container">
-<pre class="src src-julia">smoothed_d1 = directConv(d1filter,signal,ConstantBE,ConstantBE)
+<pre class="src src-julia">smoothed_d1 = directCrossCorrelation(d1filter,signal,ConstantBE,ConstantBE)
 
 p=plot(signal,label=<span style="color: #8b2252;">"signal"</span>)
 p=plot!(smoothed_d1, label=<span style="color: #8b2252;">"smoothed derivative"</span>,linewidth=2)
@@ -466,12 +481,37 @@ p=plot!(smoothed_d1, label=<span style="color: #8b2252;">"smoothed derivative"</
 <p><span class="figure-number">Figure 3: </span>Savitzky-Golay smoothed first order derivative</p>
 </div>
 </div>
+
+<div id="outline-container-org45b71e3" class="outline-4">
+<h4 id="org45b71e3"><a id="ID-dc04c037-ea1f-4abc-8468-8684f66881b6"></a><span class="section-number-4">1.2.1</span> <code>directConv</code> instead of <code>directCrossCorrelation</code></h4>
+<div class="outline-text-4" id="text-1-2-1">
+<p>
+This is what happens if we use <code>directConv</code> instead of
+<code>directCrossCorrelation</code>, \(f'\) has the wrong sign.
+</p>
+
+<div class="org-src-container">
+<pre class="src src-julia">smoothed_d1_with_conv = directConv(d1filter,signal,ConstantBE,ConstantBE)
+
+p=plot(signal,label=<span style="color: #8b2252;">"signal"</span>)
+p=plot!(smoothed_d1_with_conv, label=<span style="color: #8b2252;">"smoothed derivative (wrong sign)"</span>,linewidth=2)
+</pre>
+</div>
+
+
+<div class="figure">
+<p><img src="sg_figures/sg_d1_wrongSign.png" alt="sg_d1_wrongSign.png" align="center" width="600px" />
+</p>
+<p><span class="figure-number">Figure 4: </span>Savitzky-Golay with <code>directConv</code> instead of <code>directCrossCorrelation</code> results in wrong sign for odd-order derivatives</p>
+</div>
+</div>
+</div>
 </div>
 </div>
 </div>
 <div id="postamble" class="status">
 <p class="author">Author: picaud</p>
-<p class="date">Created: 2018-04-15 Sun 12:29</p>
+<p class="date">Created: 2018-04-25 Wed 09:00</p>
 <p class="validation"><a href="http://validator.w3.org/check?uri=referer">Validate</a></p>
 </div>
 </body>

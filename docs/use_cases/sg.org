@@ -21,9 +21,10 @@ using DirectConvolution
 
 * Savitzky-Golay filters
 
-Creates a set of Savitzky-Golay filters, window width is $11=2*5+1$ and polynomial degree is $3$.
+Creates a set of Savitzky-Golay filters. In this example, window width
+is $11=2*5+1$ and polynomial degree is $3$.
 
-#+BEGIN_SRC julia 
+#+BEGIN_SRC julia :results output none
 sg = SG_Filter(Float64,halfWidth=5,degree=3);
 #+END_SRC
 
@@ -31,22 +32,22 @@ sg = SG_Filter(Float64,halfWidth=5,degree=3);
 
 This can be checked with
 
-#+BEGIN_SRC julia :exports both :wrap "SRC julia :exports code :eval never" :results output
+#+BEGIN_SRC julia :exports both :wrap "EXAMPLE" :results output
 length(sg)
 polynomialOrder(sg)
 #+END_SRC
 
 #+RESULTS:
-#+BEGIN_SRC julia :exports code :eval never
+#+BEGIN_EXAMPLE
 11
 3
-#+END_SRC
+#+END_EXAMPLE
 
 Savitzky-Golay filters can be used to smooth or to compute smoothed
 derivatives of a signal. The associated filter is obtained thanks to
 the =filter= function.
 
-#+BEGIN_SRC julia :exports both :wrap "SRC julia :exports code :eval never" :results none
+#+BEGIN_SRC julia :exports code :results output none
 d0filter=filter(sg,derivativeOrder=0);
 d1filter=filter(sg,derivativeOrder=1);
 d2filter=filter(sg,derivativeOrder=2);
@@ -55,11 +56,13 @@ p=plot!(range(d1filter),fcoef(d1filter),markershape = :hexagon,label="d_1 filter
 p=plot!(range(d2filter),fcoef(d2filter),markershape = :hexagon,label="d_2 filter")
 #+END_SRC
 
-#+BEGIN_SRC julia :results graphics :file sg_figures/filter_coef.png :exports results
+
+#+BEGIN_SRC julia :results graphics output :file sg_figures/filter_coef.png :exports results
 savefig(p,"sg_figures/filter_coef.png")
 #+END_SRC
 
 #+ATTR_HTML: :align center :width 600px
+#+NAME: fig_sg_filter
 #+CAPTION: Savitzky-Golay filters
 #+RESULTS:
 [[file:sg_figures/filter_coef.png]]
@@ -67,37 +70,35 @@ savefig(p,"sg_figures/filter_coef.png")
 
 Maximum derivative order is equal to the polynomial order, however there is a dedicated function:
 
-#+BEGIN_SRC julia :exports both :wrap "SRC julia :exports code :eval never" :results output
+#+BEGIN_SRC julia :exports both :wrap "EXAMPLE" :results output
 maxDerivativeOrder(sg)
 #+END_SRC
 
 #+RESULTS:
-#+BEGIN_SRC julia :exports code :eval never
+#+BEGIN_EXAMPLE
 3
-#+END_SRC
+#+END_EXAMPLE
 
 ** Smoothing example
 
 First load a signal 
  
-#+BEGIN_SRC julia :exports code :results none 
+#+BEGIN_SRC julia :exports code :results output none 
 signal=readcsv("../data/signal_1.csv");
 signal=signal[:,2];
  #+END_SRC
 
 then compute a smoothed version
 
-#+BEGIN_SRC julia :exports code :results none
-smoothed=directConv(d0filter,signal,ConstantBE,ConstantBE)
+#+BEGIN_SRC julia :exports code :results output none
+smoothed=directCrossCorrelation(d0filter,signal,ConstantBE,ConstantBE)
 
 p=plot(signal,label="signal")
 p=plot!(smoothed, label="smoothed",linewidth=2)
 p=plot!(signal-smoothed, label="residue")
 #+END_SRC
 
-#+RESULTS:
-
-#+BEGIN_SRC julia :results graphics :file sg_figures/sg.png :exports results
+#+BEGIN_SRC julia :results graphics output :file sg_figures/sg.png :exports results
 savefig(p,"sg_figures/sg.png")
 #+END_SRC
 
@@ -107,25 +108,55 @@ savefig(p,"sg_figures/sg.png")
 [[file:sg_figures/sg.png]]
 
 
+*Caveat:* to apply Savitzky-Golay one must use
+ =directCrossCorrelation= and not =directConv=, otherwise the filter
+ coefficients are taken in the reversed order. This has no impact on
+ smoothing because the filters are symmetric, but this would change
+ the sign of the smoothed odd-order ($f'$, $f'''$...) derivatives that
+ have antisymmetric filter coefficients. You can see Fig. [[fig_sg_filter][Filter
+ coefficients]] and see this [[id:dc04c037-ea1f-4abc-8468-8684f66881b6][detailed illustration]].
+
 ** First order smoothed derivative 
 
 Smoothed first order derivative example:
 
-#+BEGIN_SRC julia
-smoothed_d1 = directConv(d1filter,signal,ConstantBE,ConstantBE)
+#+BEGIN_SRC julia :exports code :results output none
+smoothed_d1 = directCrossCorrelation(d1filter,signal,ConstantBE,ConstantBE)
 
 p=plot(signal,label="signal")
 p=plot!(smoothed_d1, label="smoothed derivative",linewidth=2)
 #+END_SRC
 
-#+RESULTS:
-
-#+BEGIN_SRC julia :results graphics :file sg_figures/sg_d1.png :exports results
+#+BEGIN_SRC julia :results graphics output :file sg_figures/sg_d1.png :exports results
 savefig(p,"sg_figures/sg_d1.png")
 #+END_SRC
-
 
 #+ATTR_HTML: :align center :width 600px
 #+CAPTION: Savitzky-Golay smoothed first order derivative
 #+RESULTS:
 [[file:sg_figures/sg_d1.png]]
+
+*** =directConv= instead of =directCrossCorrelation=
+    :PROPERTIES:
+    :ID:       dc04c037-ea1f-4abc-8468-8684f66881b6
+    :END:
+
+This is what happens if we use =directConv= instead of
+=directCrossCorrelation=, $f'$ has the wrong sign.
+
+#+BEGIN_SRC julia :exports code :results output none
+smoothed_d1_with_conv = directConv(d1filter,signal,ConstantBE,ConstantBE)
+
+p=plot(signal,label="signal")
+p=plot!(smoothed_d1_with_conv, label="smoothed derivative (wrong sign)",linewidth=2)
+#+END_SRC
+
+#+BEGIN_SRC julia :results graphics output :file sg_figures/sg_d1_wrongSign.png :exports results
+savefig(p,"sg_figures/sg_d1_wrongSign.png")
+#+END_SRC
+
+#+ATTR_HTML: :align center :width 600px
+#+CAPTION: Savitzky-Golay with =directConv= instead of =directCrossCorrelation= results in wrong sign for odd-order derivatives
+#+RESULTS:
+[[file:sg_figures/sg_d1_wrongSign.png]]
+
