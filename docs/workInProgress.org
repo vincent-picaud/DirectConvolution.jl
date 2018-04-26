@@ -13,8 +13,14 @@ using J4Org
 
 * Project Journal
 ** [2018-04-04 Wed] doc with J4org online
-** [2018-04-15 Sun] tag v=0.0.1 !
-
+** [2018-04-15 Sun] tag v0.0.1 
+- pre-release 
+** [2018-04-18 Wed] tag v0.0.2 
+- first release
+** [2018-04-26 Thu] tag v0.1.0
+- documentation improvement 
+- fix missing exportation of =directCrossCorrelation= symbol
+- fix Savitzky-Golay filters doc 
 * Project TODO
 
 ** TODO [0/1]
@@ -48,4 +54,3 @@ wavelet transform
 
 * W3 Links
 
-** Readings
