@@ -16,16 +16,15 @@ using direct (no FFT) methods. This can be helpful for short filters.
 #+ATTR_HTML: :align center :width 600px
 [[file:figures/sg.png]]
 
-*Note:* if you directly read this doc from GitHub, it is better to
-clone this repo and to browse it locally 
+*Note:* as it uses a CSS theme this doc is more pleasant to read if you browse it locally:
 #+BEGIN_SRC bash
-firefox docs/index.html
+git clone https://github.com/vincent-picaud/DirectConvolution.jl.git
+firefox DirectConvolution.jl/docs/index.html
 #+END_SRC
 
-*Caveat:* this package is still in early development... This is the
-first package I publicly release. For documentation it uses
-=J4Org.jl=, a package I am currently developing to document code using
-Emacs Org-mode.
+*Caveat:* this package is still in early development... For
+documentation it uses =J4Org.jl=, a package I am currently developing
+to document code using Emacs Org-mode.
 
 This package is based on my old posts:
 - [[https://pixorblog.wordpress.com/2016/07/17/direct-convolution/][direct-convolution]]
