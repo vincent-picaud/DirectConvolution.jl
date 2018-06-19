@@ -236,7 +236,7 @@ function directConv!(tilde_α::AbstractArray{T,1},
     nothing
 end
 
-#+Convolution L:directConv_details
+# +Convolution L:directConv_details
 # Computes a convolution.
 #
 # Inplace modification of $\gamma[k], k\in\Omega_\gamma$.
@@ -252,11 +252,11 @@ end
 # compute a cross-correlation.
 #
 # *Example:*
-#!β=[1:15;];
-#!γ=ones(Int,15);
-#!α=LinearFilter([0,0,1],0);
-#!directConv!(α,1,β,γ,5:10);
-#!hcat([1:length(γ);],γ)'
+# !β=[1:15;];
+# !γ=ones(Int,15);
+# !α=LinearFilter([0,0,1],0);
+# !directConv!(α,1,β,γ,5:10);
+# !hcat([1:length(γ);],γ)'
 #
 function directConv!(α::LinearFilter{T},
                      λ::Int,
@@ -376,3 +376,84 @@ function directCrossCorrelation(α::LinearFilter{T},
 
     return directConv(α,+1,β,LeftBE,RightBE)
 end
+
+
+# 2D
+
+
+# +Convolution
+# Computes a 2D (separable) convolution.
+#
+# For general information about parameters, see [[directConv_details][]]
+#
+# α_I must be interpreted as filter for *running index I*
+#
+# CAVEAT: the result overwrites β
+#
+# TODO: to check 
+function directConv2D!(α_I::LinearFilter{T},
+                       λ_I::Int,
+                       α_J::LinearFilter{T},
+                       λ_J::Int,
+                       
+                       β::AbstractArray{T,2},
+                       
+                       ::Type{min_I_BE}=ZeroPaddingBE,
+                       ::Type{max_I_BE}=ZeroPaddingBE,
+                       ::Type{min_J_BE}=ZeroPaddingBE,
+                       ::Type{max_J_BE}=ZeroPaddingBE)::Void where {T <: Number,
+                                                                    min_I_BE <: BoundaryExtension,
+                                                                    max_I_BE <: BoundaryExtension,
+                                                                    min_J_BE <: BoundaryExtension,
+                                                                    max_J_BE <: BoundaryExtension}
+
+    γ=similar(β)
+
+    (n,m)=size(β)
+    const α_I_coef=fcoef(α_I)
+    const α_I_offset=offset(α_I)
+    const α_J_coef=fcoef(α_J)
+    const α_J_offset=offset(α_J)
+    const Ωγ_I = 1:n
+    const Ωγ_J = 1:m
+    
+    # i running (for filter)
+    for j in 1:m
+
+        directConv!(α_I_coef,
+                    α_I_offset,
+                    λ_I,
+                    
+                    view(β,:,j),
+                    
+                    view(γ,:,j), 
+                    Ωγ_I,
+                    
+                    min_I_BE,
+                    max_I_BE,
+                    
+                    accumulate=false)
+    end
+    
+    # j running (for filter)
+    for i in 1:n
+
+        directConv!(α_J_coef,
+                    α_J_offset,
+                    λ_J,
+                    
+                    view(γ,i,:),
+                    
+                    view(β,i,:), 
+                    Ωγ_J,
+                    
+                    min_J_BE,
+                    max_J_BE,
+                    
+                    accumulate=false)
+    end 
+
+    nothing
+end
+
+
