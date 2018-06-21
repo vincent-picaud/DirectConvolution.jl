@@ -12,15 +12,19 @@ using J4Org
 
 
 * Project Journal
-** [2018-04-04 Wed] doc with J4org online
-** [2018-04-15 Sun] tag v0.0.1 
-- pre-release 
-** [2018-04-18 Wed] tag v0.0.2 
-- first release
+** [2018-06-21 Thu] 
+- add dedicated apply_SG_filter functions
+- add 2D directConvolution
 ** [2018-04-26 Thu] tag v0.1.0
 - documentation improvement 
 - fix missing exportation of =directCrossCorrelation= symbol
-- fix Savitzky-Golay filters doc 
+- fix Savitzky-Golay filters doc
+** [2018-04-18 Wed] tag v0.0.2 
+- first release
+** [2018-04-15 Sun] tag v0.0.1 
+- pre-release 
+** [2018-04-04 Wed] doc with J4org online
+
 * Project TODO
 
 ** TODO [0/1]
@@ -37,19 +41,6 @@ print_org_doc(documented_items,tag="TODO",header_level=0)
 #+RESULTS:
 :RESULTS:
 
-<<docQd3N6>> *Index:* *[U]* [[qEg80oo6][UDWT_Filter_Biorthogonal]] 
-- @@latex:\phantomsection@@ *=UDWT_Filter_Biorthogonal=*  <<qEg80oo6>>
-#+BEGIN_SRC julia :eval never :exports code
-abstract type UDWT_Filter_Biorthogonal{T<:Number} 
-#+END_SRC
-#+BEGIN_QUOTE
-Abstract type defining the $\phi$, $\psi$, $\tilde{\phi}$ and
-$\tilde{\psi}$ filters associated to an undecimated biorthogonal
-wavelet transform
-
-- [X] TODO must use LinearFilter struct 
-#+END_QUOTE
-[[file:/home/picaud/GitHub/DirectConvolution.jl/src/udwt.jl::12][udwt.jl:12]], [[docQd3N6][back to index]]
 :END:
 
 * W3 Links
