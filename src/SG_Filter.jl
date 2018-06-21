@@ -84,7 +84,7 @@ function SG_Filter(T::DataType=Float64;halfWidth::Int=5,degree::Int=2)::SG_Filte
     return SG_Filter{T,n_coef}(buffer)
 end
 
-# +SG_Filter
+# +SG_Filters
 #
 # Applies SG filter to 1D signal
 #
@@ -98,7 +98,7 @@ function apply_SG_filter(signal::Array{T,1},
                                   ConstantBE)
 end
 
-# +SG_Filter
+# +SG_Filters
 #
 # Applies SG filter to 2D signal
 #

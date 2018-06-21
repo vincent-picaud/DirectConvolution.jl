@@ -162,8 +162,8 @@ print_org_doc(documented_items,tag="BoundaryExtension",tag_to_ignore="Internal",
  #+RESULTS:
  :RESULTS:
 
- <<JmNcPaR9>> *Index:* *[B]* [[Pb8KSQlk][BoundaryExtension]] *[C]* [[u5mDv99G][ConstantBE]] *[M]* [[DJ77PuMS][MirrorBE]] *[P]* [[mzihGf89][PeriodicBE]] *[Z]* [[T7tefBui][ZeroPaddingBE]] 
- - @@latex:\phantomsection@@ *=BoundaryExtension=*  <<Pb8KSQlk>>
+ <<zaN0QWGv>> *Index:* *[B]* [[GSQrUL7D][BoundaryExtension]] *[C]* [[OQbAHA9f][ConstantBE]] *[M]* [[LbSAKucY][MirrorBE]] *[P]* [[vJupDWIk][PeriodicBE]] *[Z]* [[Wx6GMbhf][ZeroPaddingBE]] 
+ - @@latex:\phantomsection@@ *=BoundaryExtension=*  <<GSQrUL7D>>
  #+BEGIN_SRC julia :eval never :exports code
  abstract type BoundaryExtension 
  #+END_SRC
@@ -173,9 +173,6 @@ print_org_doc(documented_items,tag="BoundaryExtension",tag_to_ignore="Internal",
  #+BEGIN_SRC julia
  subtypes(BoundaryExtension)
  #+END_SRC
-
- #+RESULTS:
-
  #+BEGIN_SRC julia
  4-element Array{Union{DataType, UnionAll},1}:
   DirectConvolution.ConstantBE   
@@ -183,31 +180,28 @@ print_org_doc(documented_items,tag="BoundaryExtension",tag_to_ignore="Internal",
   DirectConvolution.PeriodicBE   
   DirectConvolution.ZeroPaddingBE
  #+END_SRC
-
- #+RESULTS:
-
  #+END_QUOTE
- [[file:/home/picaud/GitHub/DirectConvolution.jl/src/directConvolution.jl::11][directConvolution.jl:11]], [[JmNcPaR9][back to index]]
- - @@latex:\phantomsection@@ *=ConstantBE=*  <<u5mDv99G>>
+ [[file:/home/picaud/GitHub/DirectConvolution.jl/src/directConvolution.jl::11][directConvolution.jl:11]], [[zaN0QWGv][back to index]]
+ - @@latex:\phantomsection@@ *=ConstantBE=*  <<OQbAHA9f>>
  #+BEGIN_SRC julia :eval never :exports code
  struct ConstantBE <: BoundaryExtension
  #+END_SRC
- [[file:/home/picaud/GitHub/DirectConvolution.jl/src/directConvolution.jl::21][directConvolution.jl:21]], [[JmNcPaR9][back to index]]
- - @@latex:\phantomsection@@ *=MirrorBE=*  <<DJ77PuMS>>
+ [[file:/home/picaud/GitHub/DirectConvolution.jl/src/directConvolution.jl::21][directConvolution.jl:21]], [[zaN0QWGv][back to index]]
+ - @@latex:\phantomsection@@ *=MirrorBE=*  <<LbSAKucY>>
  #+BEGIN_SRC julia :eval never :exports code
  struct MirrorBE <: BoundaryExtension
  #+END_SRC
- [[file:/home/picaud/GitHub/DirectConvolution.jl/src/directConvolution.jl::25][directConvolution.jl:25]], [[JmNcPaR9][back to index]]
- - @@latex:\phantomsection@@ *=PeriodicBE=*  <<mzihGf89>>
+ [[file:/home/picaud/GitHub/DirectConvolution.jl/src/directConvolution.jl::25][directConvolution.jl:25]], [[zaN0QWGv][back to index]]
+ - @@latex:\phantomsection@@ *=PeriodicBE=*  <<vJupDWIk>>
  #+BEGIN_SRC julia :eval never :exports code
  struct PeriodicBE <: BoundaryExtension
  #+END_SRC
- [[file:/home/picaud/GitHub/DirectConvolution.jl/src/directConvolution.jl::23][directConvolution.jl:23]], [[JmNcPaR9][back to index]]
- - @@latex:\phantomsection@@ *=ZeroPaddingBE=*  <<T7tefBui>>
+ [[file:/home/picaud/GitHub/DirectConvolution.jl/src/directConvolution.jl::23][directConvolution.jl:23]], [[zaN0QWGv][back to index]]
+ - @@latex:\phantomsection@@ *=ZeroPaddingBE=*  <<Wx6GMbhf>>
  #+BEGIN_SRC julia :eval never :exports code
  struct ZeroPaddingBE <: BoundaryExtension
  #+END_SRC
- [[file:/home/picaud/GitHub/DirectConvolution.jl/src/directConvolution.jl::19][directConvolution.jl:19]], [[JmNcPaR9][back to index]]
+ [[file:/home/picaud/GitHub/DirectConvolution.jl/src/directConvolution.jl::19][directConvolution.jl:19]], [[zaN0QWGv][back to index]]
  :END:
 
 *** Convolution computation
@@ -220,8 +214,8 @@ print_org_doc(documented_items,tag="Convolution",tag_to_ignore="Internal",header
  #+RESULTS:
  :RESULTS:
 
- <<sL1X3cKh>> *Index:* *[d]* [[7aocj3h7][directConv]], [[mU8DK8xE][directConv!]], [[eqcFrI3I][directConv2D!]], [[gG0sYfJI][directCrossCorrelation]] 
- - @@latex:\phantomsection@@ *=directConv=*  <<7aocj3h7>>
+ <<3lvRpUaq>> *Index:* *[d]* [[lJyVkY7N][directConv]], [[HIlHMDah][directConv!]], [[JFO9W4zA][directConv2D!]], [[Wt9IX0LL][directCrossCorrelation]], [[DzCOJeWI][directCrossCorrelation2D]] 
+ - @@latex:\phantomsection@@ *=directConv=*  <<lJyVkY7N>>
  #+BEGIN_SRC julia :eval never :exports code
  function directConv(α::LinearFilter{T},
 
@@ -238,7 +232,7 @@ print_org_doc(documented_items,tag="Convolution",tag_to_ignore="Internal",header
  Computes a convolution.
 
  Convenience function that allocate $\gamma$ and compute all its
- component using [[2oA2GA3udirectConv_details][directConv!(...)]]
+ component using [[TAy1pwnGdirectConv_details][directConv!(...)]]
 
  *Returns:* $\gamma$ a created vector of length identical to the $\beta$ one.
 
@@ -256,7 +250,7 @@ print_org_doc(documented_items,tag="Convolution",tag_to_ignore="Internal",header
   3  4  5  6  7  8  9  10  11  12  13  14  15   0   0
  #+END_SRC
  #+END_QUOTE
- [[file:/home/picaud/GitHub/DirectConvolution.jl/src/directConvolution.jl::296][directConvolution.jl:296]], [[sL1X3cKh][back to index]]
+ [[file:/home/picaud/GitHub/DirectConvolution.jl/src/directConvolution.jl::296][directConvolution.jl:296]], [[3lvRpUaq][back to index]]
 
  #+BEGIN_SRC julia :eval never :exports code
  function directConv(α::LinearFilter{T},
@@ -274,8 +268,8 @@ print_org_doc(documented_items,tag="Convolution",tag_to_ignore="Internal",header
 
  *Returns:* $\gamma$ a created vector of length identical to the $\beta$ one.
  #+END_QUOTE
- [[file:/home/picaud/GitHub/DirectConvolution.jl/src/directConvolution.jl::342][directConvolution.jl:342]], [[sL1X3cKh][back to index]]
- - @@latex:\phantomsection@@ *=directConv!=*  <<mU8DK8xE>> <<2oA2GA3udirectConv_details>>
+ [[file:/home/picaud/GitHub/DirectConvolution.jl/src/directConvolution.jl::342][directConvolution.jl:342]], [[3lvRpUaq][back to index]]
+ - @@latex:\phantomsection@@ *=directConv!=*  <<HIlHMDah>> <<TAy1pwnGdirectConv_details>>
  #+BEGIN_SRC julia :eval never :exports code
  function directConv!(α::LinearFilter{T},
 		      λ::Int,
@@ -321,8 +315,8 @@ print_org_doc(documented_items,tag="Convolution",tag_to_ignore="Internal",header
   1  1  1  1  7  8  9  10  11  12   1   1   1   1   1
  #+END_SRC
  #+END_QUOTE
- [[file:/home/picaud/GitHub/DirectConvolution.jl/src/directConvolution.jl::239][directConvolution.jl:239]], [[sL1X3cKh][back to index]]
- - @@latex:\phantomsection@@ *=directConv2D!=*  <<eqcFrI3I>>
+ [[file:/home/picaud/GitHub/DirectConvolution.jl/src/directConvolution.jl::239][directConvolution.jl:239]], [[3lvRpUaq][back to index]]
+ - @@latex:\phantomsection@@ *=directConv2D!=*  <<JFO9W4zA>> <<TAy1pwnGdirectConv2D_inplace>>
  #+BEGIN_SRC julia :eval never :exports code
  function directConv2D!(α_I::LinearFilter{T},
 			λ_I::Int,
@@ -343,16 +337,16 @@ print_org_doc(documented_items,tag="Convolution",tag_to_ignore="Internal",header
  #+BEGIN_QUOTE
  Computes a 2D (separable) convolution.
 
- For general information about parameters, see [[2oA2GA3udirectConv_details][directConv!(...)]]
+ For general information about parameters, see [[TAy1pwnGdirectConv_details][directConv!(...)]]
 
  α_I must be interpreted as filter for *running index I*
 
  CAVEAT: the result overwrites β
 
- TODO: to check 
+ TODO: @parallel
  #+END_QUOTE
- [[file:/home/picaud/GitHub/DirectConvolution.jl/src/directConvolution.jl::384][directConvolution.jl:384]], [[sL1X3cKh][back to index]]
- - @@latex:\phantomsection@@ *=directCrossCorrelation=*  <<gG0sYfJI>>
+ [[file:/home/picaud/GitHub/DirectConvolution.jl/src/directConvolution.jl::384][directConvolution.jl:384]], [[3lvRpUaq][back to index]]
+ - @@latex:\phantomsection@@ *=directCrossCorrelation=*  <<Wt9IX0LL>>
  #+BEGIN_SRC julia :eval never :exports code
  function directCrossCorrelation(α::LinearFilter{T},
 				 β::AbstractArray{T,1},
@@ -369,28 +363,55 @@ print_org_doc(documented_items,tag="Convolution",tag_to_ignore="Internal",header
 
  *Returns:* $\gamma$ a created vector of length identical to the $\beta$ one.
  #+END_QUOTE
- [[file:/home/picaud/GitHub/DirectConvolution.jl/src/directConvolution.jl::361][directConvolution.jl:361]], [[sL1X3cKh][back to index]]
+ [[file:/home/picaud/GitHub/DirectConvolution.jl/src/directConvolution.jl::361][directConvolution.jl:361]], [[3lvRpUaq][back to index]]
+ - @@latex:\phantomsection@@ *=directCrossCorrelation2D=*  <<DzCOJeWI>>
+ #+BEGIN_SRC julia :eval never :exports code
+ function directCrossCorrelation2D(α_I::LinearFilter{T},
+				   α_J::LinearFilter{T},
+
+				   β::AbstractArray{T,2},
+
+				   ::Type{min_I_BE}=ZeroPaddingBE,
+				   ::Type{max_I_BE}=ZeroPaddingBE,
+				   ::Type{min_J_BE}=ZeroPaddingBE,
+				   ::Type{max_J_BE}=ZeroPaddingBE)::Array{T,2} where {T <: Number,
+										      min_I_BE <: BoundaryExtension,
+										      max_I_BE <: BoundaryExtension,
+										      min_J_BE <: BoundaryExtension,
+										      max_J_BE <: BoundaryExtension}
+ #+END_SRC
+ #+BEGIN_QUOTE
+ Computes a 2D cross-correlation
+
+ This is a wrapper that calls [[TAy1pwnGdirectConv2D_inplace][directConv2D!(...)]]
+
+ *Note:* β is not modified, instead the function returns the result.
+ #+END_QUOTE
+ [[file:/home/picaud/GitHub/DirectConvolution.jl/src/directConvolution.jl::459][directConvolution.jl:459]], [[3lvRpUaq][back to index]]
  :END:
 
 ** Savitzky-Golay Filters
+   :PROPERTIES:
+   :ID:       b3e33804-4140-43be-a3eb-7dc02be41876
+   :END:
 #+BEGIN_SRC julia :results output drawer :eval no-export :exports results
 documented_items=create_documented_item_array_dir("~/GitHub/DirectConvolution.jl/src/");
-print_org_doc(documented_items,tag="SG_Filters",tag_to_ignore="Internal",header_level=0)
+print_org_doc(documented_items,tag="SG_Filters",tag_to_ignore="Internal",header_level=0,link_prefix="API_")
 #+END_SRC
 
 #+RESULTS:
 :RESULTS:
 
-<<pa9OP8Pc>> *Index:* *[S]* [[VPX38PMB][SG_Filter]] *[f]* [[fCHxQZzo][filter]] *[l]* [[wyR6YKsP][length]] *[m]* [[tXOICVwM][maxDerivativeOrder]] *[p]* [[DQj0tzJZ][polynomialOrder]] 
-- @@latex:\phantomsection@@ *=SG_Filter=*  <<VPX38PMB>>
+<<hbEfGuFa>> *Index:* *[S]* [[2hv1BPSi][SG_Filter]] *[a]* [[owTkbNcL][apply_SG_filter]], [[Lam5dNLq][apply_SG_filter2D]] *[f]* [[UGxjZxqz][filter]] *[l]* [[NkIzu2Ct][length]] *[m]* [[424qByXJ][maxDerivativeOrder]] *[p]* [[g7niCxYf][polynomialOrder]] 
+- @@latex:\phantomsection@@ *=SG_Filter=*  <<2hv1BPSi>>
 #+BEGIN_SRC julia :eval never :exports code
 struct SG_Filter{T<:AbstractFloat,N}
 #+END_SRC
 #+BEGIN_QUOTE
 A structure to store Savitzky-Golay filters.
 #+END_QUOTE
-[[file:/home/picaud/GitHub/DirectConvolution.jl/src/SG_Filter.jl::30][SG_Filter.jl:30]], [[pa9OP8Pc][back to index]]
- @@latex:\phantomsection@@  <<Q9dEQVG2SG_Filters_Constructor>>
+[[file:/home/picaud/GitHub/DirectConvolution.jl/src/SG_Filter.jl::30][SG_Filter.jl:30]], [[hbEfGuFa][back to index]]
+ @@latex:\phantomsection@@  <<API_SG_Filters_Constructor>>
 #+BEGIN_SRC julia :eval never :exports code
 function SG_Filter(T::DataType=Float64;halfWidth::Int=5,degree::Int=2)::SG_Filter
 #+END_SRC
@@ -400,39 +421,61 @@ Creates a set of Savitzky-Golay filters
 - filter length is 2*halfWidth+1
 - polynomial degree is degree
 #+END_QUOTE
-[[file:/home/picaud/GitHub/DirectConvolution.jl/src/SG_Filter.jl::55][SG_Filter.jl:55]], [[pa9OP8Pc][back to index]]
-- @@latex:\phantomsection@@ *=filter=*  <<fCHxQZzo>>
+[[file:/home/picaud/GitHub/DirectConvolution.jl/src/SG_Filter.jl::58][SG_Filter.jl:58]], [[hbEfGuFa][back to index]]
+- @@latex:\phantomsection@@ *=apply_SG_filter=*  <<owTkbNcL>>
 #+BEGIN_SRC julia :eval never :exports code
-filter(sg::SG_Filter{T,N};derivativeOrder::Int=0) where {T<:AbstractFloat,N}
+function apply_SG_filter(signal::Array{T,1},
+                         sg::SG_Filter{T};
+                         derivativeOrder::Int=0) where {T<:AbstractFloat}
+#+END_SRC
+#+BEGIN_QUOTE
+Applies SG filter to 1D signal
+#+END_QUOTE
+[[file:/home/picaud/GitHub/DirectConvolution.jl/src/SG_Filter.jl::87][SG_Filter.jl:87]], [[hbEfGuFa][back to index]]
+- @@latex:\phantomsection@@ *=apply_SG_filter2D=*  <<Lam5dNLq>>
+#+BEGIN_SRC julia :eval never :exports code
+function apply_SG_filter2D(signal::Array{T,2},
+                           sg_I::SG_Filter{T},
+                           sg_J::SG_Filter{T};
+                           derivativeOrder_I::Int=0,
+                           derivativeOrder_J::Int=0) where {T<:AbstractFloat}
+#+END_SRC
+#+BEGIN_QUOTE
+Applies SG filter to 2D signal
+#+END_QUOTE
+[[file:/home/picaud/GitHub/DirectConvolution.jl/src/SG_Filter.jl::101][SG_Filter.jl:101]], [[hbEfGuFa][back to index]]
+- @@latex:\phantomsection@@ *=filter=*  <<UGxjZxqz>>
+#+BEGIN_SRC julia :eval never :exports code
+function filter(sg::SG_Filter{T,N};derivativeOrder::Int=0) where {T<:AbstractFloat,N}
 #+END_SRC
 #+BEGIN_QUOTE
 Returns the filter to be used to compute the  smoothed derivatives of order *derivativeOrder*.
 #+END_QUOTE
-[[file:/home/picaud/GitHub/DirectConvolution.jl/src/SG_Filter.jl::37][SG_Filter.jl:37]], [[pa9OP8Pc][back to index]]
-- @@latex:\phantomsection@@ *=length=*  <<wyR6YKsP>>
+[[file:/home/picaud/GitHub/DirectConvolution.jl/src/SG_Filter.jl::37][SG_Filter.jl:37]], [[hbEfGuFa][back to index]]
+- @@latex:\phantomsection@@ *=length=*  <<NkIzu2Ct>>
 #+BEGIN_SRC julia :eval never :exports code
 length(sg::SG_Filter{T,N}) where {T<:AbstractFloat,N}
 #+END_SRC
 #+BEGIN_QUOTE
-Returns filter length, this is an odd number, see [[Q9dEQVG2SG_Filters_Constructor][SG_Filter(...)]]
+Returns filter length, this is an odd number, see [[API_SG_Filters_Constructor][SG_Filter(...)]]
 #+END_QUOTE
-[[file:/home/picaud/GitHub/DirectConvolution.jl/src/SG_Filter.jl::42][SG_Filter.jl:42]], [[pa9OP8Pc][back to index]]
-- @@latex:\phantomsection@@ *=maxDerivativeOrder=*  <<tXOICVwM>>
+[[file:/home/picaud/GitHub/DirectConvolution.jl/src/SG_Filter.jl::45][SG_Filter.jl:45]], [[hbEfGuFa][back to index]]
+- @@latex:\phantomsection@@ *=maxDerivativeOrder=*  <<424qByXJ>>
 #+BEGIN_SRC julia :eval never :exports code
 maxDerivativeOrder(sg::SG_Filter{T,N}) where {T<:AbstractFloat,N}
 #+END_SRC
 #+BEGIN_QUOTE
 Maximum order of the smoothed derivatives we can compute with *sg*
 #+END_QUOTE
-[[file:/home/picaud/GitHub/DirectConvolution.jl/src/SG_Filter.jl::46][SG_Filter.jl:46]], [[pa9OP8Pc][back to index]]
-- @@latex:\phantomsection@@ *=polynomialOrder=*  <<DQj0tzJZ>>
+[[file:/home/picaud/GitHub/DirectConvolution.jl/src/SG_Filter.jl::49][SG_Filter.jl:49]], [[hbEfGuFa][back to index]]
+- @@latex:\phantomsection@@ *=polynomialOrder=*  <<g7niCxYf>>
 #+BEGIN_SRC julia :eval never :exports code
 polynomialOrder(sg::SG_Filter{T,N}) where {T<:AbstractFloat,N}
 #+END_SRC
 #+BEGIN_QUOTE
-Returns the degree of the polynomial used to construct the Savitzky-Golay filters, see [[Q9dEQVG2SG_Filters_Constructor][SG_Filter(...)]].
+Returns the degree of the polynomial used to construct the Savitzky-Golay filters, see [[API_SG_Filters_Constructor][SG_Filter(...)]].
 #+END_QUOTE
-[[file:/home/picaud/GitHub/DirectConvolution.jl/src/SG_Filter.jl::51][SG_Filter.jl:51]], [[pa9OP8Pc][back to index]]
+[[file:/home/picaud/GitHub/DirectConvolution.jl/src/SG_Filter.jl::54][SG_Filter.jl:54]], [[hbEfGuFa][back to index]]
 :END:
 
 ** Undecimated Wavelet Transform

@@ -1,6 +1,6 @@
 #+SETUPFILE: ../Setup/setupFile-1.org
 #+TITLE: Savitzky-Golay filters
-#+PROPERTY: header-args:julia :session *directConvolution_session*  :exports code :eval no-export
+#+PROPERTY: header-args:julia :session *session_sgDemo*  :exports code :eval no-export
 
 #+BEGIN_EXPORT latex
 \definecolor{bg}{rgb}{0.95,0.95,0.95}
@@ -19,7 +19,18 @@ using DirectConvolution
 
 #+RESULTS:
 
+* Introduction
+
+Full API documentation is described in the [[id:b3e33804-4140-43be-a3eb-7dc02be41876][Savitzky-Golay Filters]] manual section.
+
+Details are explained in [[id:ed4e3ecc-65ac-4391-ae19-8df759749162][Savitzky-Golay filters]].
+
+The recommended new API is described in [[id:a58de70d-2871-483e-9c67-e3bec2e4ac94][New API]].
+
 * Savitzky-Golay filters
+  :PROPERTIES:
+  :ID:       ed4e3ecc-65ac-4391-ae19-8df759749162
+  :END:
 
 Creates a set of Savitzky-Golay filters. In this example, window width
 is $11=2*5+1$ and polynomial degree is $3$.
@@ -159,4 +170,20 @@ savefig(p,"sg_figures/sg_d1_wrongSign.png")
 #+CAPTION: Savitzky-Golay with =directConv= instead of =directCrossCorrelation= results in wrong sign for odd-order derivatives
 #+RESULTS:
 [[file:sg_figures/sg_d1_wrongSign.png]]
+
+
+** New API
+   :PROPERTIES:
+   :ID:       a58de70d-2871-483e-9c67-e3bec2e4ac94
+   :END:
+
+To make SG filter usage easier we have introduced dedicated
+=apply_SG_filter= and =apply_SG_filter2D= functions:
+
+#+BEGIN_SRC julia :exports code :results output none :exports both
+sg = SG_Filter(Float64,halfWidth=5,degree=3);
+smoothed_1=apply_SG_filter(signal,sg,derivativeOrder=1);                                       # new API
+smoothed_2=directCrossCorrelation(filter(sg,derivativeOrder=1),signal,ConstantBE,ConstantBE);  # old approach
+@assert isapprox(smoothed_1,smoothed_2)
+#+END_SRC
 

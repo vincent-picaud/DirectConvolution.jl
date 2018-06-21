@@ -3,7 +3,7 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
-<!-- 2018-04-25 Wed 09:00 -->
+<!-- 2018-06-21 Thu 12:48 -->
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Savitzky-Golay filters</title>
@@ -331,23 +331,42 @@ for the JavaScript code in this tag.
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents">
 <ul>
-<li><a href="#orgbe38d61">1. Savitzky-Golay filters</a>
+<li><a href="#org57d5fa6">1. Introduction</a></li>
+<li><a href="#orgf384be1">2. Savitzky-Golay filters</a>
 <ul>
-<li><a href="#org312c077">1.1. Smoothing example</a></li>
-<li><a href="#orga786599">1.2. First order smoothed derivative</a>
+<li><a href="#org0b3510b">2.1. Smoothing example</a></li>
+<li><a href="#org6ca2666">2.2. First order smoothed derivative</a>
 <ul>
-<li><a href="#org45b71e3">1.2.1. <code>directConv</code> instead of <code>directCrossCorrelation</code></a></li>
+<li><a href="#org4ce38b1">2.2.1. <code>directConv</code> instead of <code>directCrossCorrelation</code></a></li>
 </ul>
 </li>
+<li><a href="#orgf80fb2f">2.3. New API</a></li>
 </ul>
 </li>
 </ul>
 </div>
 </div>
 
-<div id="outline-container-orgbe38d61" class="outline-2">
-<h2 id="orgbe38d61"><span class="section-number-2">1</span> Savitzky-Golay filters</h2>
+<div id="outline-container-org57d5fa6" class="outline-2">
+<h2 id="org57d5fa6"><span class="section-number-2">1</span> Introduction</h2>
 <div class="outline-text-2" id="text-1">
+<p>
+Full API documentation is described in the <a href="../docs.html#ID-b3e33804-4140-43be-a3eb-7dc02be41876">Savitzky-Golay Filters</a> manual section.
+</p>
+
+<p>
+Details are explained in <a href="#orgf384be1">Savitzky-Golay filters</a>.
+</p>
+
+<p>
+The recommended new API is described in <a href="#orgf80fb2f">New API</a>.
+</p>
+</div>
+</div>
+
+<div id="outline-container-orgf384be1" class="outline-2">
+<h2 id="orgf384be1"><a id="ID-ed4e3ecc-65ac-4391-ae19-8df759749162"></a><span class="section-number-2">2</span> Savitzky-Golay filters</h2>
+<div class="outline-text-2" id="text-2">
 <p>
 Creates a set of Savitzky-Golay filters. In this example, window width
 is \(11=2*5+1\) and polynomial degree is \(3\).
@@ -368,11 +387,10 @@ polynomialOrder(sg)
 </pre>
 </div>
 
-<div class="org-src-container">
-<pre class="src src-julia">11
+<pre class="example">
+11
 3
 </pre>
-</div>
 
 <p>
 Savitzky-Golay filters can be used to smooth or to compute smoothed
@@ -392,7 +410,7 @@ p=plot!(range(d2filter),fcoef(d2filter),markershape = <span style="color: #483d8
 
 
 
-<div id="orgb33cd17" class="figure">
+<div id="orgcd977ec" class="figure">
 <p><img src="sg_figures/filter_coef.png" alt="filter_coef.png" align="center" width="600px" />
 </p>
 <p><span class="figure-number">Figure 1: </span>Savitzky-Golay filters</p>
@@ -413,9 +431,9 @@ Maximum derivative order is equal to the polynomial order, however there is a de
 </pre>
 </div>
 
-<div id="outline-container-org312c077" class="outline-3">
-<h3 id="org312c077"><span class="section-number-3">1.1</span> Smoothing example</h3>
-<div class="outline-text-3" id="text-1-1">
+<div id="outline-container-org0b3510b" class="outline-3">
+<h3 id="org0b3510b"><span class="section-number-3">2.1</span> Smoothing example</h3>
+<div class="outline-text-3" id="text-2-1">
 <p>
 First load a signal 
 </p>
@@ -453,15 +471,15 @@ p=plot!(signal-smoothed, label=<span style="color: #8b2252;">"residue"</span>)
  coefficients are taken in the reversed order. This has no impact on
  smoothing because the filters are symmetric, but this would change
  the sign of the smoothed odd-order (\(f'\), \(f'''\)&#x2026;) derivatives that
- have antisymmetric filter coefficients. You can see Fig. <a href="#orgb33cd17">Filter
- coefficients</a> and see this <a href="#org45b71e3">detailed illustration</a>.
+ have antisymmetric filter coefficients. You can see Fig. <a href="#orgcd977ec">Filter
+ coefficients</a> and see this <a href="#org4ce38b1">detailed illustration</a>.
 </p>
 </div>
 </div>
 
-<div id="outline-container-orga786599" class="outline-3">
-<h3 id="orga786599"><span class="section-number-3">1.2</span> First order smoothed derivative</h3>
-<div class="outline-text-3" id="text-1-2">
+<div id="outline-container-org6ca2666" class="outline-3">
+<h3 id="org6ca2666"><span class="section-number-3">2.2</span> First order smoothed derivative</h3>
+<div class="outline-text-3" id="text-2-2">
 <p>
 Smoothed first order derivative example:
 </p>
@@ -482,9 +500,9 @@ p=plot!(smoothed_d1, label=<span style="color: #8b2252;">"smoothed derivative"</
 </div>
 </div>
 
-<div id="outline-container-org45b71e3" class="outline-4">
-<h4 id="org45b71e3"><a id="ID-dc04c037-ea1f-4abc-8468-8684f66881b6"></a><span class="section-number-4">1.2.1</span> <code>directConv</code> instead of <code>directCrossCorrelation</code></h4>
-<div class="outline-text-4" id="text-1-2-1">
+<div id="outline-container-org4ce38b1" class="outline-4">
+<h4 id="org4ce38b1"><a id="ID-dc04c037-ea1f-4abc-8468-8684f66881b6"></a><span class="section-number-4">2.2.1</span> <code>directConv</code> instead of <code>directCrossCorrelation</code></h4>
+<div class="outline-text-4" id="text-2-2-1">
 <p>
 This is what happens if we use <code>directConv</code> instead of
 <code>directCrossCorrelation</code>, \(f'\) has the wrong sign.
@@ -507,11 +525,30 @@ p=plot!(smoothed_d1_with_conv, label=<span style="color: #8b2252;">"smoothed der
 </div>
 </div>
 </div>
+
+
+<div id="outline-container-orgf80fb2f" class="outline-3">
+<h3 id="orgf80fb2f"><a id="ID-a58de70d-2871-483e-9c67-e3bec2e4ac94"></a><span class="section-number-3">2.3</span> New API</h3>
+<div class="outline-text-3" id="text-2-3">
+<p>
+To make SG filter usage easier we have introduced dedicated
+<code>apply_SG_filter</code> and <code>apply_SG_filter2D</code> functions:
+</p>
+
+<div class="org-src-container">
+<pre class="src src-julia">sg = SG_Filter(<span style="color: #228b22;">Float64</span>,halfWidth=5,degree=3);
+smoothed_1=apply_SG_filter(signal,sg,derivativeOrder=1);                                       <span style="color: #b22222;"># </span><span style="color: #b22222;">new API</span>
+smoothed_2=directCrossCorrelation(filter(sg,derivativeOrder=1),signal,ConstantBE,ConstantBE);  <span style="color: #b22222;"># </span><span style="color: #b22222;">old approach</span>
+<span style="color: #483d8b;">@assert</span> isapprox(smoothed_1,smoothed_2)
+</pre>
+</div>
+</div>
+</div>
 </div>
 </div>
 <div id="postamble" class="status">
 <p class="author">Author: picaud</p>
-<p class="date">Created: 2018-04-25 Wed 09:00</p>
+<p class="date">Created: 2018-06-21 Thu 12:48</p>
 <p class="validation"><a href="http://validator.w3.org/check?uri=referer">Validate</a></p>
 </div>
 </body>
