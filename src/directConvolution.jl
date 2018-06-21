@@ -381,7 +381,7 @@ end
 # 2D
 
 
-# +Convolution L:directConv2D!
+# +Convolution L:directConv2D_inplace
 # Computes a 2D (separable) convolution.
 #
 # For general information about parameters, see [[directConv_details][]]
@@ -459,7 +459,7 @@ end
 # +Convolution
 # Computes a 2D cross-correlation
 #
-# This is a wrapper that calls [[directConv2D!][]]
+# This is a wrapper that calls [[directConv2D_inplace][]]
 #
 # *Note:* β is not modified, instead the function returns the result.
 #
