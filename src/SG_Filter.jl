@@ -1,4 +1,4 @@
-export SG_Filter, maxDerivativeOrder, polynomialOrder
+export SG_Filter, maxDerivativeOrder, polynomialOrder, apply_SG_filter, apply_SG_filter2D
 
 import Base: filter, length
 
@@ -38,7 +38,10 @@ end
 #
 # Returns the filter to be used to compute the  smoothed derivatives of order *derivativeOrder*.
 #
-filter(sg::SG_Filter{T,N};derivativeOrder::Int=0) where {T<:AbstractFloat,N} = sg._filter_set[derivativeOrder+1]
+function filter(sg::SG_Filter{T,N};derivativeOrder::Int=0) where {T<:AbstractFloat,N}
+    @assert 0<= derivativeOrder <= maxDerivativeOrder(sg)
+    return sg._filter_set[derivativeOrder+1]
+end 
 #+SG_Filters
 #
 # Returns filter length, this is an odd number, see [[SG_Filters_Constructor][]]
@@ -80,3 +83,36 @@ function SG_Filter(T::DataType=Float64;halfWidth::Int=5,degree::Int=2)::SG_Filte
 # Returns filters set
     return SG_Filter{T,n_coef}(buffer)
 end
+
+# +SG_Filter
+#
+# Applies SG filter to 1D signal
+#
+function apply_SG_filter(signal::Array{T,1},
+                         sg::SG_Filter{T};
+                         derivativeOrder::Int=0) where {T<:AbstractFloat}
+    
+    return directCrossCorrelation(filter(sg,derivativeOrder=derivativeOrder),
+                                  signal,
+                                  ConstantBE,
+                                  ConstantBE)
+end
+
+# +SG_Filter
+#
+# Applies SG filter to 2D signal
+#
+function apply_SG_filter2D(signal::Array{T,2},
+                           sg_I::SG_Filter{T},
+                           sg_J::SG_Filter{T};
+                           derivativeOrder_I::Int=0,
+                           derivativeOrder_J::Int=0) where {T<:AbstractFloat}
+    
+    return directCrossCorrelation2D(filter(sg_I,derivativeOrder=derivativeOrder_I),
+                                    filter(sg_J,derivativeOrder=derivativeOrder_J),
+                                    signal,
+                                    ConstantBE,
+                                    ConstantBE,
+                                    ConstantBE,
+                                    ConstantBE)
+end 
