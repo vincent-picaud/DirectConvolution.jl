@@ -1,4 +1,4 @@
-export directConv, directConv!, directCrossCorrelation
+export directConv, directConv!, directConv2D!, directCrossCorrelation
 export BoundaryExtension, ZeroPaddingBE, ConstantBE, PeriodicBE, MirrorBE
 
 

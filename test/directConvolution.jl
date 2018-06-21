@@ -64,3 +64,15 @@ end;
     @test isapprox(γ,Γ)
 
 end;
+
+@testset "2D convolution" begin
+    β=rand(5,8)
+    β_save=deepcopy(β)
+    
+    α_I=LinearFilter(Float64[0,2,0])
+    α_J=LinearFilter(Float64[0,0,2,0,0])
+
+    directConv2D!(α_I,1,α_J,-1,β)
+
+    @test isapprox(β,4*β_save)
+end;
