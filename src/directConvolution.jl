@@ -1,4 +1,4 @@
-export directConv, directConv!, directConv2D!, directCrossCorrelation
+export directConv, directConv!, directConv2D!, directCrossCorrelation,directCrossCorrelation2D
 export BoundaryExtension, ZeroPaddingBE, ConstantBE, PeriodicBE, MirrorBE
 
 
@@ -381,7 +381,7 @@ end
 # 2D
 
 
-# +Convolution
+# +Convolution L:directConv2D!
 # Computes a 2D (separable) convolution.
 #
 # For general information about parameters, see [[directConv_details][]]
@@ -390,7 +390,7 @@ end
 #
 # CAVEAT: the result overwrites β
 #
-# TODO: to check 
+# TODO: @parallel
 function directConv2D!(α_I::LinearFilter{T},
                        λ_I::Int,
                        α_J::LinearFilter{T},
@@ -454,6 +454,39 @@ function directConv2D!(α_I::LinearFilter{T},
     end 
 
     nothing
+end
+
+# +Convolution
+# Computes a 2D cross-correlation
+#
+# This is a wrapper that calls [[directConv2D!][]]
+#
+# *Note:* β is not modified, instead the function returns the result.
+#
+function directCrossCorrelation2D(α_I::LinearFilter{T},
+                                  α_J::LinearFilter{T},
+                       
+                                  β::Array{T,2},
+                       
+                                  ::Type{min_I_BE}=ZeroPaddingBE,
+                                  ::Type{max_I_BE}=ZeroPaddingBE,
+                                  ::Type{min_J_BE}=ZeroPaddingBE,
+                                  ::Type{max_J_BE}=ZeroPaddingBE)::Array{T,2} where {T <: Number,
+                                                                               min_I_BE <: BoundaryExtension,
+                                                                               max_I_BE <: BoundaryExtension,
+                                                                               min_J_BE <: BoundaryExtension,
+                                                                               max_J_BE <: BoundaryExtension}
+
+    γ=similar(β)
+    γ.=β
+
+    directConv2D!(α_I,+1,α_J,+1,γ,
+                  min_I_BE,
+                  max_I_BE,
+                  min_J_BE,
+                  max_J_BE)
+
+    return γ
 end
 
 

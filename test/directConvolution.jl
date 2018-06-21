@@ -76,3 +76,14 @@ end;
 
     @test isapprox(β,4*β_save)
 end;
+
+@testset "2D crossCorrelation" begin
+    β=rand(5,8)
+    
+    α_I=LinearFilter(Float64[0,2,0])
+    α_J=LinearFilter(Float64[0,0,2,0,0])
+
+    γ=directCrossCorrelation2D(α_I,α_J,β)
+
+    @test isapprox(γ,4*β)
+end;
