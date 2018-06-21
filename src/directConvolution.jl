@@ -465,17 +465,17 @@ end
 #
 function directCrossCorrelation2D(α_I::LinearFilter{T},
                                   α_J::LinearFilter{T},
-                       
-                                  β::Array{T,2},
-                       
+                                  
+                                  β::AbstractArray{T,2},
+                                  
                                   ::Type{min_I_BE}=ZeroPaddingBE,
                                   ::Type{max_I_BE}=ZeroPaddingBE,
                                   ::Type{min_J_BE}=ZeroPaddingBE,
                                   ::Type{max_J_BE}=ZeroPaddingBE)::Array{T,2} where {T <: Number,
-                                                                               min_I_BE <: BoundaryExtension,
-                                                                               max_I_BE <: BoundaryExtension,
-                                                                               min_J_BE <: BoundaryExtension,
-                                                                               max_J_BE <: BoundaryExtension}
+                                                                                     min_I_BE <: BoundaryExtension,
+                                                                                     max_I_BE <: BoundaryExtension,
+                                                                                     min_J_BE <: BoundaryExtension,
+                                                                                     max_J_BE <: BoundaryExtension}
 
     γ=similar(β)
     γ.=β
