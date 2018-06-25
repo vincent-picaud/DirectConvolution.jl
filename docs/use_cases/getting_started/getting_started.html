@@ -3,7 +3,7 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
-<!-- 2018-06-25 Mon 17:15 -->
+<!-- 2018-06-25 Mon 18:58 -->
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Getting started with directConv functions</title>
@@ -331,21 +331,21 @@ for the JavaScript code in this tag.
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents">
 <ul>
-<li><a href="#orgc21b860">1. Comparison with Julia native <code>conv()</code> function</a></li>
-<li><a href="#orga85409e">2. Performance</a></li>
-<li><a href="#org1d15d75">3. Versatility</a>
+<li><a href="#org261c03e">1. Comparison with Julia native <code>conv()</code> function</a></li>
+<li><a href="#org7efa2e4">2. Performance</a></li>
+<li><a href="#orgdb95b51">3. Versatility</a>
 <ul>
-<li><a href="#org9a9199b">3.1. Parallel computation</a></li>
-<li><a href="#orgf94d502">3.2. Boundary extensions</a></li>
-<li><a href="#org279a093">3.3. Adjoint</a></li>
+<li><a href="#orgc6cb180">3.1. Parallel computation</a></li>
+<li><a href="#org75ce3c4">3.2. Boundary extensions</a></li>
+<li><a href="#org70e1513">3.3. Adjoint</a></li>
 </ul>
 </li>
 </ul>
 </div>
 </div>
 
-<div id="outline-container-orgc21b860" class="outline-2">
-<h2 id="orgc21b860"><span class="section-number-2">1</span> Comparison with Julia native <code>conv()</code> function</h2>
+<div id="outline-container-org261c03e" class="outline-2">
+<h2 id="org261c03e"><span class="section-number-2">1</span> Comparison with Julia native <code>conv()</code> function</h2>
 <div class="outline-text-2" id="text-1">
 <p>
 With Julia native <code>conv</code> function
@@ -360,20 +360,20 @@ With Julia native <code>conv</code> function
 
 <div class="org-src-container">
 <pre class="src src-julia">14-element <span style="color: #228b22;">Array</span>{<span style="color: #228b22;">Float64</span>,1}:
- 0.549805 
- 0.842662 
- 0.467419 
- 0.814479 
- 1.10424  
- 0.898765 
- 1.04313  
- 1.33577  
- 1.3778   
- 1.51315  
- 1.11486  
- 0.489911 
- 0.307805 
- 0.0806651
+ 0.216624 
+ 0.416602 
+ 0.646538 
+ 0.660492 
+ 1.61936  
+ 1.15249  
+ 1.22127  
+ 1.72914  
+ 1.44925  
+ 1.29137  
+ 0.94214  
+ 0.65695  
+ 0.262058 
+ 0.0200272
 </pre>
 </div>
 
@@ -397,18 +397,18 @@ With <code>DirectConvolution.jl</code> one must first define a filter with <code
 </div>
 
 <div class="org-src-container">
-<pre class="src src-julia">DirectConvolution.LinearFilter_Default{<span style="color: #228b22;">Float64</span>,5}([0.68179, 0.845972, 0.269956, 0.308282, 0.105164], 0)
+<pre class="src src-julia">DirectConvolution.LinearFilter_Default{<span style="color: #228b22;">Float64</span>,5}([0.0570966, 0.159702, 0.932971, 0.746808, 0.675408], 0)
 10-element <span style="color: #228b22;">Array</span>{<span style="color: #228b22;">Float64</span>,1}:
- 0.549805
- 0.842662
- 0.467419
- 0.814479
- 1.10424 
- 0.898765
- 1.04313 
- 1.33577 
- 1.3778  
- 1.51315
+ 0.00823509
+ 0.0778808 
+ 0.322487  
+ 1.11396   
+ 1.45592   
+ 1.46361   
+ 1.37137   
+ 1.36605   
+ 1.82005   
+ 1.46266
 </pre>
 </div>
 
@@ -427,14 +427,14 @@ Let's use first check that the results are identical (for their common parts):
 </div>
 
 <div class="org-src-container">
-<pre class="src src-julia">7.28021923224409e-16
+<pre class="src src-julia">4.718447854656915e-16
 </pre>
 </div>
 </div>
 </div>
 
-<div id="outline-container-orga85409e" class="outline-2">
-<h2 id="orga85409e"><span class="section-number-2">2</span> Performance</h2>
+<div id="outline-container-org7efa2e4" class="outline-2">
+<h2 id="org7efa2e4"><span class="section-number-2">2</span> Performance</h2>
 <div class="outline-text-2" id="text-2">
 <p>
 The following is not a complete benchmark, but gives some
@@ -456,10 +456,10 @@ With the given α, β and γ we get:
   memory estimate:  9.17 KiB
   allocs estimate:  132
   --------------
-  minimum time:     39.391 &#956;s (0.00% GC)
-  median time:      45.553 &#956;s (0.00% GC)
-  mean time:        55.168 &#956;s (10.56% GC)
-  maximum time:     25.181 ms (69.60% GC)
+  minimum time:     36.946 &#956;s (0.00% GC)
+  median time:      43.541 &#956;s (0.00% GC)
+  mean time:        51.735 &#956;s (8.59% GC)
+  maximum time:     21.249 ms (63.96% GC)
   --------------
   samples:          10000
   evals/sample:     1
@@ -476,13 +476,13 @@ With the given α, β and γ we get:
   memory estimate:  432 bytes
   allocs estimate:  5
   --------------
-  minimum time:     564.816 ns (0.00% GC)
-  median time:      595.978 ns (0.00% GC)
-  mean time:        759.396 ns (17.68% GC)
-  maximum time:     40.959 &#956;s (97.45% GC)
+  minimum time:     551.717 ns (0.00% GC)
+  median time:      573.893 ns (0.00% GC)
+  mean time:        694.201 ns (13.76% GC)
+  maximum time:     34.393 &#956;s (96.89% GC)
   --------------
   samples:          10000
-  evals/sample:     185
+  evals/sample:     187
 </pre>
 </div>
 
@@ -496,7 +496,7 @@ For these short filters we have a
 </div>
 
 <div class="org-src-container">
-<pre class="src src-julia">76.43398091713829
+<pre class="src src-julia">75.86953726308728
 </pre>
 </div>
 
@@ -517,7 +517,7 @@ median(r_ftt.times)/median(r_direct.times)
 </div>
 
 <div class="org-src-container">
-<pre class="src src-julia">25.099794976934906
+<pre class="src src-julia">24.075015278060704
 </pre>
 </div>
 
@@ -538,18 +538,18 @@ median(r_ftt.times)/median(r_direct.times)
 </div>
 
 <div class="org-src-container">
-<pre class="src src-julia">2.624813162970106
+<pre class="src src-julia">2.5229993396169776
 </pre>
 </div>
 </div>
 </div>
 
-<div id="outline-container-org1d15d75" class="outline-2">
-<h2 id="org1d15d75"><span class="section-number-2">3</span> Versatility</h2>
+<div id="outline-container-orgdb95b51" class="outline-2">
+<h2 id="orgdb95b51"><span class="section-number-2">3</span> Versatility</h2>
 <div class="outline-text-2" id="text-3">
 </div>
-<div id="outline-container-org9a9199b" class="outline-3">
-<h3 id="org9a9199b"><span class="section-number-3">3.1</span> Parallel computation</h3>
+<div id="outline-container-orgc6cb180" class="outline-3">
+<h3 id="orgc6cb180"><span class="section-number-3">3.1</span> Parallel computation</h3>
 <div class="outline-text-3" id="text-3-1">
 <p>
 The <code>directConv</code> functions can be used in various ways. For instance we can compute a convolution by splitting destination
@@ -581,8 +581,8 @@ This can be used for parallel computations. (no done yet)
 </div>
 </div>
 
-<div id="outline-container-orgf94d502" class="outline-3">
-<h3 id="orgf94d502"><span class="section-number-3">3.2</span> Boundary extensions</h3>
+<div id="outline-container-org75ce3c4" class="outline-3">
+<h3 id="org75ce3c4"><span class="section-number-3">3.2</span> Boundary extensions</h3>
 <div class="outline-text-3" id="text-3-2">
 <p>
 Boundary extensions are rigorously implemented and are free of all
@@ -622,45 +622,14 @@ norm(t&#945;&#946;-t&#946;&#945;)
 </div>
 
 <div class="org-src-container">
-<pre class="src src-julia">ERROR: MethodError: no method matching start(::<span style="color: #228b22;">Plots</span>.Plot{Plots.GRBackend})
-Closest candidates are:
-  start(!Matched::<span style="color: #228b22;">SimpleVector</span>) at essentials.jl:258
-  start(!Matched::<span style="color: #228b22;">Base</span>.MethodList) at reflection.jl:560
-  start(!Matched::<span style="color: #228b22;">ExponentialBackOff</span>) at error.jl:107
-  ...
-Stacktrace:
- [1] <span style="color: #b22222;">#</span><span style="color: #b22222;">writedlm#18(::Array{Any,1}, ::Function, ::IOStream, ::Plots.Plot{Plots.GRBackend}, ::Char) at ./datafmt.jl:673</span>
- [2] <span style="color: #b22222;">#</span><span style="color: #b22222;">20 at ./datafmt.jl:683 [inlined]</span>
- [3] open(::<span style="color: #228b22;">Base</span>.DataFmt.<span style="color: #b22222;">##</span><span style="color: #b22222;">20#21{Array{Any,1},Plots.Plot{Plots.GRBackend},Char}, ::String, ::String) at ./iostream.jl:152</span>
- [4] <span style="color: #b22222;">#</span><span style="color: #b22222;">writecsv#23(::Array{Any,1}, ::Function, ::String, ::Plots.Plot{Plots.GRBackend}) at ./datafmt.jl:705</span>
- [5] writecsv(::<span style="color: #228b22;">String</span>, ::<span style="color: #228b22;">Plots</span>.Plot{Plots.GRBackend}) at ./datafmt.jl:705
-
-ERROR: MethodError: no method matching start(::<span style="color: #228b22;">Void</span>)
-Closest candidates are:
-  start(!Matched::<span style="color: #228b22;">SimpleVector</span>) at essentials.jl:258
-  start(!Matched::<span style="color: #228b22;">Base</span>.MethodList) at reflection.jl:560
-  start(!Matched::<span style="color: #228b22;">ExponentialBackOff</span>) at error.jl:107
-  ...
-Stacktrace:
- [1] <span style="color: #b22222;">#</span><span style="color: #b22222;">writedlm#18(::Array{Any,1}, ::Function, ::IOStream, ::Void, ::Char) at ./datafmt.jl:673</span>
- [2] <span style="color: #b22222;">#</span><span style="color: #b22222;">20 at ./datafmt.jl:683 [inlined]</span>
- [3] open(::<span style="color: #228b22;">Base</span>.DataFmt.<span style="color: #b22222;">##</span><span style="color: #b22222;">20#21{Array{Any,1},Void,Char}, ::String, ::String) at ./iostream.jl:152</span>
- [4] <span style="color: #b22222;">#</span><span style="color: #b22222;">writecsv#23(::Array{Any,1}, ::Function, ::String, ::Void) at ./datafmt.jl:705</span>
- [5] writecsv(::<span style="color: #228b22;">String</span>, ::<span style="color: #228b22;">Void</span>) at ./datafmt.jl:705
-
-
-
-
-
-
-1.1102230246251565e-16
+<pre class="src src-julia">0.0
 </pre>
 </div>
 </div>
 </div>
 
-<div id="outline-container-org279a093" class="outline-3">
-<h3 id="org279a093"><span class="section-number-3">3.3</span> Adjoint</h3>
+<div id="outline-container-org70e1513" class="outline-3">
+<h3 id="org70e1513"><span class="section-number-3">3.3</span> Adjoint</h3>
 <div class="outline-text-3" id="text-3-3">
 <p>
 From
@@ -699,7 +668,7 @@ dot(directConv(&#945;,-3,v,PeriodicBE,PeriodicBE),w) - dot(directConv(&#945;,+3,
 </div>
 <div id="postamble" class="status">
 <p class="author">Author: picaud</p>
-<p class="date">Created: 2018-06-25 Mon 17:15</p>
+<p class="date">Created: 2018-06-25 Mon 18:58</p>
 <p class="validation"><a href="http://validator.w3.org/check?uri=referer">Validate</a></p>
 </div>
 </body>

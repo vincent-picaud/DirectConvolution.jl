@@ -1,0 +1,6 @@
+#+INCLUDE: ../Setup/setupFile-1.org
+#+TITLE: Use case list 
+
+- [[file:getting_started/getting_started.org][Getting Started]]
+- [[file:Savitzky-Golay/Savitzky-Golay.org][Savitzky-Golay filters]]
+- [[file:UDW/udwt.org][Undecimated Wavelet Transform]]

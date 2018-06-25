@@ -3,7 +3,7 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
-<!-- 2018-06-25 Mon 16:55 -->
+<!-- 2018-06-25 Mon 18:51 -->
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Undecimated Wavelet Transform</title>
@@ -309,24 +309,24 @@ for the JavaScript code in this tag.
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents">
 <ul>
-<li><a href="#org5ec2701">1. Undecimated Wavelet Transform</a>
+<li><a href="#orgb841b14">1. Undecimated Wavelet Transform</a>
 <ul>
-<li><a href="#org7ded7d9">1.1. Signal</a></li>
-<li><a href="#orgf122993">1.2. Direct transform</a></li>
-<li><a href="#org354058c">1.3. Inverse transform</a></li>
-<li><a href="#orgaf5fe48">1.4. Smoothing</a></li>
+<li><a href="#org6020fb8">1.1. Signal</a></li>
+<li><a href="#org8ae3187">1.2. Direct transform</a></li>
+<li><a href="#org9246878">1.3. Inverse transform</a></li>
+<li><a href="#org4dcb258">1.4. Smoothing</a></li>
 </ul>
 </li>
 </ul>
 </div>
 </div>
 
-<div id="outline-container-org5ec2701" class="outline-2">
-<h2 id="org5ec2701"><span class="section-number-2">1</span> Undecimated Wavelet Transform</h2>
+<div id="outline-container-orgb841b14" class="outline-2">
+<h2 id="orgb841b14"><span class="section-number-2">1</span> Undecimated Wavelet Transform</h2>
 <div class="outline-text-2" id="text-1">
 </div>
-<div id="outline-container-org7ded7d9" class="outline-3">
-<h3 id="org7ded7d9"><span class="section-number-3">1.1</span> Signal</h3>
+<div id="outline-container-org6020fb8" class="outline-3">
+<h3 id="org6020fb8"><span class="section-number-3">1.1</span> Signal</h3>
 <div class="outline-text-3" id="text-1-1">
 <div class="org-src-container">
 <pre class="src src-julia">signal=readcsv(joinpath(DirectConvolution.RootDir,<span style="color: #8b2252;">"data/signal_1.csv"</span>));
@@ -345,8 +345,8 @@ plot(signal,label=<span style="color: #8b2252;">"signal"</span>)
 </div>
 </div>
 
-<div id="outline-container-orgf122993" class="outline-3">
-<h3 id="orgf122993"><span class="section-number-3">1.2</span> Direct transform</h3>
+<div id="outline-container-org8ae3187" class="outline-3">
+<h3 id="org8ae3187"><span class="section-number-3">1.2</span> Direct transform</h3>
 <div class="outline-text-3" id="text-1-2">
 <p>
 Use some wavelet filter 
@@ -388,8 +388,8 @@ plot!(signal,label=<span style="color: #8b2252;">"signal"</span>)
 </div>
 
 
-<div id="outline-container-org354058c" class="outline-3">
-<h3 id="org354058c"><span class="section-number-3">1.3</span> Inverse transform</h3>
+<div id="outline-container-org9246878" class="outline-3">
+<h3 id="org9246878"><span class="section-number-3">1.3</span> Inverse transform</h3>
 <div class="outline-text-3" id="text-1-3">
 <p>
 Check perfect reconstruction
@@ -408,8 +408,8 @@ norm(signal-reconst)
 </div>
 </div>
 
-<div id="outline-container-orgaf5fe48" class="outline-3">
-<h3 id="orgaf5fe48"><span class="section-number-3">1.4</span> Smoothing</h3>
+<div id="outline-container-org4dcb258" class="outline-3">
+<h3 id="org4dcb258"><span class="section-number-3">1.4</span> Smoothing</h3>
 <div class="outline-text-3" id="text-1-4">
 <p>
 Rough solution&#x2026; cancels the two finest resolution levels.
@@ -437,7 +437,7 @@ plot!(signal,label=<span style="color: #8b2252;">"signal"</span>)
 </div>
 <div id="postamble" class="status">
 <p class="author">Author: picaud</p>
-<p class="date">Created: 2018-06-25 Mon 16:55</p>
+<p class="date">Created: 2018-06-25 Mon 18:51</p>
 <p class="validation"><a href="http://validator.w3.org/check?uri=referer">Validate</a></p>
 </div>
 </body>

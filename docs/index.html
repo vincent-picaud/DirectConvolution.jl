@@ -3,7 +3,7 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
-<!-- 2018-04-18 Wed 20:10 -->
+<!-- 2018-06-25 Mon 18:53 -->
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Direct Convolution Package</title>
@@ -331,7 +331,7 @@ for the JavaScript code in this tag.
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents">
 <ul>
-<li><a href="#orgabfdcf5">1. Sitemap</a></li>
+<li><a href="#orgeb8b2b2">1. Sitemap</a></li>
 </ul>
 </div>
 </div>
@@ -361,19 +361,18 @@ using direct (no FFT) methods. This can be helpful for short filters.
 </div>
 
 <p>
-<b>Note:</b> if you directly read this doc from GitHub, it is better to
-clone this repo and to browse it locally 
+<b>Note:</b> as it uses a CSS theme this doc is more pleasant to read if you browse it locally:
 </p>
 <div class="org-src-container">
-<pre class="src src-bash">firefox docs/index.html
+<pre class="src src-bash">git clone https://github.com/vincent-picaud/DirectConvolution.jl.git
+firefox DirectConvolution.jl/docs/index.html
 </pre>
 </div>
 
 <p>
-<b>Caveat:</b> this package is still in early development&#x2026; This is the
-first package I publicly release. For documentation it uses
-<code>J4Org.jl</code>, a package I am currently developing to document code using
-Emacs Org-mode.
+<b>Caveat:</b> this package is still in early development&#x2026; For
+documentation it uses <code>J4Org.jl</code>, a package I am currently developing
+to document code using Emacs Org-mode.
 </p>
 
 <p>
@@ -385,8 +384,8 @@ This package is based on my old posts:
 <li><a href="https://pixorblog.wordpress.com/2017/01/06/some-remarks-on-the-usage-of-derivatives-in-spectrum-processing/">some-remarks-on-the-usage-of-derivatives-in-spectrum-processing</a></li>
 </ul>
 
-<div id="outline-container-orgabfdcf5" class="outline-2">
-<h2 id="orgabfdcf5"><span class="section-number-2">1</span> Sitemap</h2>
+<div id="outline-container-orgeb8b2b2" class="outline-2">
+<h2 id="orgeb8b2b2"><span class="section-number-2">1</span> Sitemap</h2>
 <div class="outline-text-2" id="text-1">
 <ul class="org-ul">
 <li><a href="docs.html">Direct Convolution Package</a></li>
@@ -394,9 +393,19 @@ This package is based on my old posts:
 <li><a href="workInProgress.html">Work in Progress</a></li>
 <li>use_cases
 <ul class="org-ul">
-<li><a href="use_cases/getting_started.html">Getting started with directConv functions</a></li>
-<li><a href="use_cases/sg.html">Savitzky-Golay filters</a></li>
-<li><a href="use_cases/udwt.html">Undecimated Wavelet Transform</a></li>
+<li><a href="use_cases/use_cases.html">Use cases</a></li>
+<li>Savitzky-Golay
+<ul class="org-ul">
+<li><a href="use_cases/Savitzky-Golay/Savitzky-Golay.html">Savitzky-Golay filters</a></li>
+</ul></li>
+<li>UDW
+<ul class="org-ul">
+<li><a href="use_cases/UDW/udwt.html">Undecimated Wavelet Transform</a></li>
+</ul></li>
+<li>getting_started
+<ul class="org-ul">
+<li><a href="use_cases/getting_started/getting_started.html">Getting started with directConv functions</a></li>
+</ul></li>
 </ul></li>
 </ul>
 </div>
@@ -404,7 +413,7 @@ This package is based on my old posts:
 </div>
 <div id="postamble" class="status">
 <p class="author">Author: picaud</p>
-<p class="date">Created: 2018-04-18 Wed 20:10</p>
+<p class="date">Created: 2018-06-25 Mon 18:53</p>
 <p class="validation"><a href="http://validator.w3.org/check?uri=referer">Validate</a></p>
 </div>
 </body>

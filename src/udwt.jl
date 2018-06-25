@@ -173,7 +173,7 @@ function udwt(signal::AbstractArray{T,1},
     return udwt_domain
 end
 
-#+UDWT
+# +UDWT
 #
 # Performs an 1D *inverse* undecimated wavelet transform
 #

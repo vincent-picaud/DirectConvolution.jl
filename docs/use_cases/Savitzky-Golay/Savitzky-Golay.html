@@ -3,7 +3,7 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
-<!-- 2018-06-25 Mon 16:49 -->
+<!-- 2018-06-25 Mon 19:27 -->
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Savitzky-Golay filters</title>
@@ -331,23 +331,24 @@ for the JavaScript code in this tag.
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents">
 <ul>
-<li><a href="#orgb9b61de">1. Introduction</a></li>
-<li><a href="#orga727c6c">2. Savitzky-Golay filters</a>
+<li><a href="#org9206faf">1. Introduction</a></li>
+<li><a href="#org00ecb87">2. Savitzky-Golay filters</a>
 <ul>
-<li><a href="#orga172761">2.1. Filter coefficients</a></li>
-<li><a href="#org39322dd">2.2. Smoothing example</a></li>
-<li><a href="#org317aa28">2.3. First order smoothed derivative</a></li>
+<li><a href="#org03fcdbf">2.1. Filter coefficients</a></li>
+<li><a href="#orgc218437">2.2. Smoothing example</a></li>
+<li><a href="#orgb8edaae">2.3. First order smoothed derivative</a></li>
+<li><a href="#orgc4cf85d">2.4. 2D example</a></li>
 </ul>
 </li>
 </ul>
 </div>
 </div>
 
-<div id="outline-container-orgb9b61de" class="outline-2">
-<h2 id="orgb9b61de"><span class="section-number-2">1</span> Introduction</h2>
+<div id="outline-container-org9206faf" class="outline-2">
+<h2 id="org9206faf"><span class="section-number-2">1</span> Introduction</h2>
 <div class="outline-text-2" id="text-1">
 <p>
-In the spectrometry communities, <a href="https://en.wikipedia.org/wiki/Savitzky%E2%80%93Golay_filter">Savitzky-Golay filters</a> were a common
+In the spectrometry community, <a href="https://en.wikipedia.org/wiki/Savitzky%E2%80%93Golay_filter">Savitzky-Golay filters</a> were a common
 approach to smooth signal (before the Wavelets era).
 </p>
 
@@ -357,13 +358,13 @@ Full API documentation is described in the <a href="../../docs.html#ID-b3e33804-
 </div>
 </div>
 
-<div id="outline-container-orga727c6c" class="outline-2">
-<h2 id="orga727c6c"><a id="ID-ed4e3ecc-65ac-4391-ae19-8df759749162"></a><span class="section-number-2">2</span> Savitzky-Golay filters</h2>
+<div id="outline-container-org00ecb87" class="outline-2">
+<h2 id="org00ecb87"><a id="ID-ed4e3ecc-65ac-4391-ae19-8df759749162"></a><span class="section-number-2">2</span> Savitzky-Golay filters</h2>
 <div class="outline-text-2" id="text-2">
 </div>
 
-<div id="outline-container-orga172761" class="outline-3">
-<h3 id="orga172761"><span class="section-number-3">2.1</span> Filter coefficients</h3>
+<div id="outline-container-org03fcdbf" class="outline-3">
+<h3 id="org03fcdbf"><span class="section-number-3">2.1</span> Filter coefficients</h3>
 <div class="outline-text-3" id="text-2-1">
 <p>
 Creates a set of Savitzky-Golay filters. In this example, window width
@@ -408,7 +409,7 @@ p=plot!(range(d2filter),fcoef(d2filter),markershape = <span style="color: #483d8
 
 
 
-<div id="org2cd8918" class="figure">
+<div id="org2c6dee1" class="figure">
 <p><img src="figures/filter_coef.png" alt="filter_coef.png" align="center" width="600px" />
 </p>
 <p><span class="figure-number">Figure 1: </span>Savitzky-Golay filters</p>
@@ -430,8 +431,8 @@ Maximum derivative order is equal to the polynomial order, however there is a de
 </div>
 </div>
 
-<div id="outline-container-org39322dd" class="outline-3">
-<h3 id="org39322dd"><span class="section-number-3">2.2</span> Smoothing example</h3>
+<div id="outline-container-orgc218437" class="outline-3">
+<h3 id="orgc218437"><a id="ID-2de0dd03-d798-4166-bcdc-d360a8977a8a"></a><span class="section-number-3">2.2</span> Smoothing example</h3>
 <div class="outline-text-3" id="text-2-2">
 <p>
 First load a signal 
@@ -467,8 +468,8 @@ p=plot!(signal-smoothed, label=<span style="color: #8b2252;">"residue"</span>)
 </div>
 
 
-<div id="outline-container-org317aa28" class="outline-3">
-<h3 id="org317aa28"><span class="section-number-3">2.3</span> First order smoothed derivative</h3>
+<div id="outline-container-orgb8edaae" class="outline-3">
+<h3 id="orgb8edaae"><span class="section-number-3">2.3</span> First order smoothed derivative</h3>
 <div class="outline-text-3" id="text-2-3">
 <p>
 Smoothed first order derivative example:
@@ -490,11 +491,60 @@ p=plot!(smoothed_d1, label=<span style="color: #8b2252;">"smoothed derivative"</
 </div>
 </div>
 </div>
+
+
+<div id="outline-container-orgc4cf85d" class="outline-3">
+<h3 id="orgc4cf85d"><span class="section-number-3">2.4</span> 2D example</h3>
+<div class="outline-text-3" id="text-2-4">
+<p>
+Signal is:
+</p>
+
+<div class="org-src-container">
+<pre class="src src-julia">signal2D=readdlm(joinpath(DirectConvolution.RootDir,<span style="color: #8b2252;">"data/surface.data"</span>));
+surface(signal2D,label=<span style="color: #8b2252;">"2D signal"</span>);
+</pre>
+</div>
+
+
+<div class="figure">
+<p><img src="./figures/signal2D.png" alt="signal2D.png" />
+</p>
+</div>
+
+<p>
+Following <a href="#orgc218437">Smoothing example</a> we can perform 2D smoothing as follows:
+</p>
+
+<div class="org-src-container">
+<pre class="src src-julia">sg_I = SG_Filter(<span style="color: #228b22;">Float64</span>,halfWidth=5,degree=3);
+sg_J = SG_Filter(<span style="color: #228b22;">Float64</span>,halfWidth=3,degree=3);
+
+smoothed2D = apply_SG_filter2D(signal2D,
+                               sg_I,
+                               sg_J,
+                               derivativeOrder_I=0,
+                               derivativeOrder_J=0)
+
+surface(smoothed2D,label=<span style="color: #8b2252;">"Smoothed 2D signal"</span>);
+</pre>
+</div>
+
+
+<div class="figure">
+<p><img src="./figures/smoothedSignal2D.png" alt="smoothedSignal2D.png" align="center" width="600px" />
+</p>
+</div>
+
+<p>
+<b>Caveat:</b> the function name is <code>apply_SG_filter2D</code> and not <code>apply_SG_filter</code></p>
+</div>
+</div>
 </div>
 </div>
 <div id="postamble" class="status">
 <p class="author">Author: picaud</p>
-<p class="date">Created: 2018-06-25 Mon 16:49</p>
+<p class="date">Created: 2018-06-25 Mon 19:27</p>
 <p class="validation"><a href="http://validator.w3.org/check?uri=referer">Validate</a></p>
 </div>
 </body>

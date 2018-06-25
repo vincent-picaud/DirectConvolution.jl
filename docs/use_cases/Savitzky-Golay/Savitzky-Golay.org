@@ -14,6 +14,7 @@
 
 #+BEGIN_SRC julia :exports none
 using Plots
+pyplot()
 using DirectConvolution
 #+END_SRC
 
@@ -21,7 +22,7 @@ using DirectConvolution
 
 * Introduction
 
-In the spectrometry communities, [[https://en.wikipedia.org/wiki/Savitzky%25E2%2580%2593Golay_filter][Savitzky-Golay filters]] were a common
+In the spectrometry community, [[https://en.wikipedia.org/wiki/Savitzky%25E2%2580%2593Golay_filter][Savitzky-Golay filters]] were a common
 approach to smooth signal (before the Wavelets era).
 
 Full API documentation is described in the [[id:b3e33804-4140-43be-a3eb-7dc02be41876][Savitzky-Golay Filters]] manual section.
@@ -92,6 +93,10 @@ maxDerivativeOrder(sg)
 #+END_EXAMPLE
 
 ** Smoothing example
+   :PROPERTIES:
+   :ID:       2de0dd03-d798-4166-bcdc-d360a8977a8a
+   :END:
+#+INDEX: Savitzky-Golay!1D
 
 First load a signal 
  
@@ -142,3 +147,45 @@ savefig(p,"figures/sg_d1.png")
 [[file:figures/sg_d1.png]]
 
 
+** 2D example 
+#+INDEX: Savitzky-Golay!2D
+
+Signal is:
+
+#+BEGIN_SRC julia :exports code :results output none 
+signal2D=readdlm(joinpath(DirectConvolution.RootDir,"data/surface.data"));
+surface(signal2D,label="2D signal");
+ #+END_SRC
+
+#+ATTR_HTML: :align center :width 600px
+#+BEGIN_SRC julia :results graphics output :file ./figures/signal2D.png :exports results
+savefig("./figures/signal2D.png")
+ #+END_SRC
+
+ #+RESULTS:
+ [[file:./figures/signal2D.png]]
+
+Following [[id:2de0dd03-d798-4166-bcdc-d360a8977a8a][Smoothing example]] we can perform 2D smoothing as follows:
+
+#+BEGIN_SRC julia :exports code :results output none
+sg_I = SG_Filter(Float64,halfWidth=5,degree=3);
+sg_J = SG_Filter(Float64,halfWidth=3,degree=3);
+
+smoothed2D = apply_SG_filter2D(signal2D,
+                               sg_I,
+                               sg_J,
+                               derivativeOrder_I=0,
+                               derivativeOrder_J=0)
+
+surface(smoothed2D,label="Smoothed 2D signal");
+#+END_SRC
+
+#+BEGIN_SRC julia :results graphics output :file ./figures/smoothedSignal2D.png :exports results
+savefig("./figures/smoothedSignal2D.png")
+ #+END_SRC
+
+#+ATTR_HTML: :align center :width 600px
+ #+RESULTS:
+ [[file:./figures/smoothedSignal2D.png]]
+
+*Caveat:* the function name is =apply_SG_filter2D= and not =apply_SG_filter=
