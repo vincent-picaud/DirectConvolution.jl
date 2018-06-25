@@ -23,7 +23,7 @@ using DirectConvolution
 
 ** Signal 
    #+BEGIN_SRC julia :results none
-signal=readcsv("../data/signal_1.csv");
+signal=readcsv(joinpath(DirectConvolution.RootDir,"data/signal_1.csv"));
 signal=signal[:,2];
 plot(signal,label="signal")
    #+END_SRC
