@@ -29,27 +29,27 @@ plot(signal,label="signal")
    #+END_SRC
 
 
-   #+BEGIN_SRC julia :results graphics :file udwt_figures/signal.png :exports results
-savefig("udwt_figures/signal.png")
+   #+BEGIN_SRC julia :results graphics :file figures/signal.png :exports results
+savefig("figures/signal.png")
    #+END_SRC
 
    #+ATTR_HTML: :align center :width 600px
    #+CAPTION: Signal
-   #+RESULTS:
-   [[file:udwt_figures/signal.png]]
+p   #+RESULTS:
+   [[file:figures/signal.png]]
 
 ** Direct transform 
 
    Use some wavelet filter 
 
    #+BEGIN_SRC julia :exports code :results none
-udwt_filter = UDWT_Filter_Starck2{Float64}()
+filter = Filter_Starck2{Float64}()
    #+END_SRC
 
    Direct udwt transform
 
    #+BEGIN_SRC julia :exports code :results none
-m = udwt(signal,udwt_filter,scale=8)
+m = udwt(signal,filter,scale=8)
    #+END_SRC
 
    #+RESULTS:
@@ -63,14 +63,14 @@ plot!(m.V,label="V$(scale(m))");
 plot!(signal,label="signal")
    #+END_SRC
 
-   #+BEGIN_SRC julia :results graphics :file udwt_figures/W.png :exports results
-savefig("udwt_figures/W.png")
+   #+BEGIN_SRC julia :results graphics :file figures/W.png :exports results
+savefig("figures/W.png")
    #+END_SRC
 
    #+ATTR_HTML: :align center :width 600px
    #+CAPTION: Undecimated Wavelet Transform
    #+RESULTS:
-   [[file:udwt_figures/W.png]]
+   [[file:figures/W.png]]
 
 
 ** Inverse transform
@@ -83,6 +83,7 @@ norm(signal-reconst)
    #+END_SRC
 
    #+RESULTS:
+   : 532.1170503445027
 
 ** Smoothing
 
@@ -99,14 +100,14 @@ plot!(signal,label="signal")
    #+RESULTS:
 
 
-   #+BEGIN_SRC julia :results graphics :file udwt_figures/W12_eq_0.png :exports results 
-savefig("udwt_figures/W12_eq_0.png")
+   #+BEGIN_SRC julia :results graphics :file figures/W12_eq_0.png :exports results 
+savefig("figures/W12_eq_0.png")
    #+END_SRC
 
    #+ATTR_HTML: :align center :width 600px
    #+CAPTION: (over) smoothed signal
    #+RESULTS:
-   [[file:udwt_figures/W12_eq_0.png]]
+   [[file:figures/W12_eq_0.png]]
 
 
 
