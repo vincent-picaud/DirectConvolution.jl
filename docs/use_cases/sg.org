@@ -95,7 +95,7 @@ maxDerivativeOrder(sg)
 First load a signal 
  
 #+BEGIN_SRC julia :exports code :results output none 
-signal=readcsv("../data/signal_1.csv");
+signal=readcsv(joinpath(DirectConvolution.RootDir,"data/signal_1.csv"));
 signal=signal[:,2];
  #+END_SRC
 
