@@ -398,15 +398,11 @@ function directConv2D!(α_I::LinearFilter{T},
                        
                        β::AbstractArray{T,2},
                        
-                       ::Type{min_I_BE}=ZeroPaddingBE,
-                       ::Type{max_I_BE}=ZeroPaddingBE,
-                       ::Type{min_J_BE}=ZeroPaddingBE,
-                       ::Type{max_J_BE}=ZeroPaddingBE)::Void where {T <: Number,
-                                                                    min_I_BE <: BoundaryExtension,
-                                                                    max_I_BE <: BoundaryExtension,
-                                                                    min_J_BE <: BoundaryExtension,
-                                                                    max_J_BE <: BoundaryExtension}
-
+                       min_I_BE::Type{<:BoundaryExtension}=ZeroPaddingBE,
+                       max_I_BE::Type{<:BoundaryExtension}=ZeroPaddingBE,
+                       min_J_BE::Type{<:BoundaryExtension}=ZeroPaddingBE,
+                       max_J_BE::Type{<:BoundaryExtension}=ZeroPaddingBE)::Void where {T<:Number}
+    
     γ=similar(β)
 
     (n,m)=size(β)
@@ -468,14 +464,10 @@ function directCrossCorrelation2D(α_I::LinearFilter{T},
                                   
                                   β::AbstractArray{T,2},
                                   
-                                  ::Type{min_I_BE}=ZeroPaddingBE,
-                                  ::Type{max_I_BE}=ZeroPaddingBE,
-                                  ::Type{min_J_BE}=ZeroPaddingBE,
-                                  ::Type{max_J_BE}=ZeroPaddingBE)::Array{T,2} where {T <: Number,
-                                                                                     min_I_BE <: BoundaryExtension,
-                                                                                     max_I_BE <: BoundaryExtension,
-                                                                                     min_J_BE <: BoundaryExtension,
-                                                                                     max_J_BE <: BoundaryExtension}
+                                  min_I_BE::Type{<:BoundaryExtension}=ZeroPaddingBE,
+                                  max_I_BE::Type{<:BoundaryExtension}=ZeroPaddingBE,
+                                  min_J_BE::Type{<:BoundaryExtension}=ZeroPaddingBE,
+                                  max_J_BE::Type{<:BoundaryExtension}=ZeroPaddingBE)::Array{T,2} where {T<:Number}
 
     γ=similar(β)
     γ.=β

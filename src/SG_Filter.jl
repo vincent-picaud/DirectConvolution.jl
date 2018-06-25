@@ -90,12 +90,14 @@ end
 #
 function apply_SG_filter(signal::Array{T,1},
                          sg::SG_Filter{T};
-                         derivativeOrder::Int=0) where {T<:AbstractFloat}
+                         derivativeOrder::Int=0,
+                         left_BE::Type{<:BoundaryExtension}=ConstantBE,
+                         right_BE::Type{<:BoundaryExtension}=ConstantBE) where {T<:AbstractFloat}
     
     return directCrossCorrelation(filter(sg,derivativeOrder=derivativeOrder),
                                   signal,
-                                  ConstantBE,
-                                  ConstantBE)
+                                  left_BE,
+                                  right_BE)
 end
 
 # +SG_Filters
@@ -106,13 +108,17 @@ function apply_SG_filter2D(signal::Array{T,2},
                            sg_I::SG_Filter{T},
                            sg_J::SG_Filter{T};
                            derivativeOrder_I::Int=0,
-                           derivativeOrder_J::Int=0) where {T<:AbstractFloat}
+                           derivativeOrder_J::Int=0,
+                           min_I_BE::Type{<:BoundaryExtension}=ConstantBE,
+                           max_I_BE::Type{<:BoundaryExtension}=ConstantBE,
+                           min_J_BE::Type{<:BoundaryExtension}=ConstantBE,
+                           max_J_BE::Type{<:BoundaryExtension}=ConstantBE) where {T<:AbstractFloat}
     
     return directCrossCorrelation2D(filter(sg_I,derivativeOrder=derivativeOrder_I),
                                     filter(sg_J,derivativeOrder=derivativeOrder_J),
                                     signal,
-                                    ConstantBE,
-                                    ConstantBE,
-                                    ConstantBE,
-                                    ConstantBE)
+                                    min_I_BE,
+                                    max_I_BE,
+                                    min_J_BE,
+                                    max_J_BE)
 end 
