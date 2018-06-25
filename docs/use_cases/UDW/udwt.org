@@ -35,7 +35,7 @@ savefig("figures/signal.png")
 
    #+ATTR_HTML: :align center :width 600px
    #+CAPTION: Signal
-p   #+RESULTS:
+   #+RESULTS:
    [[file:figures/signal.png]]
 
 ** Direct transform 
