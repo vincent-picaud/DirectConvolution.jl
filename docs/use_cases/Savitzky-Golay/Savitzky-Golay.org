@@ -68,15 +68,15 @@ p=plot!(range(d2filter),fcoef(d2filter),markershape = :hexagon,label="d_2 filter
 #+END_SRC
 
 
-#+BEGIN_SRC julia :results graphics output :file sg_figures/filter_coef.png :exports results
-savefig(p,"sg_figures/filter_coef.png")
+#+BEGIN_SRC julia :results graphics output :file figures/filter_coef.png :exports results
+savefig(p,"figures/filter_coef.png")
 #+END_SRC
 
 #+ATTR_HTML: :align center :width 600px
 #+NAME: fig_sg_filter
 #+CAPTION: Savitzky-Golay filters
 #+RESULTS:
-[[file:sg_figures/filter_coef.png]]
+[[file:figures/filter_coef.png]]
 
 
 Maximum derivative order is equal to the polynomial order, however there is a dedicated function:
@@ -109,14 +109,14 @@ p=plot!(smoothed, label="smoothed",linewidth=2)
 p=plot!(signal-smoothed, label="residue")
 #+END_SRC
 
-#+BEGIN_SRC julia :results graphics output :file sg_figures/sg.png :exports results
-savefig(p,"sg_figures/sg.png")
+#+BEGIN_SRC julia :results graphics output :file figures/sg.png :exports results
+savefig(p,"figures/sg.png")
 #+END_SRC
 
 #+ATTR_HTML: :align center :width 600px
 #+CAPTION: Savitzky-Golay smoothing
 #+RESULTS:
-[[file:sg_figures/sg.png]]
+[[file:figures/sg.png]]
 
 
 *Caveat:* to apply Savitzky-Golay one must use
@@ -138,14 +138,14 @@ p=plot(signal,label="signal")
 p=plot!(smoothed_d1, label="smoothed derivative",linewidth=2)
 #+END_SRC
 
-#+BEGIN_SRC julia :results graphics output :file sg_figures/sg_d1.png :exports results
-savefig(p,"sg_figures/sg_d1.png")
+#+BEGIN_SRC julia :results graphics output :file figures/sg_d1.png :exports results
+savefig(p,"figures/sg_d1.png")
 #+END_SRC
 
 #+ATTR_HTML: :align center :width 600px
 #+CAPTION: Savitzky-Golay smoothed first order derivative
 #+RESULTS:
-[[file:sg_figures/sg_d1.png]]
+[[file:figures/sg_d1.png]]
 
 *** =directConv= instead of =directCrossCorrelation=
     :PROPERTIES:
@@ -162,14 +162,14 @@ p=plot(signal,label="signal")
 p=plot!(smoothed_d1_with_conv, label="smoothed derivative (wrong sign)",linewidth=2)
 #+END_SRC
 
-#+BEGIN_SRC julia :results graphics output :file sg_figures/sg_d1_wrongSign.png :exports results
-savefig(p,"sg_figures/sg_d1_wrongSign.png")
+#+BEGIN_SRC julia :results graphics output :file figures/sg_d1_wrongSign.png :exports results
+savefig(p,"figures/sg_d1_wrongSign.png")
 #+END_SRC
 
 #+ATTR_HTML: :align center :width 600px
 #+CAPTION: Savitzky-Golay with =directConv= instead of =directCrossCorrelation= results in wrong sign for odd-order derivatives
 #+RESULTS:
-[[file:sg_figures/sg_d1_wrongSign.png]]
+[[file:figures/sg_d1_wrongSign.png]]
 
 
 ** New API
