@@ -1,6 +1,6 @@
-#+SETUPFILE: ../Setup/setupFile-1.org
+#+SETUPFILE: ../../Setup/setupFile-2.org
 #+TITLE: Savitzky-Golay filters
-#+PROPERTY: header-args:julia :session *session_sgDemo*  :exports code :eval no-export
+#+PROPERTY: header-args:julia :session *session_usecase_sg*  :exports code :eval no-export
 
 #+BEGIN_EXPORT latex
 \definecolor{bg}{rgb}{0.95,0.95,0.95}
@@ -21,16 +21,17 @@ using DirectConvolution
 
 * Introduction
 
+In the spectrometry communities, [[https://en.wikipedia.org/wiki/Savitzky%25E2%2580%2593Golay_filter][Savitzky-Golay filters]] were a common
+approach to smooth signal (before the Wavelets era).
+
 Full API documentation is described in the [[id:b3e33804-4140-43be-a3eb-7dc02be41876][Savitzky-Golay Filters]] manual section.
-
-Details are explained in [[id:ed4e3ecc-65ac-4391-ae19-8df759749162][Savitzky-Golay filters]].
-
-The recommended new API is described in [[id:a58de70d-2871-483e-9c67-e3bec2e4ac94][New API]].
 
 * Savitzky-Golay filters
   :PROPERTIES:
   :ID:       ed4e3ecc-65ac-4391-ae19-8df759749162
   :END:
+
+** Filter coefficients 
 
 Creates a set of Savitzky-Golay filters. In this example, window width
 is $11=2*5+1$ and polynomial degree is $3$.
@@ -102,7 +103,8 @@ signal=signal[:,2];
 then compute a smoothed version
 
 #+BEGIN_SRC julia :exports code :results output none
-smoothed=directCrossCorrelation(d0filter,signal,ConstantBE,ConstantBE)
+sg = SG_Filter(Float64,halfWidth=5,degree=3);
+smoothed=apply_SG_filter(signal,sg,derivativeOrder=0)
 
 p=plot(signal,label="signal")
 p=plot!(smoothed, label="smoothed",linewidth=2)
@@ -119,20 +121,12 @@ savefig(p,"figures/sg.png")
 [[file:figures/sg.png]]
 
 
-*Caveat:* to apply Savitzky-Golay one must use
- =directCrossCorrelation= and not =directConv=, otherwise the filter
- coefficients are taken in the reversed order. This has no impact on
- smoothing because the filters are symmetric, but this would change
- the sign of the smoothed odd-order ($f'$, $f'''$...) derivatives that
- have antisymmetric filter coefficients. You can see Fig. [[fig_sg_filter][Filter
- coefficients]] and see this [[id:dc04c037-ea1f-4abc-8468-8684f66881b6][detailed illustration]].
-
 ** First order smoothed derivative 
 
 Smoothed first order derivative example:
 
 #+BEGIN_SRC julia :exports code :results output none
-smoothed_d1 = directCrossCorrelation(d1filter,signal,ConstantBE,ConstantBE)
+smoothed_d1=apply_SG_filter(signal,sg,derivativeOrder=1)
 
 p=plot(signal,label="signal")
 p=plot!(smoothed_d1, label="smoothed derivative",linewidth=2)
@@ -147,43 +141,4 @@ savefig(p,"figures/sg_d1.png")
 #+RESULTS:
 [[file:figures/sg_d1.png]]
 
-*** =directConv= instead of =directCrossCorrelation=
-    :PROPERTIES:
-    :ID:       dc04c037-ea1f-4abc-8468-8684f66881b6
-    :END:
-
-This is what happens if we use =directConv= instead of
-=directCrossCorrelation=, $f'$ has the wrong sign.
-
-#+BEGIN_SRC julia :exports code :results output none
-smoothed_d1_with_conv = directConv(d1filter,signal,ConstantBE,ConstantBE)
-
-p=plot(signal,label="signal")
-p=plot!(smoothed_d1_with_conv, label="smoothed derivative (wrong sign)",linewidth=2)
-#+END_SRC
-
-#+BEGIN_SRC julia :results graphics output :file figures/sg_d1_wrongSign.png :exports results
-savefig(p,"figures/sg_d1_wrongSign.png")
-#+END_SRC
-
-#+ATTR_HTML: :align center :width 600px
-#+CAPTION: Savitzky-Golay with =directConv= instead of =directCrossCorrelation= results in wrong sign for odd-order derivatives
-#+RESULTS:
-[[file:figures/sg_d1_wrongSign.png]]
-
-
-** New API
-   :PROPERTIES:
-   :ID:       a58de70d-2871-483e-9c67-e3bec2e4ac94
-   :END:
-
-To make SG filter usage easier we have introduced dedicated
-=apply_SG_filter= and =apply_SG_filter2D= functions:
-
-#+BEGIN_SRC julia :exports code :results output none :exports both
-sg = SG_Filter(Float64,halfWidth=5,degree=3);
-smoothed_1=apply_SG_filter(signal,sg,derivativeOrder=1);                                       # new API
-smoothed_2=directCrossCorrelation(filter(sg,derivativeOrder=1),signal,ConstantBE,ConstantBE);  # old approach
-@assert isapprox(smoothed_1,smoothed_2)
-#+END_SRC
 
