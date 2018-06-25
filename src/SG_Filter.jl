@@ -88,6 +88,9 @@ end
 #
 # Applies SG filter to 1D signal
 #
+# *Returns:*
+# - the smoothed signal
+#
 function apply_SG_filter(signal::Array{T,1},
                          sg::SG_Filter{T};
                          derivativeOrder::Int=0,
@@ -103,6 +106,9 @@ end
 # +SG_Filters
 #
 # Applies SG filter to 2D signal
+#
+# *Returns:*
+# - the smoothed signal
 #
 function apply_SG_filter2D(signal::Array{T,2},
                            sg_I::SG_Filter{T},
