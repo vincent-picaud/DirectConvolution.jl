@@ -1,6 +1,6 @@
-#+SETUPFILE: ../Setup/setupFile-1.org
+#+SETUPFILE: ../../Setup/setupFile-2.org
 #+TITLE: Undecimated Wavelet Transform
-#+PROPERTY: header-args:julia :session *directConvolution_session*  :exports code :eval no-export
+#+PROPERTY: header-args:julia :session *session_usecases_udwt*  :exports code :eval no-export
 
 #+BEGIN_EXPORT latex
 \definecolor{bg}{rgb}{0.95,0.95,0.95}
