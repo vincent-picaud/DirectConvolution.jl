@@ -3,10 +3,10 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
-<!-- 2018-06-21 Thu 12:48 -->
+<!-- 2018-06-25 Mon 17:15 -->
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>Savitzky-Golay filters</title>
+<title>Getting started with directConv functions</title>
 <meta name="generator" content="Org mode" />
 <meta name="author" content="picaud" />
 <style type="text/css">
@@ -244,7 +244,7 @@ for the JavaScript code in this tag.
 
 <!--/*--><![CDATA[/*><!--*/
 org_html_manager.set("TOC_DEPTH", "3");
-org_html_manager.set("LINK_HOME", "../index.html");
+org_html_manager.set("LINK_HOME", "../../index.html");
 org_html_manager.set("LINK_UP", "");
 org_html_manager.set("LOCAL_TOC", "1");
 org_html_manager.set("VIEW_BUTTONS", "0");
@@ -326,220 +326,371 @@ for the JavaScript code in this tag.
 </head>
 <body>
 <div id="content">
-<h1 class="title">Savitzky-Golay filters</h1>
+<h1 class="title">Getting started with directConv functions</h1>
 <div id="table-of-contents">
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents">
 <ul>
-<li><a href="#org57d5fa6">1. Introduction</a></li>
-<li><a href="#orgf384be1">2. Savitzky-Golay filters</a>
+<li><a href="#orgc21b860">1. Comparison with Julia native <code>conv()</code> function</a></li>
+<li><a href="#orga85409e">2. Performance</a></li>
+<li><a href="#org1d15d75">3. Versatility</a>
 <ul>
-<li><a href="#org0b3510b">2.1. Smoothing example</a></li>
-<li><a href="#org6ca2666">2.2. First order smoothed derivative</a>
-<ul>
-<li><a href="#org4ce38b1">2.2.1. <code>directConv</code> instead of <code>directCrossCorrelation</code></a></li>
-</ul>
-</li>
-<li><a href="#orgf80fb2f">2.3. New API</a></li>
+<li><a href="#org9a9199b">3.1. Parallel computation</a></li>
+<li><a href="#orgf94d502">3.2. Boundary extensions</a></li>
+<li><a href="#org279a093">3.3. Adjoint</a></li>
 </ul>
 </li>
 </ul>
 </div>
 </div>
 
-<div id="outline-container-org57d5fa6" class="outline-2">
-<h2 id="org57d5fa6"><span class="section-number-2">1</span> Introduction</h2>
+<div id="outline-container-orgc21b860" class="outline-2">
+<h2 id="orgc21b860"><span class="section-number-2">1</span> Comparison with Julia native <code>conv()</code> function</h2>
 <div class="outline-text-2" id="text-1">
 <p>
-Full API documentation is described in the <a href="../docs.html#ID-b3e33804-4140-43be-a3eb-7dc02be41876">Savitzky-Golay Filters</a> manual section.
+With Julia native <code>conv</code> function
+</p>
+
+<div class="org-src-container">
+<pre class="src src-julia">&#945;=rand(5);
+&#946;=rand(10);
+&#947;_ftt=conv(&#945;,&#946;)
+</pre>
+</div>
+
+<div class="org-src-container">
+<pre class="src src-julia">14-element <span style="color: #228b22;">Array</span>{<span style="color: #228b22;">Float64</span>,1}:
+ 0.549805 
+ 0.842662 
+ 0.467419 
+ 0.814479 
+ 1.10424  
+ 0.898765 
+ 1.04313  
+ 1.33577  
+ 1.3778   
+ 1.51315  
+ 1.11486  
+ 0.489911 
+ 0.307805 
+ 0.0806651
+</pre>
+</div>
+
+<p>
+<code>conv</code> function returns an array of size \(|\alpha|+|\beta|-1\), here
+</p>
+
+<div class="org-src-container">
+<pre class="src src-julia">14
+</pre>
+</div>
+
+<p>
+With <code>DirectConvolution.jl</code> one must first define a filter with <code>offset=0</code>, then use the <code>directConv</code> function:
+</p>
+
+<div class="org-src-container">
+<pre class="src src-julia">&#945;_filter=LinearFilter(&#945;,0)
+&#947;_direct=directConv(&#945;_filter,&#946;)
+</pre>
+</div>
+
+<div class="org-src-container">
+<pre class="src src-julia">DirectConvolution.LinearFilter_Default{<span style="color: #228b22;">Float64</span>,5}([0.68179, 0.845972, 0.269956, 0.308282, 0.105164], 0)
+10-element <span style="color: #228b22;">Array</span>{<span style="color: #228b22;">Float64</span>,1}:
+ 0.549805
+ 0.842662
+ 0.467419
+ 0.814479
+ 1.10424 
+ 0.898765
+ 1.04313 
+ 1.33577 
+ 1.3778  
+ 1.51315
+</pre>
+</div>
+
+<p>
+A difference with the native Julia <code>conv</code> function is that the
+returned signal as the same size as the initial \(\beta\) signal.
 </p>
 
 <p>
-Details are explained in <a href="#orgf384be1">Savitzky-Golay filters</a>.
+Let's use first check that the results are identical (for their common parts):
 </p>
 
-<p>
-The recommended new API is described in <a href="#orgf80fb2f">New API</a>.
-</p>
+<div class="org-src-container">
+<pre class="src src-julia">norm(&#947;_ftt[1:endof(&#947;_direct)]-&#947;_direct)
+</pre>
+</div>
+
+<div class="org-src-container">
+<pre class="src src-julia">7.28021923224409e-16
+</pre>
+</div>
 </div>
 </div>
 
-<div id="outline-container-orgf384be1" class="outline-2">
-<h2 id="orgf384be1"><a id="ID-ed4e3ecc-65ac-4391-ae19-8df759749162"></a><span class="section-number-2">2</span> Savitzky-Golay filters</h2>
+<div id="outline-container-orga85409e" class="outline-2">
+<h2 id="orga85409e"><span class="section-number-2">2</span> Performance</h2>
 <div class="outline-text-2" id="text-2">
 <p>
-Creates a set of Savitzky-Golay filters. In this example, window width
-is \(11=2*5+1\) and polynomial degree is \(3\).
+The following is not a complete benchmark, but gives some
+ideas. Please also note that for the moment <code>directConv</code> is a pure
+Julia, straightforward implementation.
+</p>
+
+<p>
+With the given α, β and γ we get:
 </p>
 
 <div class="org-src-container">
-<pre class="src src-julia">sg = SG_Filter(<span style="color: #228b22;">Float64</span>,halfWidth=5,degree=3);
+<pre class="src src-julia">r_ftt=<span style="color: #483d8b;">@benchmark</span>(conv(&#945;,&#946;))
+</pre>
+</div>
+
+<div class="org-src-container">
+<pre class="src src-julia">BenchmarkTools.Trial: 
+  memory estimate:  9.17 KiB
+  allocs estimate:  132
+  --------------
+  minimum time:     39.391 &#956;s (0.00% GC)
+  median time:      45.553 &#956;s (0.00% GC)
+  mean time:        55.168 &#956;s (10.56% GC)
+  maximum time:     25.181 ms (69.60% GC)
+  --------------
+  samples:          10000
+  evals/sample:     1
+</pre>
+</div>
+
+<div class="org-src-container">
+<pre class="src src-julia">r_direct=<span style="color: #483d8b;">@benchmark</span>(directConv(&#945;_filter,&#946;))
+</pre>
+</div>
+
+<div class="org-src-container">
+<pre class="src src-julia">BenchmarkTools.Trial: 
+  memory estimate:  432 bytes
+  allocs estimate:  5
+  --------------
+  minimum time:     564.816 ns (0.00% GC)
+  median time:      595.978 ns (0.00% GC)
+  mean time:        759.396 ns (17.68% GC)
+  maximum time:     40.959 &#956;s (97.45% GC)
+  --------------
+  samples:          10000
+  evals/sample:     185
 </pre>
 </div>
 
 <p>
-This can be checked with
+For these short filters we have a
 </p>
 
 <div class="org-src-container">
-<pre class="src src-julia">length(sg)
-polynomialOrder(sg)
+<pre class="src src-julia">median(r_ftt.times)/median(r_direct.times)
 </pre>
 </div>
-
-<pre class="example">
-11
-3
-</pre>
-
-<p>
-Savitzky-Golay filters can be used to smooth or to compute smoothed
-derivatives of a signal. The associated filter is obtained thanks to
-the <code>filter</code> function.
-</p>
 
 <div class="org-src-container">
-<pre class="src src-julia">d0filter=filter(sg,derivativeOrder=0);
-d1filter=filter(sg,derivativeOrder=1);
-d2filter=filter(sg,derivativeOrder=2);
-p=plot(range(d0filter),fcoef(d0filter), markershape = <span style="color: #483d8b;">:hexagon</span>,label=<span style="color: #8b2252;">"smoothing filter"</span>)
-p=plot!(range(d1filter),fcoef(d1filter),markershape = <span style="color: #483d8b;">:hexagon</span>,label=<span style="color: #8b2252;">"d_1 filter"</span>)
-p=plot!(range(d2filter),fcoef(d2filter),markershape = <span style="color: #483d8b;">:hexagon</span>,label=<span style="color: #8b2252;">"d_2 filter"</span>)
-</pre>
-</div>
-
-
-
-<div id="orgcd977ec" class="figure">
-<p><img src="sg_figures/filter_coef.png" alt="filter_coef.png" align="center" width="600px" />
-</p>
-<p><span class="figure-number">Figure 1: </span>Savitzky-Golay filters</p>
-</div>
-
-
-<p>
-Maximum derivative order is equal to the polynomial order, however there is a dedicated function:
-</p>
-
-<div class="org-src-container">
-<pre class="src src-julia">maxDerivativeOrder(sg)
-</pre>
-</div>
-
-<pre class="example">
-3
-</pre>
-</div>
-
-<div id="outline-container-org0b3510b" class="outline-3">
-<h3 id="org0b3510b"><span class="section-number-3">2.1</span> Smoothing example</h3>
-<div class="outline-text-3" id="text-2-1">
-<p>
-First load a signal 
-</p>
-
-<div class="org-src-container">
-<pre class="src src-julia">signal=readcsv(<span style="color: #8b2252;">"../data/signal_1.csv"</span>);
-signal=signal[:,2];
+<pre class="src src-julia">76.43398091713829
 </pre>
 </div>
 
 <p>
-then compute a smoothed version
+speed up.
+</p>
+
+<p>
+For a more realistic size for \(\beta\), we still get this speedup:
 </p>
 
 <div class="org-src-container">
-<pre class="src src-julia">smoothed=directCrossCorrelation(d0filter,signal,ConstantBE,ConstantBE)
+<pre class="src src-julia">&#946;=rand(1000);
+r_ftt=<span style="color: #483d8b;">@benchmark</span>(conv(&#945;,&#946;));
+r_direct=<span style="color: #483d8b;">@benchmark</span>(directConv(&#945;_filter,&#946;));
+median(r_ftt.times)/median(r_direct.times)
+</pre>
+</div>
 
-p=plot(signal,label=<span style="color: #8b2252;">"signal"</span>)
-p=plot!(smoothed, label=<span style="color: #8b2252;">"smoothed"</span>,linewidth=2)
-p=plot!(signal-smoothed, label=<span style="color: #8b2252;">"residue"</span>)
+<div class="org-src-container">
+<pre class="src src-julia">25.099794976934906
+</pre>
+</div>
+
+<p>
+Typical size for \(\alpha\) is around \(5\) for applications like wavelets
+transform. If we increase this size the direct approach is less and
+less competitive compared to the FFT approach. However on my computer
+it is still advantageous to use it for an \(\alpha\) size of \(40\).
+</p>
+
+<div class="org-src-container">
+<pre class="src src-julia">&#945;=rand(40);
+&#945;_filter=LinearFilter(&#945;,0);
+r_ftt=<span style="color: #483d8b;">@benchmark</span>(conv(&#945;,&#946;));
+r_direct=<span style="color: #483d8b;">@benchmark</span>(directConv(&#945;_filter,&#946;));
+median(r_ftt.times)/median(r_direct.times)
+</pre>
+</div>
+
+<div class="org-src-container">
+<pre class="src src-julia">2.624813162970106
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-org1d15d75" class="outline-2">
+<h2 id="org1d15d75"><span class="section-number-2">3</span> Versatility</h2>
+<div class="outline-text-2" id="text-3">
+</div>
+<div id="outline-container-org9a9199b" class="outline-3">
+<h3 id="org9a9199b"><span class="section-number-3">3.1</span> Parallel computation</h3>
+<div class="outline-text-3" id="text-3-1">
+<p>
+The <code>directConv</code> functions can be used in various ways. For instance we can compute a convolution by splitting destination
+</p>
+
+<div class="org-src-container">
+<pre class="src src-julia">&#945;=LinearFilter(rand(10),0);
+&#946;=rand(100);
+
+&#947;_ref = directConv(&#945;,&#946;);        <span style="color: #b22222;"># </span><span style="color: #b22222;">compute all in one call</span>
+
+&#947; = <span style="color: #228b22;">Vector</span>{<span style="color: #228b22;">Float64</span>}(length(&#946;));
+directConv!(&#945;,-1,&#946;,&#947;,1:25);     <span style="color: #b22222;"># </span><span style="color: #b22222;">independant computations 1:25</span>
+directConv!(&#945;,-1,&#946;,&#947;,25:75);    <span style="color: #b22222;">#                         </span><span style="color: #b22222;">25:75      </span>
+directConv!(&#945;,-1,&#946;,&#947;,75:100);   <span style="color: #b22222;">#                         </span><span style="color: #b22222;">75:100 </span>
+
+norm(&#947;_ref-&#947;) <span style="color: #b22222;"># </span><span style="color: #b22222;">check that results are identical</span>
+</pre>
+</div>
+
+<div class="org-src-container">
+<pre class="src src-julia">0.0
+</pre>
+</div>
+
+<p>
+This can be used for parallel computations. (no done yet) 
+</p>
+</div>
+</div>
+
+<div id="outline-container-orgf94d502" class="outline-3">
+<h3 id="orgf94d502"><span class="section-number-3">3.2</span> Boundary extensions</h3>
+<div class="outline-text-3" id="text-3-2">
+<p>
+Boundary extensions are rigorously implemented and are free of all
+limitations. For instance you can even use a filter α bigger than the
+signal β, with mirror symmetry on left and periodic extension of the
+right:
+</p>
+
+<div class="org-src-container">
+<pre class="src src-julia">&#945;=LinearFilter([0,0,0,1,0,0,0],-6); <span style="color: #b22222;"># </span><span style="color: #b22222;">with offset=-6, mimic a filter of support 6:12</span>
+&#946;=[1,2,3,4];
+&#947; = zeros(<span style="color: #228b22;">Int</span>,20);
+directConv!(&#945;,-1,&#946;,&#947;,1:20,MirrorBE,PeriodicBE); 
+plot(1:20, &#947;, markershape = <span style="color: #483d8b;">:hexagon</span>)
 </pre>
 </div>
 
 
 <div class="figure">
-<p><img src="sg_figures/sg.png" alt="sg.png" align="center" width="600px" />
-</p>
-<p><span class="figure-number">Figure 2: </span>Savitzky-Golay smoothing</p>
-</div>
-
-
-<p>
-<b>Caveat:</b> to apply Savitzky-Golay one must use
- <code>directCrossCorrelation</code> and not <code>directConv</code>, otherwise the filter
- coefficients are taken in the reversed order. This has no impact on
- smoothing because the filters are symmetric, but this would change
- the sign of the smoothed odd-order (\(f'\), \(f'''\)&#x2026;) derivatives that
- have antisymmetric filter coefficients. You can see Fig. <a href="#orgcd977ec">Filter
- coefficients</a> and see this <a href="#org4ce38b1">detailed illustration</a>.
+<p><img src="figures/be.png" alt="be.png" align="center" width="600px" />
 </p>
 </div>
-</div>
 
-<div id="outline-container-org6ca2666" class="outline-3">
-<h3 id="org6ca2666"><span class="section-number-3">2.2</span> First order smoothed derivative</h3>
-<div class="outline-text-3" id="text-2-2">
-<p>
-Smoothed first order derivative example:
+<p align="center" width="600px">
+With zero padding we can also check commutativity \(\alpha \circledast \beta = \beta \circledast \alpha\):
 </p>
 
 <div class="org-src-container">
-<pre class="src src-julia">smoothed_d1 = directCrossCorrelation(d1filter,signal,ConstantBE,ConstantBE)
-
-p=plot(signal,label=<span style="color: #8b2252;">"signal"</span>)
-p=plot!(smoothed_d1, label=<span style="color: #8b2252;">"smoothed derivative"</span>,linewidth=2)
+<pre class="src src-julia">&#945;=rand(4);
+&#946;=rand(6);
+t&#945;&#946;=zeros(6);
+directConv!(LinearFilter(&#945;,0),-1,&#946;,t&#945;&#946;,1:6);
+t&#946;&#945;=zeros(6);
+directConv!(LinearFilter(&#946;,0),-1,&#945;,t&#946;&#945;,1:6);
+norm(t&#945;&#946;-t&#946;&#945;)
 </pre>
 </div>
 
+<div class="org-src-container">
+<pre class="src src-julia">ERROR: MethodError: no method matching start(::<span style="color: #228b22;">Plots</span>.Plot{Plots.GRBackend})
+Closest candidates are:
+  start(!Matched::<span style="color: #228b22;">SimpleVector</span>) at essentials.jl:258
+  start(!Matched::<span style="color: #228b22;">Base</span>.MethodList) at reflection.jl:560
+  start(!Matched::<span style="color: #228b22;">ExponentialBackOff</span>) at error.jl:107
+  ...
+Stacktrace:
+ [1] <span style="color: #b22222;">#</span><span style="color: #b22222;">writedlm#18(::Array{Any,1}, ::Function, ::IOStream, ::Plots.Plot{Plots.GRBackend}, ::Char) at ./datafmt.jl:673</span>
+ [2] <span style="color: #b22222;">#</span><span style="color: #b22222;">20 at ./datafmt.jl:683 [inlined]</span>
+ [3] open(::<span style="color: #228b22;">Base</span>.DataFmt.<span style="color: #b22222;">##</span><span style="color: #b22222;">20#21{Array{Any,1},Plots.Plot{Plots.GRBackend},Char}, ::String, ::String) at ./iostream.jl:152</span>
+ [4] <span style="color: #b22222;">#</span><span style="color: #b22222;">writecsv#23(::Array{Any,1}, ::Function, ::String, ::Plots.Plot{Plots.GRBackend}) at ./datafmt.jl:705</span>
+ [5] writecsv(::<span style="color: #228b22;">String</span>, ::<span style="color: #228b22;">Plots</span>.Plot{Plots.GRBackend}) at ./datafmt.jl:705
 
-<div class="figure">
-<p><img src="sg_figures/sg_d1.png" alt="sg_d1.png" align="center" width="600px" />
-</p>
-<p><span class="figure-number">Figure 3: </span>Savitzky-Golay smoothed first order derivative</p>
+ERROR: MethodError: no method matching start(::<span style="color: #228b22;">Void</span>)
+Closest candidates are:
+  start(!Matched::<span style="color: #228b22;">SimpleVector</span>) at essentials.jl:258
+  start(!Matched::<span style="color: #228b22;">Base</span>.MethodList) at reflection.jl:560
+  start(!Matched::<span style="color: #228b22;">ExponentialBackOff</span>) at error.jl:107
+  ...
+Stacktrace:
+ [1] <span style="color: #b22222;">#</span><span style="color: #b22222;">writedlm#18(::Array{Any,1}, ::Function, ::IOStream, ::Void, ::Char) at ./datafmt.jl:673</span>
+ [2] <span style="color: #b22222;">#</span><span style="color: #b22222;">20 at ./datafmt.jl:683 [inlined]</span>
+ [3] open(::<span style="color: #228b22;">Base</span>.DataFmt.<span style="color: #b22222;">##</span><span style="color: #b22222;">20#21{Array{Any,1},Void,Char}, ::String, ::String) at ./iostream.jl:152</span>
+ [4] <span style="color: #b22222;">#</span><span style="color: #b22222;">writecsv#23(::Array{Any,1}, ::Function, ::String, ::Void) at ./datafmt.jl:705</span>
+ [5] writecsv(::<span style="color: #228b22;">String</span>, ::<span style="color: #228b22;">Void</span>) at ./datafmt.jl:705
+
+
+
+
+
+
+1.1102230246251565e-16
+</pre>
 </div>
 </div>
+</div>
 
-<div id="outline-container-org4ce38b1" class="outline-4">
-<h4 id="org4ce38b1"><a id="ID-dc04c037-ea1f-4abc-8468-8684f66881b6"></a><span class="section-number-4">2.2.1</span> <code>directConv</code> instead of <code>directCrossCorrelation</code></h4>
-<div class="outline-text-4" id="text-2-2-1">
+<div id="outline-container-org279a093" class="outline-3">
+<h3 id="org279a093"><span class="section-number-3">3.3</span> Adjoint</h3>
+<div class="outline-text-3" id="text-3-3">
 <p>
-This is what happens if we use <code>directConv</code> instead of
-<code>directCrossCorrelation</code>, \(f'\) has the wrong sign.
+From
+\[
+\gamma[k]=\sum\limits_{i\in\Omega^\alpha}\alpha[i]\beta[k+\lambda i],\text{ with }\lambda\in\mathbb{Z}^*
+\]
+with free \(\lambda\) we can compute convolution (\(\lambda=-1\)) cross-correlation (\(\lambda=+1\)) and more generally adjoint operator:
+\[
+\forall \lambda\in\mathbb{Z}^*,\ \langle \alpha\bigodot\limits_{\lambda}v ,w \rangle_E = 
+\langle v , \alpha\bigodot\limits_{-\lambda} w \rangle_F
+\]
+</p>
+
+<p>
+This relation only holds true for zero padding and periodic boundary extension:
 </p>
 
 <div class="org-src-container">
-<pre class="src src-julia">smoothed_d1_with_conv = directConv(d1filter,signal,ConstantBE,ConstantBE)
+<pre class="src src-julia">&#945;=LinearFilter(rand(5));
+v=rand(8);
+w=rand(8);
 
-p=plot(signal,label=<span style="color: #8b2252;">"signal"</span>)
-p=plot!(smoothed_d1_with_conv, label=<span style="color: #8b2252;">"smoothed derivative (wrong sign)"</span>,linewidth=2)
+dot(directConv(&#945;,-3,v),w) - dot(directConv(&#945;,+3,w),v)
+dot(directConv(&#945;,-3,v,PeriodicBE,PeriodicBE),w) - dot(directConv(&#945;,+3,w,PeriodicBE,PeriodicBE),v)
 </pre>
 </div>
 
-
-<div class="figure">
-<p><img src="sg_figures/sg_d1_wrongSign.png" alt="sg_d1_wrongSign.png" align="center" width="600px" />
-</p>
-<p><span class="figure-number">Figure 4: </span>Savitzky-Golay with <code>directConv</code> instead of <code>directCrossCorrelation</code> results in wrong sign for odd-order derivatives</p>
-</div>
-</div>
-</div>
-</div>
-
-
-<div id="outline-container-orgf80fb2f" class="outline-3">
-<h3 id="orgf80fb2f"><a id="ID-a58de70d-2871-483e-9c67-e3bec2e4ac94"></a><span class="section-number-3">2.3</span> New API</h3>
-<div class="outline-text-3" id="text-2-3">
-<p>
-To make SG filter usage easier we have introduced dedicated
-<code>apply_SG_filter</code> and <code>apply_SG_filter2D</code> functions:
-</p>
-
 <div class="org-src-container">
-<pre class="src src-julia">sg = SG_Filter(<span style="color: #228b22;">Float64</span>,halfWidth=5,degree=3);
-smoothed_1=apply_SG_filter(signal,sg,derivativeOrder=1);                                       <span style="color: #b22222;"># </span><span style="color: #b22222;">new API</span>
-smoothed_2=directCrossCorrelation(filter(sg,derivativeOrder=1),signal,ConstantBE,ConstantBE);  <span style="color: #b22222;"># </span><span style="color: #b22222;">old approach</span>
-<span style="color: #483d8b;">@assert</span> isapprox(smoothed_1,smoothed_2)
+<pre class="src src-julia">0.0
+0.0
 </pre>
 </div>
 </div>
@@ -548,7 +699,7 @@ smoothed_2=directCrossCorrelation(filter(sg,derivativeOrder=1),signal,ConstantBE
 </div>
 <div id="postamble" class="status">
 <p class="author">Author: picaud</p>
-<p class="date">Created: 2018-06-21 Thu 12:48</p>
+<p class="date">Created: 2018-06-25 Mon 17:15</p>
 <p class="validation"><a href="http://validator.w3.org/check?uri=referer">Validate</a></p>
 </div>
 </body>
