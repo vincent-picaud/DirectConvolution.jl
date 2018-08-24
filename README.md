@@ -12,7 +12,7 @@ Currently supported features:
 - Savitzky-Golay filters
 - Undecimated Wavelet Transform
 
-![udwt](https://github.com/vincent-picaud/DirectConvolution.jl/blob/master/docs/use_cases/udwt_figures/W.png)
+![udwt](https://github.com/vincent-picaud/DirectConvolution.jl/blob/master/docs/use_cases/UDW/figures/W.png)
 
 You can read documentation directly
 [here](https://vincent-picaud.github.io/DirectConvolution.jl/index.html),

@@ -1,20 +1,28 @@
-## Documentation: http://docs.travis-ci.com/user/languages/julia/
+##################################################################
+# Documentation: http://docs.travis-ci.com/user/languages/julia/ #
+##################################################################
+
 language: julia
+
 os:
   - linux
 #  - osx
+
 julia:
   - 0.6
-#  - nightly
+  - 1.0
+  - nightly
+
 notifications:
   email: false
+
 git:
   depth: 99999999
 
 ## uncomment the following lines to allow failures on nightly julia
 ## (tests will run but not make your overall status red)
 #matrix:
-#  allow_failures:
+# allow_failures:
 #  - julia: nightly
 
 ## uncomment and modify the following lines to manually install system packages
@@ -28,14 +36,25 @@ git:
 # homebrew for mac
 #  - if [ $TRAVIS_OS_NAME = osx ]; then brew install gcc; fi
 
-## uncomment the following lines to override the default test script
+###############
+# Test Script #
+###############
+
 script:
   - julia -e 'Pkg.clone(pwd()); Pkg.build("DirectConvolution"); Pkg.test("DirectConvolution"; coverage=true)'
+
+#################
+# After Success #
+#################
+
 after_success:
+#
+# Push coverage results to Codecov
+#
+  - julia -e 'cd(Pkg.dir("DirectConvolution")); Pkg.add("Coverage"); using Coverage; Codecov.submit(Codecov.process_folder())'
+
   # push coverage results to Coveralls
   # - julia -e 'cd(Pkg.dir("DirectConvolution")); Pkg.add("Coverage"); using Coverage; Coveralls.submit(Coveralls.process_folder())'
-  # push coverage results to Codecov
-  - julia -e 'cd(Pkg.dir("DirectConvolution")); Pkg.add("Coverage"); using Coverage; Codecov.submit(Codecov.process_folder())'
   # Documenter
   #  - julia -e 'Pkg.add("Documenter")'
   #  - julia -e 'cd(Pkg.dir("DirectConvolution")); include(joinpath("docs", "make.jl"))'
