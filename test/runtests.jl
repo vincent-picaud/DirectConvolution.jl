@@ -1,5 +1,6 @@
 using DirectConvolution
 using Test
+using LinearAlgebra
 
 @testset "DirectConvolution" begin
 

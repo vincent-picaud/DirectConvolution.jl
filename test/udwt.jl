@@ -1,6 +1,6 @@
 @testset "Haar" begin
 
-    const haar_udwt = UDWT_Filter_Haar{Float64}()
+    haar_udwt = UDWT_Filter_Haar{Float64}()
 
     @test ϕ_filter(haar_udwt) ≈ [1/2, 1/2]
     @test tildeϕ_filter(haar_udwt) ≈ [1/2, 1/2]
@@ -12,14 +12,14 @@ end
 
 @testset "Starck2" begin
 
-    const starck2_udwt = UDWT_Filter_Starck2{Float64}()
+    starck2_udwt = UDWT_Filter_Starck2{Float64}()
 
     @test fcoef(tildeϕ_filter(starck2_udwt)) ≈ [1]
 end
 
 @testset "UDWT Transform" begin
 
-    const signal = rand(20)
+    signal = rand(20)
 
     for filter in [UDWT_Filter_Haar{Float64}()
                    UDWT_Filter_Starck2{Float64}()]

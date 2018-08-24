@@ -12,7 +12,7 @@ function _Vandermonde(T::DataType=Float64;halfWidth::Int=5,degree::Int=2)::Array
     n = degree+1
     m = length(x)
     
-    V = Array{T}(m, n)
+    V = Array{T}(undef,m, n)
     
     for i = 1:m
         V[i,1] = T(1)
@@ -69,6 +69,19 @@ function SG_Filter(T::DataType=Float64;halfWidth::Int=5,degree::Int=2)::SG_Filte
     
     V=_Vandermonde(T,halfWidth=halfWidth,degree=degree)
     Q,R=qr(V)
+    # breaking change in Julia V1.0,
+    # see https://github.com/JuliaLang/julia/issues/27397
+    #
+    # before Q was a "plain" matrix, now stored in compact form
+    #
+    # SG=R\Q'
+    #
+    # must be replaced by
+    #
+    # Q=Q*Matrix(I, size(V))
+    # SG=R\Q'
+    #
+    Q=Q*Matrix(I, size(V))
     SG=R\Q'
 
     n_filter,n_coef = size(SG)

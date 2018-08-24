@@ -40,8 +40,8 @@ struct MirrorBE <: BoundaryExtension end
 #
 function scale(λ::Int,Ω::UnitRange{Int})
     ifelse(λ>0,
-           UnitRange(λ*start(Ω),λ*last(Ω)),
-           UnitRange(λ*last(Ω),λ*start(Ω)))
+           UnitRange(λ*first(Ω),λ*last(Ω)),
+           UnitRange(λ*last(Ω),λ*first(Ω)))
 end
 
 #+BoundaryExtension,Internal
@@ -62,7 +62,7 @@ function compute_Ωγ1(Ωα::UnitRange{Int},
     
     λΩα = scale(λ,Ωα)
 
-    UnitRange(start(Ωβ)-start(λΩα),
+    UnitRange(first(Ωβ)-first(λΩα),
               last(Ωβ)-last(λΩα))
 end
 
@@ -81,8 +81,8 @@ end
 # $\in A$ but on the left side of $B$) is *empty*.
 function relativeComplement_left(A::UnitRange{Int},
                                  B::UnitRange{Int})
-    UnitRange(start(A),
-              min(last(A),start(B)-1))
+    UnitRange(first(A),
+              min(last(A),first(B)-1))
 end
 
 #+BoundaryExtension,Internal
@@ -100,7 +100,7 @@ end
 # $\in A$ but on the right side of $B$) is $\{6,7,8,9,10\}$
 function relativeComplement_right(A::UnitRange{Int},
                                   B::UnitRange{Int})
-    UnitRange(max(start(A),last(B)+1),
+    UnitRange(max(first(A),last(B)+1),
               last(A))
 end
 
@@ -184,12 +184,12 @@ function directConv!(tilde_α::AbstractArray{T,1},
                      Ωγ::UnitRange{Int},
                      ::Type{LeftBE}=ZeroPaddingBE,
                      ::Type{RightBE}=ZeroPaddingBE;
-                     accumulate::Bool=false)::Void where {T <: Number,
+                     accumulate::Bool=false)::Nothing where {T <: Number,
                                                           LeftBE <: BoundaryExtension,
                                                           RightBE <: BoundaryExtension}
     # Sanity check
     @assert λ!=0
-    @assert (start(Ωγ)>=1)&&(last(Ωγ)<=length(γ))
+    @assert (first(Ωγ)>=1)&&(last(Ωγ)<=length(γ))
 
     # Initialization
     Ωα = filter_range(length(tilde_α),α_offset)
@@ -206,7 +206,7 @@ function directConv!(tilde_α::AbstractArray{T,1},
     
     # rΩγ1 part: no boundary effect
     #
-    β_offset = λ*(start(Ωα)-tilde_i0)
+    β_offset = λ*(first(Ωα)-tilde_i0)
     for k in rΩγ1
         @simd for i in tilde_Ωα
             @inbounds γ[k]+=tilde_α[i]*β[k+λ*i+β_offset]
@@ -269,7 +269,7 @@ function directConv!(α::LinearFilter{T},
                      ::Type{LeftBE}=ZeroPaddingBE,
                      ::Type{RightBE}=ZeroPaddingBE;
                      
-                     accumulate::Bool=false)::Void where {T <: Number,
+                     accumulate::Bool=false)::Nothing where {T <: Number,
                                                           LeftBE <: BoundaryExtension,
                                                           RightBE <: BoundaryExtension}
 
@@ -401,7 +401,7 @@ function directConv2D!(α_I::LinearFilter{T},
                        min_I_BE::Type{<:BoundaryExtension}=ZeroPaddingBE,
                        max_I_BE::Type{<:BoundaryExtension}=ZeroPaddingBE,
                        min_J_BE::Type{<:BoundaryExtension}=ZeroPaddingBE,
-                       max_J_BE::Type{<:BoundaryExtension}=ZeroPaddingBE)::Void where {T<:Number}
+                       max_J_BE::Type{<:BoundaryExtension}=ZeroPaddingBE)::Nothing where {T<:Number}
     
     γ=similar(β)
 
