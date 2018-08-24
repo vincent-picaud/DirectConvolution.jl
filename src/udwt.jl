@@ -100,8 +100,8 @@ struct UDWT{T<:Number}
             n::Int=0,
             scale::Int=0) where {T<:Number} =
                 new(filter,
-                    Array{T,2}(n,scale),
-                    Array{T,1}(n))
+                    Array{T,2}(undef,n,scale),
+                    Array{T,1}(undef,n))
 end
 
 #+UDWT
@@ -129,8 +129,8 @@ function udwt(signal::AbstractArray{T,1},
     udwt_domain = UDWT{T}(filter,n=n,scale=scale)
     Ωγ = 1:n
 
-    Vs = Array{T,1}(n)
-    Vsp1 = Array{T,1}(n)
+    Vs = Array{T,1}(undef,n)
+    Vsp1 = Array{T,1}(undef,n)
     Vs .= signal
 
     for s in 1:scale
@@ -188,7 +188,7 @@ function inverse_udwt!(udwt_domain::UDWT{T},
     maxScale = scale(udwt_domain)
     n = length(reconstructed_signal)
     Ωγ = 1:n
-    buffer = Array{T,1}(n)
+    buffer = Array{T,1}(undef,n)
     
     reconstructed_signal .= udwt_domain.V
 
@@ -238,7 +238,7 @@ end
 # *Returns:* a vector containing the reconstructed signal.
 #
 function inverse_udwt(udwt_domain::UDWT{T})::Array{T,1} where {T<:Number}
-    reconstructed_signal=Array{T,1}(length(udwt_domain))
+    reconstructed_signal=Array{T,1}(undef,length(udwt_domain))
     inverse_udwt!(udwt_domain,reconstructed_signal)
     return reconstructed_signal
 end

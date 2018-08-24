@@ -319,7 +319,7 @@ function directConv(α::LinearFilter{T},
                     ::Type{RightBE}=ZeroPaddingBE) where {T <: Number,
                                                           LeftBE <: BoundaryExtension,
                                                           RightBE <: BoundaryExtension}
-    γ = Array{T,1}(length(β))
+    γ = Array{T,1}(undef,length(β))
     
     directConv!(α,
                 λ,
