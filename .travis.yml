@@ -40,7 +40,7 @@ git:
 ###############
 
 script:
-  - julia -e 'using Pkg; Pkg.add(pwd()); Pkg.build("DirectConvolution"); Pkg.test("DirectConvolution"; coverage=true)'
+  - julia -e 'using Pkg; Pkg.clone(pwd()); Pkg.build("DirectConvolution"); Pkg.test("DirectConvolution"; coverage=true)'
 
 #################
 # After Success #
@@ -50,7 +50,9 @@ after_success:
 #
 # Push coverage results to Codecov
 #
-  - julia -e 'using Pkg; cd(Pkg.dir("DirectConvolution")); Pkg.add("Coverage"); using Coverage; Codecov.submit(Codecov.process_folder())'
+  - julia -e 'using Pkg, DirectConvolution; cd(joinpath(dirname(pathof(DirectConvolution)), "..")); Pkg.add("Coverage"); using Coverage; Codecov.submit(Codecov.process_folder())'
+
+# old version:   - julia -e 'using Pkg; cd(Pkg.dir("DirectConvolution")); Pkg.add("Coverage"); using Coverage; Codecov.submit(Codecov.process_folder())'
 
   # push coverage results to Coveralls
   # - julia -e 'cd(Pkg.dir("DirectConvolution")); Pkg.add("Coverage"); using Coverage; Coveralls.submit(Coveralls.process_folder())'
