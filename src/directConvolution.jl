@@ -192,9 +192,9 @@ function directConv!(tilde_α::AbstractArray{T,1},
     @assert (start(Ωγ)>=1)&&(last(Ωγ)<=length(γ))
 
     # Initialization
-    const Ωα = filter_range(length(tilde_α),α_offset)
-    const Ωβ = UnitRange(1,length(β))
-    const tilde_Ωα = 1:length(Ωα)
+    Ωα = filter_range(length(tilde_α),α_offset)
+    Ωβ = UnitRange(1,length(β))
+    tilde_Ωα = 1:length(Ωα)
 
     if !accumulate
         for k in Ωγ
@@ -406,12 +406,12 @@ function directConv2D!(α_I::LinearFilter{T},
     γ=similar(β)
 
     (n,m)=size(β)
-    const α_I_coef=fcoef(α_I)
-    const α_I_offset=offset(α_I)
-    const α_J_coef=fcoef(α_J)
-    const α_J_offset=offset(α_J)
-    const Ωγ_I = 1:n
-    const Ωγ_J = 1:m
+    α_I_coef=fcoef(α_I)
+    α_I_offset=offset(α_I)
+    α_J_coef=fcoef(α_J)
+    α_J_offset=offset(α_J)
+    Ωγ_I = 1:n
+    Ωγ_J = 1:m
     
     # i running (for filter)
     for j in 1:m

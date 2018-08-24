@@ -124,18 +124,18 @@ function udwt(signal::AbstractArray{T,1},
 
     @assert scale>=0
 
-    const boundary = PeriodicBE
-    const n = length(signal)
-    const udwt_domain = UDWT{T}(filter,n=n,scale=scale)
-    const Ωγ = 1:n
+    boundary = PeriodicBE
+    n = length(signal)
+    udwt_domain = UDWT{T}(filter,n=n,scale=scale)
+    Ωγ = 1:n
 
     Vs = Array{T,1}(n)
     Vsp1 = Array{T,1}(n)
     Vs .= signal
 
     for s in 1:scale
-        const twoPowScale = 2^(s-1)
-        const Wsp1 = @view udwt_domain.W[:,s]
+        twoPowScale = 2^(s-1)
+        Wsp1 = @view udwt_domain.W[:,s]
         
         # Computes Vs+1 from Vs
         #
@@ -184,17 +184,17 @@ function inverse_udwt!(udwt_domain::UDWT{T},
 
     @assert length(udwt_domain) == length(reconstructed_signal)
 
-    const boundary = PeriodicBE
-    const maxScale = scale(udwt_domain)
-    const n = length(reconstructed_signal)
-    const Ωγ = 1:n
-    const buffer = Array{T,1}(n)
+    boundary = PeriodicBE
+    maxScale = scale(udwt_domain)
+    n = length(reconstructed_signal)
+    Ωγ = 1:n
+    buffer = Array{T,1}(n)
     
     reconstructed_signal .= udwt_domain.V
 
     
     for s in maxScale:-1:1
-        const twoPowScale = 2^(s-1)
+        twoPowScale = 2^(s-1)
         
         # Computes Vs from Vs+1
         #
@@ -211,7 +211,7 @@ function inverse_udwt!(udwt_domain::UDWT{T},
 
         # Computes Ws from Ws+1
         #
-        const Ws = @view udwt_domain.W[:,s]
+        Ws = @view udwt_domain.W[:,s]
 
         directConv!(tildeψ_filter(udwt_domain.filter),
                     -twoPowScale,

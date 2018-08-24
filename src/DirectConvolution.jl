@@ -1,6 +1,6 @@
 module DirectConvolution
 
-const RootDir = dirname(dirname(Base.functionloc(DirectConvolution.eval, Tuple{Void})[1]))
+const RootDir = pathof(DirectConvolution)
 
 using StaticArrays
 

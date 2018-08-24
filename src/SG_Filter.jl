@@ -71,7 +71,7 @@ function SG_Filter(T::DataType=Float64;halfWidth::Int=5,degree::Int=2)::SG_Filte
     Q,R=qr(V)
     SG=R\Q'
 
-    const n_filter,n_coef = size(SG)
+    n_filter,n_coef = size(SG)
 
     buffer=Array{LinearFilter_DefaultCentered{T,n_coef},1}()
     

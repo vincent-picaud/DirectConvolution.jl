@@ -86,7 +86,7 @@ end
 
 #+LinearFilter,Internal
 function LinearFilter_DefaultCentered(c::AbstractArray{T,1}) where {T<:Number} 
-    const N = length(c)
+    N = length(c)
     @assert isodd(length(c)) "Centered filters must have an odd number of coefficients, $N is even"
     return LinearFilter_DefaultCentered{T,N}(SVector{N,T}(c))
 end
