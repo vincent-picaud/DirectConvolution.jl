@@ -1,5 +1,5 @@
 using DirectConvolution
-using Base.Test
+using Test
 
 @testset "DirectConvolution" begin
 
