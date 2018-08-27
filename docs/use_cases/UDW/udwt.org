@@ -12,18 +12,22 @@
   fontsize=\footnotesize}
 #+END_EXPORT
 
-#+BEGIN_SRC julia :exports none
+
+* Undecimated Wavelet Transform
+** Required libraries
+
+#+BEGIN_SRC julia :exports code 
 using Plots
 using DirectConvolution
+using DelimitedFiles
+using LinearAlgebra
 #+END_SRC
 
 #+RESULTS:
 
-* Undecimated Wavelet Transform
-
 ** Signal 
    #+BEGIN_SRC julia :results none
-signal=readcsv(joinpath(DirectConvolution.RootDir,"data/signal_1.csv"));
+signal=readdlm("../../../data/signal_1.csv",',');
 signal=signal[:,2];
 plot(signal,label="signal")
    #+END_SRC
@@ -37,13 +41,13 @@ savefig("figures/signal.png")
    #+CAPTION: Signal
    #+RESULTS:
    [[file:figures/signal.png]]
-
+   
 ** Direct transform 
 
    Use some wavelet filter 
 
    #+BEGIN_SRC julia :exports code :results none
-filter = Filter_Starck2{Float64}()
+filter = UDWT_Filter_Starck2{Float64}()
    #+END_SRC
 
    Direct udwt transform
@@ -77,13 +81,14 @@ savefig("figures/W.png")
 
    Check perfect reconstruction
 
-   #+BEGIN_SRC julia :exports both
+   #+BEGIN_SRC julia :exports both :results output
 reconst = inverse_udwt(m);
 norm(signal-reconst)
    #+END_SRC
 
    #+RESULTS:
-   : 532.1170503445027
+   : 
+   : 0.0
 
 ** Smoothing
 
