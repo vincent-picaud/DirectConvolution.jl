@@ -22,3 +22,4 @@ deploydocs(
     repo="github.com/vincent-picaud/DirectConvolution.jl.git",
     devbranch = "main"
 )
+
