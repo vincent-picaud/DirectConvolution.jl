@@ -1,12 +1,8 @@
 export directConv, directConv!, directConv2D!, directCrossCorrelation,directCrossCorrelation2D
 export BoundaryExtension, ZeroPaddingBE, ConstantBE, PeriodicBE, MirrorBE
 
-
-
 # first index 
 const tilde_i0 = Int(1)
-
-
 
 #+BoundaryExtension
 #
@@ -25,7 +21,7 @@ struct PeriodicBE <: BoundaryExtension end
 #+BoundaryExtension
 struct MirrorBE <: BoundaryExtension end
 
-
+
 
 #+BoundaryExtension,Internal
 #
@@ -104,7 +100,7 @@ function relativeComplement_right(A::UnitRange{Int},
               last(A))
 end
 
-
+
 
 #+BoundaryExtension,Internal
 #
@@ -173,7 +169,7 @@ function boundaryExtension(β::AbstractArray{T,1},
 end
 
 
-
+
 
 #+Convolution,Internal
 function directConv!(tilde_α::AbstractArray{T,1},
@@ -185,8 +181,8 @@ function directConv!(tilde_α::AbstractArray{T,1},
                      ::Type{LeftBE}=ZeroPaddingBE,
                      ::Type{RightBE}=ZeroPaddingBE;
                      accumulate::Bool=false)::Nothing where {T <: Number,
-                                                          LeftBE <: BoundaryExtension,
-                                                          RightBE <: BoundaryExtension}
+                                                             LeftBE <: BoundaryExtension,
+                                                             RightBE <: BoundaryExtension}
     # Sanity check
     @assert λ!=0
     @assert (first(Ωγ)>=1)&&(last(Ωγ)<=length(γ))
@@ -270,8 +266,8 @@ function directConv!(α::LinearFilter{T},
                      ::Type{RightBE}=ZeroPaddingBE;
                      
                      accumulate::Bool=false)::Nothing where {T <: Number,
-                                                          LeftBE <: BoundaryExtension,
-                                                          RightBE <: BoundaryExtension}
+                                                             LeftBE <: BoundaryExtension,
+                                                             RightBE <: BoundaryExtension}
 
     directConv!(fcoef(α),
                 offset(α),
@@ -290,7 +286,7 @@ function directConv!(α::LinearFilter{T},
     nothing
 end
 
-
+
 
 
 #+Convolution
@@ -337,7 +333,7 @@ function directConv(α::LinearFilter{T},
     return γ
 end
 
-
+
 
 #+Convolution
 #
@@ -377,7 +373,7 @@ function directCrossCorrelation(α::LinearFilter{T},
     return directConv(α,+1,β,LeftBE,RightBE)
 end
 
-
+
 # 2D
 
 
@@ -481,4 +477,4 @@ function directCrossCorrelation2D(α_I::LinearFilter{T},
     return γ
 end
 
-
+
