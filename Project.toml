@@ -1,0 +1,5 @@
+name = "DirectConvolution"
+uuid = "60a1edcd-6e1b-57a1-8cb7-ec83bf7a2d9a"
+
+[deps]
+StaticArrays = "90137ffa-7385-5640-81b9-e52037218182"
