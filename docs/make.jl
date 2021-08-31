@@ -18,6 +18,7 @@ makedocs(;
     ],
 )
 
-deploydocs(;
-    repo="github.com/vincent-picaud/DirectConvolution.jl",
+deploydocs(
+    repo="github.com/vincent-picaud/DirectConvolution.jl.git",
+    devbranch = "main"
 )
