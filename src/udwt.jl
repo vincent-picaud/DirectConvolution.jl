@@ -7,34 +7,37 @@ import Base: length
 """
     abstract type UDWT_Filter_Biorthogonal{T<:Number} end
 
-Abstract type defining the ϕ, ψ, tildeϕ and tileψ filters associated
+Abstract type defining the ϕ, ψ, tildeϕ and tildeψ filters associated
 to an undecimated biorthogonal wavelet transform
 
+Subtypes of this structure are:
+  * [`UDWT_Filter`](@ref UDWT_Filter)
+
 Associated methods are:
-* `ϕ_filter`
-* `ψ_filter`
-* `tildeϕ_filter`
-* `tildeψ_filter`
+  * [`ϕ_filter`](@ref ϕ_filter)
+  * `ψ_filter`
+  * `tildeϕ_filter`
+  * `tildeψ_filter`
 """ 
 abstract type UDWT_Filter_Biorthogonal{T<:Number} end
 
-#+UDWT_Filter
+"""
+    ϕ_filter(c::UDWT_Filter_Biorthogonal)
+
+Returns the ϕ filter
+"""
 ϕ_filter(c::UDWT_Filter_Biorthogonal)::LinearFilter = c._ϕ_filter
-#+UDWT_Filter
 ψ_filter(c::UDWT_Filter_Biorthogonal)::LinearFilter = c._ψ_filter
-#+UDWT_Filter
 tildeϕ_filter(c::UDWT_Filter_Biorthogonal)::LinearFilter = c._tildeϕ_filter
-#+UDWT_Filter
 tildeψ_filter(c::UDWT_Filter_Biorthogonal)::LinearFilter = c._tildeψ_filter
 
+"""
+    abstract type UDWT_Filter{T<:Number} <: UDWT_Filter_Biorthogonal{T} end
 
-#+UDWT_Filter
-#
-# A specialization of UDWT_Filter_Biorthogonal for *orthogonal* filters.
-#
-#
-# For orthogonal filters we have: $\\phi=\\tilde{\\phi}$ and $\\psi=\\tilde{\\psi}$
-# 
+A specialization of `UDWT_Filter_Biorthogonal` for **orthogonal** filters.
+
+For orthogonal filters we have:  ϕ=tildeϕ, ψ=tildeψ
+""" 
 abstract type UDWT_Filter{T<:Number} <: UDWT_Filter_Biorthogonal{T}
 end
 
