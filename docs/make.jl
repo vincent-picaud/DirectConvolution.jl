@@ -4,7 +4,7 @@ using Documenter
 DocMeta.setdocmeta!(DirectConvolution, :DocTestSetup, :(using DirectConvolution); recursive=true)
 
 makedocs(modules=[DirectConvolution],
-         doctest = false,
+#         doctest = false,
          authors="vincent-picaud <picaud.vincent@gmail.com> and contributors",
          repo="https://github.com/vincent-picaud/DirectConvolution.jl/blob/{commit}{path}#{line}",
          sitename="DirectConvolution.jl",
