@@ -16,19 +16,15 @@ using DelimitedFiles
 These demos use data stored in the `data/` folder.
 
 ```@repl session_1
-root_dir=abspath(joinpath(pwd(),"..",".."))
-cd(root_dir)
-pwd()
-data_1D=readdlm("data/signal_1.csv",',')
+data_1D=readdlm(joinpath(pwd(),"..","..","data/signal_1.csv"),',')
 ```
 
 Plot test
 ```@repl session_1
 using PyPlot
 
-x = rand(10)
+plot(data_1D[:,1],data_1D[:,2])
 
-plot(x)
 savefig("plot.svg")
 ```
 
