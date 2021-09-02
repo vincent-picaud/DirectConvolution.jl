@@ -5,30 +5,33 @@ CurrentModule = DirectConvolution
 # DirectConvolution
 
 Documentation for [DirectConvolution](https://github.com/vincent-picaud/DirectConvolution.jl).
-  
 ```@setup session_1
 using DirectConvolution
 using DelimitedFiles
+using Plots
+
+rootDir  = joinpath(dirname(pathof(DirectConvolution)), "..")
+dataDir = joinpath(rootDir,"data")
+
 ```
 
 # Use cases
 
 These demos use data stored in the `data/` folder.
 
-```@repl session_1
-data_1D=readdlm(joinpath(pwd(),"..","..","data/signal_1.csv"),',')
+
+```julia
+data_1D = readdlm("data/signal_1.csv",',')
+Plots.plot(data_1D[:,1],data_1D[:,2])
 ```
 
-Plot test
-```@repl session_1
-using PyPlot
-
-plot(data_1D[:,1],data_1D[:,2])
-
-savefig("plot.svg")
+```@setup session_1
+data_1D=readdlm(joinpath(dataDir,"signal_1.csv"),',')
+Plots.plot(data_1D[:,1],data_1D[:,2])
+Plots.savefig("plot_signal_1.png")
 ```
 
-![test fig](plot.svg)
+![](plot_signal_1.png)
 
 ## Savitzky-Golay filters
 
