@@ -50,10 +50,6 @@ jobs:
       - uses: julia-actions/setup-julia@v1
         with:
           version: '1'
-      - name: Install apt deps
-        run: |
-          sudo apt-get install -y qt5-default
-      - name: Setup docs environment     
       - run: |
           julia --project=docs -e '
             using Pkg
@@ -61,6 +57,7 @@ jobs:
             Pkg.instantiate()'
       - run: |
           julia --project=docs -e '
+  	    ENV["GKSwstype"] = "nul"
             using Documenter: DocMeta, doctest
             using DirectConvolution
             DocMeta.setdocmeta!(DirectConvolution, :DocTestSetup, :(using DirectConvolution); recursive=true)
