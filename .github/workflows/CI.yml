@@ -57,7 +57,7 @@ jobs:
             Pkg.instantiate()'
       - run: |
           julia --project=docs -e '
-  	    ENV["GKSwstype"] = "nul"
+            ENV["GKSwstype"] = "nul"
             using Documenter: DocMeta, doctest
             using DirectConvolution
             DocMeta.setdocmeta!(DirectConvolution, :DocTestSetup, :(using DirectConvolution); recursive=true)
