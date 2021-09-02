@@ -5,9 +5,12 @@ export boundaryExtension
 # first index 
 const tilde_i0 = Int(1)
 
+# ================================================================
+# Used for tag dispatching, parent of available boundary extensions
+# ================================================================
+
 #+BoundaryExtension
 #
-# Used for tag dispatching, parent of available boundary extensions
 #
 #!subtypes(BoundaryExtension)
 #

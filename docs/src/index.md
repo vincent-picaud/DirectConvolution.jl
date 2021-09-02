@@ -5,6 +5,64 @@ CurrentModule = DirectConvolution
 # DirectConvolution
 
 Documentation for [DirectConvolution](https://github.com/vincent-picaud/DirectConvolution.jl).
+  
+```@setup session_1
+using DirectConvolution
+using DelimitedFiles
+```
+
+# Use cases
+
+These demos use data stored in the `data/` folder.
+
+```@repl session_1
+root_dir=abspath(joinpath(pwd(),"..",".."))
+cd(root_dir)
+pwd()
+data_1D=readdlm("data/signal_1.csv",',')
+```
+
+Plot test
+```@repl session_1
+using PyPlot
+
+x = rand(10)
+
+plot(x)
+savefig("plot.svg")
+```
+
+![test fig](plot.svg)
+
+## Savitzky-Golay filters
+
+Savitzky-Golay filters are a common approach to compute smoothed
+derivatives of a signal.
+
+Creates a set of Savitzky-Golay filters using polynomial of degree $3$
+with a window width of $11=2\times 5+1$.
+
+
+```@repl session_1
+sg = SG_Filter(Float64,halfWidth=5,degree=3);
+```
+
+This can be checked with 
+
+```@repl session_1
+length(sg)
+polynomialOrder(sg)
+```
+
+# API
+
+
+```@index
+```
+
+```@docs
+scale
+```
 
 ## Linear Filters
 ```@docs
@@ -39,6 +97,7 @@ LinearFilter_Default
 
 ### Boundary extension
 
+
 There are several possible boundary extension:
 
 ```@docs
@@ -68,9 +127,5 @@ boundaryExtension
 
 ```@docs
 directConv!
-```
-## Automatically generated 
-
-```@index
 ```
 
