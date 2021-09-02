@@ -40,6 +40,11 @@ Creates a `SG_Filter` structure used to store Savitzky-Golay filters.
 * filter length is 2*`halfWidth`+1 
 * polynomial degree is `degree`, which defines `maxDerivativeOrder`
 
+You can apply these filters using the 
+* `apply_SG_filter`
+* `apply_SG_filter2D`
+functions.
+
 Example:
 
 ```jldoctest
@@ -95,7 +100,7 @@ end
 # ================================================================
 
 """
-    filter(sg::SG_Filter{T,N};derivativeOrder::Int=0)
+    function filter(sg::SG_Filter{T,N};derivativeOrder::Int=0)
 
 Returns the filter to be used to compute the smoothed derivatives of order `derivativeOrder`.
 
@@ -107,7 +112,7 @@ function filter(sg::SG_Filter{T,N};derivativeOrder::Int=0) where {T<:AbstractFlo
 end 
 
 """
-    length(sg::SG_Filter{T,N})
+    function length(sg::SG_Filter{T,N})
 
 Returns filter length, this is an odd number.
 
@@ -116,7 +121,7 @@ See: `SG_Filter`
 Base.length(sg::SG_Filter{T,N}) where {T<:AbstractFloat,N} = length(filter(sg))
 
 """
-    maxDerivativeOrder(sg::SG_Filter{T,N})
+    function maxDerivativeOrder(sg::SG_Filter{T,N})
 
 Maximum order of the smoothed derivatives we can compute using `sg` filters.
 
@@ -125,7 +130,7 @@ See: `SG_Filter`
 maxDerivativeOrder(sg::SG_Filter{T,N}) where {T<:AbstractFloat,N} = size(sg._filter_set,1)-1
 
 """
-    polynomialOrder(sg::SG_Filter{T,N})
+    function polynomialOrder(sg::SG_Filter{T,N})
 
 Returns the degree of the polynomial used to construct the
 Savitzky-Golay filters. This is mainly a 'convenience' function, as it
@@ -136,11 +141,11 @@ See: `SG_Filter`
 polynomialOrder(sg::SG_Filter{T,N}) where {T<:AbstractFloat,N} = maxDerivativeOrder(sg)
 
 """
-    apply_SG_filter(signal::Array{T,1},
-                    sg::SG_Filter{T};
-                    derivativeOrder::Int=0,
-                    left_BE::Type{<:BoundaryExtension}=ConstantBE,
-                    right_BE::Type{<:BoundaryExtension}=ConstantBE)
+    function apply_SG_filter(signal::Array{T,1},
+                             sg::SG_Filter{T};
+                             derivativeOrder::Int=0,
+                             left_BE::Type{<:BoundaryExtension}=ConstantBE,
+                             right_BE::Type{<:BoundaryExtension}=ConstantBE)
 
 
 
