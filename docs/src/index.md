@@ -27,8 +27,8 @@ Plots.plot(data_1D[:,1],data_1D[:,2])
 
 ```@setup session_1
 data_1D=readdlm(joinpath(dataDir,"signal_1.csv"),',')
-Plots.plot(data_1D[:,1],data_1D[:,2])
-Plots.savefig("plot_signal_1.png")
+p=Plots.plot(data_1D[:,1],data_1D[:,2]);
+Plots.savefig(p,"plot_signal_1.png")
 ```
 
 ![](plot_signal_1.png)

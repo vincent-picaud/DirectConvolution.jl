@@ -51,15 +51,12 @@ jobs:
         with:
           version: '1'
       - run: |
-          sudo apt install qt5-default
-      - run: |
           julia --project=docs -e '
             using Pkg
             Pkg.develop(PackageSpec(path=pwd()))
             Pkg.instantiate()'
       - run: |
           julia --project=docs -e '
-            ENV["GKSwstype"] = "100"
             using Documenter: DocMeta, doctest
             using DirectConvolution
             DocMeta.setdocmeta!(DirectConvolution, :DocTestSetup, :(using DirectConvolution); recursive=true)

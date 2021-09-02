@@ -9,36 +9,36 @@ const tilde_i0 = Int(1)
 # Used for tag dispatching, parent of available boundary extensions
 # ================================================================
 
-#+BoundaryExtension
-#
-#
-#!subtypes(BoundaryExtension)
-#
+"""
+    abstract type BoundaryExtension end
+
+Abstract type associated to boundary extension. 
+"""
 abstract type BoundaryExtension end
 
 """
-    struct ZeroPaddingBE 
+    struct ZeroPaddingBE <: BoundaryExtension end
 
 A type used to tag zero padding extension
 """
 struct ZeroPaddingBE <: BoundaryExtension end
 
 """
-    struct ConstantBE
+    struct ConstantBE <: BoundaryExtension end
 
 A type used to tag constant constant extension
 """
 struct ConstantBE <: BoundaryExtension end
 
 """
-    struct PeriodicBE
+    struct PeriodicBE <: BoundaryExtension end
 
 A type used to tag periodic extension
 """
 struct PeriodicBE <: BoundaryExtension end
 
 """
-    struct MirrorBE
+    struct MirrorBE <: BoundaryExtension end
 
 A type used to tag mirror extension
 """
@@ -52,7 +52,7 @@ Range scaling.
 
 **Caveat:**
 
-We do not use Julia =*= operator as it returns a step range:
+We do not use Julia `*` operator as it returns a step range:
 ```jldoctest
 julia> r=6:8
 6:8
