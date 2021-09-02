@@ -51,7 +51,7 @@ jobs:
         with:
           version: '1'
       - run: |
-          sudo apt install libxt6 libxrender1 libxext6 libgl1-mesa-glx libqt5widgets5
+          sudo apt install qt5-default
       - run: |
           julia --project=docs -e '
             using Pkg
