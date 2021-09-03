@@ -1,7 +1,13 @@
+# Some TODO:
+# Rename:
+#   LinearFilter -> AbstractLinearFilter
+#   LinearFilter_Default -> LinearFilter
+#   LinearFilter_DefaultCentered -> LinearFilter_Centered (or only compute the right offset)
+#
 export LinearFilter
 export fcoef, length, offset, range
 
-import Base: length,range,isapprox
+import Base: length, range, isapprox, show
 
 
 
@@ -59,6 +65,22 @@ function isapprox(f::LinearFilter{T},v::AbstractArray{T,1}) where {T<:Number}
     return isapprox(fcoef(f),v)
 end
 
+#
+# Pretty print 
+#
+# I defined this afterward to avoid jldoctest to fail because of
+# different rounding errors occuring for different architectures.
+#
+# Now filters coefficient are rounded before printing.
+#
+function Base.show(io::IO, f::LinearFilter)
+    r = range(f)
+    coef = fcoef(f)
+    print(io,"Filter(r=$r,c=")
+    print(io, round.(coef; sigdigits=4))
+    println(io,")")
+end 
+
 """
     struct LinearFilter_Default{T<:Number,N}
 
@@ -68,7 +90,7 @@ You can create a filter as follows
 
 ```jldoctest
 julia> linear_filter=LinearFilter([1,-2,1],1)
-DirectConvolution.LinearFilter_Default{Int64, 3}([1, -2, 1], 1)
+Filter(r=-1:1,c=[1.0, -2.0, 1.0])
 
 
 julia> offset(linear_filter)
