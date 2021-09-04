@@ -4,33 +4,40 @@ export udwt, scale, inverse_udwt!, inverse_udwt
 
 import Base: length
 
-
+"""
+    abstract type UDWT_Filter_Biorthogonal{T<:Number} end
 
-#+UDWT_Filter
-#
-# Abstract type defining the $\phi$, $\psi$, $\tilde{\phi}$ and
-# $\tilde{\psi}$ filters associated to an undecimated biorthogonal
-# wavelet transform
+Abstract type defining the ϕ, ψ, tildeϕ and tildeψ filters associated
+to an undecimated biorthogonal wavelet transform
+
+Subtypes of this structure are:
+  * [`UDWT_Filter`](@ref UDWT_Filter)
+
+Associated methods are:
+  * [`ϕ_filter`](@ref ϕ_filter)
+  * `ψ_filter`
+  * `tildeϕ_filter`
+  * `tildeψ_filter`
+""" 
 abstract type UDWT_Filter_Biorthogonal{T<:Number} end
 
-#+UDWT_Filter
+"""
+    ϕ_filter(c::UDWT_Filter_Biorthogonal)
+
+Returns the ϕ filter
+"""
 ϕ_filter(c::UDWT_Filter_Biorthogonal)::LinearFilter = c._ϕ_filter
-#+UDWT_Filter
 ψ_filter(c::UDWT_Filter_Biorthogonal)::LinearFilter = c._ψ_filter
-#+UDWT_Filter
 tildeϕ_filter(c::UDWT_Filter_Biorthogonal)::LinearFilter = c._tildeϕ_filter
-#+UDWT_Filter
 tildeψ_filter(c::UDWT_Filter_Biorthogonal)::LinearFilter = c._tildeψ_filter
 
-
+"""
+    abstract type UDWT_Filter{T<:Number} <: UDWT_Filter_Biorthogonal{T} end
 
-#+UDWT_Filter
-#
-# A specialization of UDWT_Filter_Biorthogonal for *orthogonal* filters.
-#
-#
-# For orthogonal filters we have: $\phi=\tilde{\phi}$ and $\psi=\tilde{\psi}$
-# 
+A specialization of `UDWT_Filter_Biorthogonal` for **orthogonal** filters.
+
+For orthogonal filters we have:  ϕ=tildeϕ, ψ=tildeψ
+""" 
 abstract type UDWT_Filter{T<:Number} <: UDWT_Filter_Biorthogonal{T}
 end
 
@@ -40,9 +47,7 @@ tildeϕ_filter(c::UDWT_Filter)::LinearFilter = ϕ_filter(c)
 #+UDWT_Filter
 tildeψ_filter(c::UDWT_Filter)::LinearFilter = ψ_filter(c)
 
-
 # Filter examples
-
 
 #+UDWT_Filter_Available
 # Haar filter
@@ -56,7 +61,6 @@ struct UDWT_Filter_Haar{T<:AbstractFloat} <: UDWT_Filter{T}
                                                 LinearFilter_Default{T,2}(SVector{2,T}([-1/2 +1/2]),0))
 end
 
-
 
 #+UDWT_Filter_Available
 # Starck2 filter
@@ -76,7 +80,6 @@ struct UDWT_Filter_Starck2{T<:AbstractFloat} <: UDWT_Filter_Biorthogonal{T}
                                                    LinearFilter_DefaultCentered{T,1}(SVector{1,T}([+1])))
 end
 
-
 #+UDWT
 # A structure to store 1D UDWT
 #

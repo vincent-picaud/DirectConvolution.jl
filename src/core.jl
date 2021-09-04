@@ -1,39 +1,76 @@
 export directConv, directConv!, directConv2D!, directCrossCorrelation,directCrossCorrelation2D
 export BoundaryExtension, ZeroPaddingBE, ConstantBE, PeriodicBE, MirrorBE
+export boundaryExtension
 
 # first index 
 const tilde_i0 = Int(1)
 
-#+BoundaryExtension
-#
+# ================================================================
 # Used for tag dispatching, parent of available boundary extensions
-#
-#!subtypes(BoundaryExtension)
-#
+# ================================================================
+
+"""
+    abstract type BoundaryExtension end
+
+Abstract type associated to boundary extension. 
+"""
 abstract type BoundaryExtension end
 
-#+BoundaryExtension
+"""
+    struct ZeroPaddingBE <: BoundaryExtension end
+
+A type used to tag zero padding extension
+"""
 struct ZeroPaddingBE <: BoundaryExtension end
-#+BoundaryExtension
+
+"""
+    struct ConstantBE <: BoundaryExtension end
+
+A type used to tag constant constant extension
+"""
 struct ConstantBE <: BoundaryExtension end
-#+BoundaryExtension
+
+"""
+    struct PeriodicBE <: BoundaryExtension end
+
+A type used to tag periodic extension
+"""
 struct PeriodicBE <: BoundaryExtension end
-#+BoundaryExtension
+
+"""
+    struct MirrorBE <: BoundaryExtension end
+
+A type used to tag mirror extension
+"""
 struct MirrorBE <: BoundaryExtension end
 
 
+"""
+    scale(λ::Int,Ω::UnitRange{Int})
 
-#+BoundaryExtension,Internal
-#
-# Range scaling
-#
-# *Caveat:*
-# We do not use Julia =*= operator as it returns a step range:
-#!r=6:8
-#!-2*r
-# What we need is:
-#!scale(-2,r)
-#
+Range scaling.
+
+**Caveat:**
+
+We do not use Julia `*` operator as it returns a step range:
+```jldoctest
+julia> r=6:8
+6:8
+
+julia> -2*r
+-12:-2:-16
+```
+
+What we need is:
+
+```jldoctest
+julia> r=6:8
+6:8
+
+julia> scale(-2,r)
+-16:-12
+```
+"""
 function scale(λ::Int,Ω::UnitRange{Int})
     ifelse(λ>0,
            UnitRange(λ*first(Ω),λ*last(Ω)),
@@ -100,13 +137,53 @@ function relativeComplement_right(A::UnitRange{Int},
               last(A))
 end
 
+# ================================================================
 
+"""
+    boundaryExtension(β::AbstractArray{T,1},
+                      k::Int,
+                      ::Type{BOUNDARY_EXT_TYPE})
 
-#+BoundaryExtension,Internal
-#
-#!r=-5:10
-#!hcat(r,map(x->DirectConvolution.boundaryExtension([1:3;],x,ZeroPaddingBE),r))'
-#
+Computes extended boundary value `β[k]` given boundary extension type
+`BOUNDARY_EXT_TYPE`
+
+Available `BOUNDARY_EXT_TYPE` are:
+* `ZeroPaddingBE`: zero padding
+* `ConstantBE`: constant boundary extension padding
+* `PeriodicBE`: periodic boundary extension padding
+* `MirrorBE`: mirror symmetry boundary extension padding
+
+The routine is robust in the sens that there is no restriction on `k`
+value.
+
+```jldoctest
+julia> dom = [-5:10;];
+
+julia> hcat(dom,map(x->boundaryExtension([1; 2; 3],x,ZeroPaddingBE),dom))'
+2×16 adjoint(::Matrix{Int64}) with eltype Int64:
+ -5  -4  -3  -2  -1  0  1  2  3  4  5  6  7  8  9  10
+  0   0   0   0   0  0  1  2  3  0  0  0  0  0  0   0
+
+julia> hcat(dom,map(x->boundaryExtension([1; 2; 3],x,ConstantBE),dom))'
+2×16 adjoint(::Matrix{Int64}) with eltype Int64:
+ -5  -4  -3  -2  -1  0  1  2  3  4  5  6  7  8  9  10
+  1   1   1   1   1  1  1  2  3  3  3  3  3  3  3   3
+
+julia> hcat(dom,map(x->boundaryExtension([1; 2; 3],x,PeriodicBE),dom))'
+2×16 adjoint(::Matrix{Int64}) with eltype Int64:
+ -5  -4  -3  -2  -1  0  1  2  3  4  5  6  7  8  9  10
+  1   2   3   1   2  3  1  2  3  1  2  3  1  2  3   1
+
+julia> hcat(dom,map(x->boundaryExtension([1; 2; 3],x,MirrorBE),dom))'
+2×16 adjoint(::Matrix{Int64}) with eltype Int64:
+ -5  -4  -3  -2  -1  0  1  2  3  4  5  6  7  8  9  10
+  3   2   1   2   3  2  1  2  3  2  1  2  3  2  1   2
+
+```
+
+"""
+function boundaryExtension end
+
 function boundaryExtension(β::AbstractArray{T,1},
                            k::Int,
                            ::Type{ZeroPaddingBE}) where {T <: Number}
@@ -120,11 +197,6 @@ function boundaryExtension(β::AbstractArray{T,1},
     end
 end
 
-#+BoundaryExtension,Internal
-#
-#!r=-5:10
-#!hcat(r,map(x->DirectConvolution.boundaryExtension([1:3;],x,ConstantBE),r))'
-#
 function boundaryExtension(β::AbstractArray{T,1},
                            k::Int,
                            ::Type{ConstantBE}) where {T <: Number}
@@ -140,11 +212,6 @@ function boundaryExtension(β::AbstractArray{T,1},
     end
 end
 
-#+BoundaryExtension,Internal
-#
-#!r=-5:10
-#!hcat(r,map(x->DirectConvolution.boundaryExtension([1:3;],x,PeriodicBE),r))'
-#
 function boundaryExtension(β::AbstractArray{T,1},
                            k::Int,
                            ::Type{PeriodicBE}) where {T <: Number}
@@ -154,11 +221,6 @@ function boundaryExtension(β::AbstractArray{T,1},
     β[kmin+mod(k-kmin,1+kmax-kmin)]
 end
 
-#+BoundaryExtension,Internal
-#
-#!r=-5:10
-#!hcat(r,map(x->DirectConvolution.boundaryExtension([1:3;],x,MirrorBE),r))'
-#
 function boundaryExtension(β::AbstractArray{T,1},
                            k::Int,
                            ::Type{MirrorBE}) where {T <: Number}
@@ -169,7 +231,7 @@ function boundaryExtension(β::AbstractArray{T,1},
 end
 
 
-
+# ================================================================
 
 #+Convolution,Internal
 function directConv!(tilde_α::AbstractArray{T,1},
@@ -232,28 +294,81 @@ function directConv!(tilde_α::AbstractArray{T,1},
     nothing
 end
 
-# +Convolution L:directConv_details
+# """
+#     directConv!
+
 # Computes a convolution.
-#
-# Inplace modification of $\gamma[k], k\in\Omega_\gamma$.
-# $$
+
+# Inplace modification of ``\\gamma[k], k\\in\\Omega_\\gamma``
+
+# ```math 
 # \gamma[k]=\sum\limits_{i\in\Omega^\alpha}\alpha[i]\beta[k+\lambda i],\text{ with }\lambda\in\mathbb{Z}^*
-# $$
-# If $k\notin \Omega_\gamma$, $\gamma[k]$ is unmodified.
-#
-# If *accumulate=false* then an erasing step $\gamma[k]=0,
-# k\in\Omega_\gamma$ is performed before computation.
-#
-# If $\lambda=-1$ you compute a convolution, if $\lambda=+1$ you
+# ```
+
+# If ``k\\notin \\Omega_\\gamma``, ``\\gamma[k]`` is unmodified.
+
+# If *accumulate=false* then an erasing step ``\\gamma[k]=0, k\\in\\Omega_\\gamma`` is performed before computation.
+
+# If ``\\lambda=-1`` you compute a convolution, if ``\\lambda=+1`` you
 # compute a cross-correlation.
-#
-# *Example:*
-# !β=[1:15;];
-# !γ=ones(Int,15);
-# !α=LinearFilter([0,0,1],0);
-# !directConv!(α,1,β,γ,5:10);
-# !hcat([1:length(γ);],γ)'
-#
+
+# **Example:**
+
+# ```@jldoctest
+
+# julia> β=[1:15;]
+
+# julia> γ=ones(Int,15)
+
+# julia> α=LinearFilter([0,0,1],0)
+
+# julia> directConv!(α,1,β,γ,5:10)
+
+# julia> hcat([1:length(γ);],γ)
+
+# ```
+
+# """
+
+"""
+    directConv!
+
+Computes a convolution.
+```math 
+\\gamma[k]=\\sum\\limits_{i\\in\\Omega^\\alpha}\\alpha[i]\\beta[k+\\lambda i]
+```
+
+The following example shows how to apply inplace the `[0 0 1]` filter on `γ[5:10]` 
+```jldoctest
+julia> β=[1:15;];
+
+julia> γ=ones(Int,15);
+
+julia> α=LinearFilter([0,0,1],0);
+
+julia> directConv!(α,1,β,γ,5:10)
+
+julia> hcat([1:length(γ);],γ)
+15×2 Matrix{Int64}:
+  1   1
+  2   1
+  3   1
+  4   1
+  5   7
+  6   8
+  7   9
+  8  10
+  9  11
+ 10  12
+ 11   1
+ 12   1
+ 13   1
+ 14   1
+ 15   1
+
+```
+
+"""
 function directConv!(α::LinearFilter{T},
                      λ::Int,
 

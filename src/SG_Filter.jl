@@ -26,42 +26,42 @@ function _Vandermonde(T::DataType=Float64;halfWidth::Int=5,degree::Int=2)::Array
     return V
 end
 
+# ================================================================
 
-#+SG_Filters
-#
-# A structure to store Savitzky-Golay filters.
-#
 struct SG_Filter{T<:AbstractFloat,N}
     _filter_set::Array{LinearFilter_DefaultCentered{T,N},1}
 end
-#+SG_Filters
-#
-# Returns the filter to be used to compute the  smoothed derivatives of order *derivativeOrder*.
-#
-function filter(sg::SG_Filter{T,N};derivativeOrder::Int=0) where {T<:AbstractFloat,N}
-    @assert 0<= derivativeOrder <= maxDerivativeOrder(sg)
-    return sg._filter_set[derivativeOrder+1]
-end 
-#+SG_Filters
-#
-# Returns filter length, this is an odd number, see [[SG_Filters_Constructor][]]
-length(sg::SG_Filter{T,N}) where {T<:AbstractFloat,N} = length(filter(sg))
-#+SG_Filters
-#
-# Maximum order of the smoothed derivatives we can compute with *sg*
-#
-maxDerivativeOrder(sg::SG_Filter{T,N}) where {T<:AbstractFloat,N} = size(sg._filter_set,1)-1
-#+SG_Filters
-# Returns the degree of the polynomial used to construct the Savitzky-Golay filters, see [[SG_Filters_Constructor][]].
-polynomialOrder(sg::SG_Filter{T,N}) where {T<:AbstractFloat,N} = maxDerivativeOrder(sg)
-    
-#+SG_Filters L:SG_Filters_Constructor
-#
-# Creates a set of Savitzky-Golay filters
-#
-# - filter length is 2*halfWidth+1
-# - polynomial degree is degree
-#
+
+"""
+    function SG_Filter(T::DataType=Float64;halfWidth::Int=5,degree::Int=2)
+
+Creates a `SG_Filter` structure used to store Savitzky-Golay filters.
+
+* filter length is 2*`halfWidth`+1 
+* polynomial degree is `degree`, which defines `maxDerivativeOrder`
+
+You can apply these filters using the 
+* `apply_SG_filter`
+* `apply_SG_filter2D`
+functions.
+
+Example:
+
+```jldoctest
+julia> sg = SG_Filter(halfWidth=5,degree=3);
+
+
+julia> maxDerivativeOrder(sg)
+3
+
+julia> length(sg)
+11
+
+julia> filter(sg,derivativeOrder=2)
+Filter(r=-5:5,c=[0.03497, 0.01399, -0.002331, -0.01399, -0.02098, -0.02331, -0.02098, -0.01399, -0.002331, 0.01399, 0.03497])
+
+```
+"""
 function SG_Filter(T::DataType=Float64;halfWidth::Int=5,degree::Int=2)::SG_Filter
     @assert degree>=0
     @assert halfWidth>=1
@@ -97,13 +97,60 @@ function SG_Filter(T::DataType=Float64;halfWidth::Int=5,degree::Int=2)::SG_Filte
     return SG_Filter{T,n_coef}(buffer)
 end
 
-# +SG_Filters
-#
-# Applies SG filter to 1D signal
-#
-# *Returns:*
-# - the smoothed signal
-#
+# ================================================================
+
+"""
+    function filter(sg::SG_Filter{T,N};derivativeOrder::Int=0)
+
+Returns the filter to be used to compute the smoothed derivatives of order `derivativeOrder`.
+
+See: `SG_Filter`
+"""
+function filter(sg::SG_Filter{T,N};derivativeOrder::Int=0) where {T<:AbstractFloat,N}
+    @assert 0<= derivativeOrder <= maxDerivativeOrder(sg)
+    return sg._filter_set[derivativeOrder+1]
+end 
+
+"""
+    function length(sg::SG_Filter{T,N})
+
+Returns filter length, this is an odd number.
+
+See: `SG_Filter`
+"""
+Base.length(sg::SG_Filter{T,N}) where {T<:AbstractFloat,N} = length(filter(sg))
+
+"""
+    function maxDerivativeOrder(sg::SG_Filter{T,N})
+
+Maximum order of the smoothed derivatives we can compute using `sg` filters.
+
+See: `SG_Filter`
+"""
+maxDerivativeOrder(sg::SG_Filter{T,N}) where {T<:AbstractFloat,N} = size(sg._filter_set,1)-1
+
+"""
+    function polynomialOrder(sg::SG_Filter{T,N})
+
+Returns the degree of the polynomial used to construct the
+Savitzky-Golay filters. This is mainly a 'convenience' function, as it
+is equivalent to `maxDerivativeOrder`
+
+See: `SG_Filter`
+"""
+polynomialOrder(sg::SG_Filter{T,N}) where {T<:AbstractFloat,N} = maxDerivativeOrder(sg)
+
+"""
+    function apply_SG_filter(signal::Array{T,1},
+                             sg::SG_Filter{T};
+                             derivativeOrder::Int=0,
+                             left_BE::Type{<:BoundaryExtension}=ConstantBE,
+                             right_BE::Type{<:BoundaryExtension}=ConstantBE)
+
+
+
+Applies an 1D Savitzky-Golay and returns the smoothed signal.
+"""
 function apply_SG_filter(signal::Array{T,1},
                          sg::SG_Filter{T};
                          derivativeOrder::Int=0,
@@ -116,13 +163,19 @@ function apply_SG_filter(signal::Array{T,1},
                                   right_BE)
 end
 
-# +SG_Filters
-#
-# Applies SG filter to 2D signal
-#
-# *Returns:*
-# - the smoothed signal
-#
+"""
+    function apply_SG_filter2D(signal::Array{T,2},
+                               sg_I::SG_Filter{T},
+                               sg_J::SG_Filter{T};
+                               derivativeOrder_I::Int=0,
+                               derivativeOrder_J::Int=0,
+                               min_I_BE::Type{<:BoundaryExtension}=ConstantBE,
+                               max_I_BE::Type{<:BoundaryExtension}=ConstantBE,
+                               min_J_BE::Type{<:BoundaryExtension}=ConstantBE,
+                               max_J_BE::Type{<:BoundaryExtension}=ConstantBE)
+
+Applies an 2D Savitzky-Golay and returns the smoothed signal.
+"""
 function apply_SG_filter2D(signal::Array{T,2},
                            sg_I::SG_Filter{T},
                            sg_J::SG_Filter{T};

@@ -1,31 +1,47 @@
+# Some TODO:
+# Rename:
+#   LinearFilter -> AbstractLinearFilter
+#   LinearFilter_Default -> LinearFilter
+#   LinearFilter_DefaultCentered -> LinearFilter_Centered (or only compute the right offset)
+#
 export LinearFilter
 export fcoef, length, offset, range
 
-import Base: length,range,isapprox
+import Base: length, range, isapprox, show
 
 
-#+LinearFilter L:LinearFilter
-#
-# Abstract type defining a linear filter. A linear filter is defined by its coefficients and by its domain
-#
+
+"""
+    abstract type LinearFilter{T<:Number} end
+
+Abstract type defining a linear filter. 
+"""
 abstract type LinearFilter{T<:Number} end
 
-#+LinearFilter
-# Returns filter coefficients
+"""
+    fcoef(c::LinearFilter) 
+
+Returns filter coefficients
+"""
 fcoef(c::LinearFilter) = c._fcoef
 
-#+LinearFilter 
-# Returns filter length
+"""
+    length(c::LinearFilter)::Int
+
+Returns filter length
+"""
 length(c::LinearFilter)::Int = length(fcoef(c))
-#+LinearFilter 
-# Returns filter offset
-#
-# *Caveat:* the first position is *0* (and not *1*)
-#
-# See: [[range_filter][]]
+
+"""
+    offset(c::LinearFilter)::Int
+
+Returns filter offset
+
+**Caveat:** the first position is **0** (and not **1**)
+"""
 offset(c::LinearFilter)::Int = c._offset
 
-#+LinearFilter,Convolution,Internal
+# Internal
 #
 # Computes [[range_filter][]] using primitive types.
 # This allows reuse by =directConv!= for instance.
@@ -33,27 +49,58 @@ offset(c::LinearFilter)::Int = c._offset
 # *Caveat:* do not overload Base.range !!! 
 filter_range(size::Int,offset::Int)::UnitRange = UnitRange(-offset,size-offset-1)
 
-#+LinearFilter L:range_filter
-# Returns filter range $\Omega$
-#
-# Filter support is defined by
-# $$
-# \Omega_\alpha = [ -\text{offset}(\alpha) , \text{size}(\alpha) -\text{offset}(\alpha)  - 1 ]
-# $$
+"""
+    range(c::LinearFilter)::UnitRange
+
+Returns filter range Ω
+
+Filter support of a filter α is defined by Ω = [ - offset(α), length(α) -  offset(α) - 1 ]
+"""
 range(c::LinearFilter)::UnitRange = filter_range(length(c),offset(c))
 
-#+LinearFilter,Internal 
+
 # For convenience only, used in utests
+#
 function isapprox(f::LinearFilter{T},v::AbstractArray{T,1}) where {T<:Number}
     return isapprox(fcoef(f),v)
 end
 
-
+#
+# Pretty print 
+#
+# I defined this afterward to avoid jldoctest to fail because of
+# different rounding errors occuring for different architectures.
+#
+# Now filters coefficient are rounded before printing.
+#
+function Base.show(io::IO, f::LinearFilter)
+    r = range(f)
+    coef = fcoef(f)
+    print(io,"Filter(r=$r,c=")
+    print(io, round.(coef; sigdigits=4))
+    println(io,")")
+end 
 
-#+LinearFilter,Internal
-#
-# Default linear filter
-#
+"""
+    struct LinearFilter_Default{T<:Number,N}
+
+Default linear filter.
+
+You can create a filter as follows
+
+```jldoctest
+julia> linear_filter=LinearFilter([1,-2,1],1)
+Filter(r=-1:1,c=[1.0, -2.0, 1.0])
+
+
+julia> offset(linear_filter)
+1
+
+
+julia> range(linear_filter)
+-1:1
+```
+"""
 struct LinearFilter_Default{T<:Number,N} <: LinearFilter{T}
     _fcoef::SVector{N,T}
     _offset::Int
