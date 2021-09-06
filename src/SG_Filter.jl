@@ -151,7 +151,7 @@ polynomialOrder(sg::SG_Filter{T,N}) where {T<:AbstractFloat,N} = maxDerivativeOr
 
 Applies an 1D Savitzky-Golay and returns the smoothed signal.
 """
-function apply_SG_filter(signal::Array{T,1},
+function apply_SG_filter(signal::AbstractArray{T,1},
                          sg::SG_Filter{T};
                          derivativeOrder::Int=0,
                          left_BE::Type{<:BoundaryExtension}=ConstantBE,
@@ -176,7 +176,7 @@ end
 
 Applies an 2D Savitzky-Golay and returns the smoothed signal.
 """
-function apply_SG_filter2D(signal::Array{T,2},
+function apply_SG_filter2D(signal::AbstractArray{T,2},
                            sg_I::SG_Filter{T},
                            sg_J::SG_Filter{T};
                            derivativeOrder_I::Int=0,
