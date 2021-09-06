@@ -46,7 +46,7 @@ There are one 1D signal and one 2D signal:
 data_1D = readdlm(joinpath(dataDir,"signal_1.csv"),','); 
 data_1D_x = @view data_1D[:,1]
 data_1D_y = @view data_1D[:,2]
-plot(data_1D_x,data_1D_y) 
+plot(data_1D_x,data_1D_y,label="signal") 
 ```
 ```@example session_1
 data_2D=readdlm(joinpath(dataDir,"surface.data"));
@@ -82,8 +82,8 @@ Apply this filter on an unidimensional signal:
 ```@example session_1
 data_1D_y_smoothed = apply_SG_filter(data_1D_y,sg,derivativeOrder=0)
 
-plot(data_1D_x,data_1D_y)
-plot!(data_1D_x,data_1D_y_smoothed)
+plot(data_1D_x,data_1D_y_smoothed,linewidth=3,label="smoothed signal")
+plot!(data_1D_x,data_1D_y,label="signal")
 ```
 
 ### 2D signal smoothing
