@@ -1,0 +1,4 @@
+[deps]
+BenchmarkTools = "6e4b80f9-dd63-53aa-95a3-0cdb28fa8baf"
+DSP = "717857b8-e6f2-59f4-9121-6e50c889abd2"
+DirectConvolution = "60a1edcd-6e1b-57a1-8cb7-ec83bf7a2d9a"
