@@ -26,7 +26,9 @@ trous](https://en.wikipedia.org/wiki/Stationary_wavelet_transform)).
 using DirectConvolution
 using DelimitedFiles
 using LinearAlgebra
+
 using Plots
+ENV["GKSwstype"]=100
 gr()
 
 rootDir  = joinpath(dirname(pathof(DirectConvolution)), "..")

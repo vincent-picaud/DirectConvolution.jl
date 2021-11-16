@@ -1,6 +1,6 @@
 name = "DirectConvolution"
 uuid = "60a1edcd-6e1b-57a1-8cb7-ec83bf7a2d9a"
-version = "0.2.0"
+version = "0.2.1"
 
 [deps]
 Documenter = "e30172f5-a6a5-5a46-863b-614d45cd2de4"
@@ -11,4 +11,3 @@ Test = "8dfed614-e22c-5e08-85e1-65c5234f0b40"
 [compat]
 Documenter = "0.27"
 StaticArrays = "1"
-
